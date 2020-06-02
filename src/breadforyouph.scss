@@ -1,12 +1,83 @@
+@import "~bootstrap/scss/bootstrap";
+
+.company-name {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .slogan {
+    margin-top: 10px;
+  }
+}
+
 .app-container {
   .app-header {
-    
+    display: flex;
+    justify-content: center;
+    width: 100%;
 
-    .company-name {
-      font-size: 100px;
-    }
-    .motto {
+    .reason {
       font-size: 20px;
+      margin-top: 10px;
+    }
+  }
+
+  section {
+    margin-top: 30px;
+    margin-right: 20vw;
+    margin-left: 20vw;
+
+    .section-title {
+      font-size: 30px;
+    }
+    .instructions {
+      margin-top: 16px;
+      font-style: italic;
+    }
+    .message {
+      margin-top: 8px;
+      background-color: #8080804a;
+      padding: 16px;
+      .message-line {
+        margin-top: 4px;
+        font-weight: bold;
+        span {
+          font-weight: normal;
+          font-style: italic;
+        }
+      }
+    }
+  }
+
+  .btn-row {
+    display: flex;
+    justify-content: center;
+  }
+  .btn-order {
+    border: 2px solid red;
+    color: red;
+    font-weight: bold;
+    border-radius: 5px;
+    width: 100px;
+    text-align: center;
+    padding: 10px 5px;
+  }
+
+  footer {
+    margin-top: 32px;
+    padding: 16px 0;
+    width: 100%;
+    background-color: #1e1e1e;
+    min-height: 50px;
+    display: flex;
+    justify-content: flex-end;
+
+    .placeholder-logo {
+      border-radius: 60px;
+      padding: 15px;
+      color: white;
+      background-color: saddlebrown;
+      margin-right: 10px;
     }
   }
 }
