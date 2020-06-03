@@ -10,7 +10,19 @@
   }
 }
 
+.grid-img {
+  width: 100%;
+}
+
+.pictures-section {
+  padding-bottom: 50px;
+}
+
 .app-container {
+  .jumbotron {
+    background-color: white;
+  }
+
   .app-header {
     display: flex;
     justify-content: center;
@@ -23,9 +35,18 @@
   }
 
   section {
-    margin-top: 30px;
-    margin-right: 20vw;
-    margin-left: 20vw;
+    padding-top: 30px;
+    padding-right: 20vw;
+    padding-left: 20vw;
+    height: 95vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    &:nth-of-type(odd) {
+      background-color: #f6f6f4;
+    }
 
     .section-title {
       font-size: 30px;
@@ -37,7 +58,7 @@
     .message {
       margin-top: 8px;
       background-color: #8080804a;
-      padding: 16px;
+      padding: 32px;
       .message-line {
         margin-top: 4px;
         font-weight: bold;
@@ -71,13 +92,19 @@
     min-height: 50px;
     display: flex;
     justify-content: flex-end;
+    color: white;
+    display: flex;
+    align-items: center;
+
+    .footer-item {
+      margin-right: 10px;
+    }
 
     .placeholder-logo {
       border-radius: 60px;
       padding: 15px;
       color: white;
       background-color: saddlebrown;
-      margin-right: 10px;
     }
   }
 }
