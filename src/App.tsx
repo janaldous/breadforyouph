@@ -17,7 +17,7 @@ function App() {
           <p className="lead ">Healthy. Delicious. Kind.</p>
           <a
             className="btn btn-primary btn-lg"
-            href="#section-order"
+            href="#how-to-order"
             role="button"
           >
             Order
@@ -41,7 +41,7 @@ function App() {
         <div className="section-title">The Bread</div>
         <div className="instructions">Banana bread smothered in lemon zest</div>
       </section>
-      <section>
+      <section id="how-to-order">
         <div className="row">
           <div className="col-sm-4">
             <div className="section-title">How to Order</div>
@@ -65,13 +65,6 @@ function App() {
                 <span>Meet up location or address in Sta. Rosa, Laguna</span>
               </div>
             </div>
-            <div className="instructions">
-              * Note: Limited slots available (maximum 6 loaves a day), excess
-              orders will be pushed to the next batch the following day.
-            </div>
-            <div className="instructions">
-              Delivery expense is included in the price. Thank you.
-            </div>
           </div>
         </div>
       </section>
@@ -81,13 +74,9 @@ function App() {
           100% of profits go to COVID-19 Relief Fund
         </div>
       </section>
-      <section id="section-order">
-        <div className="section-title">Order</div>
-        <div className="instructions">Form for ordering</div>
-      </section>
       <footer>
         <div className="footer-item">
-          All profits will go towards COVID-19 charties
+          All profits will go towards COVID-19 charities
         </div>
         <div className="footer-item">
           <a href="https://www.instagram.com/breadforyouph/">
