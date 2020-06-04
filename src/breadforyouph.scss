@@ -1,5 +1,9 @@
 @import "~bootstrap/scss/bootstrap";
 
+html {
+  scroll-behavior: smooth;
+}
+
 .company-name {
   display: flex;
   flex-direction: column;
@@ -26,7 +30,7 @@
 }
 
 .instagram-icon {
-    max-width: 60px;
+  max-width: 60px;
 }
 
 .app-container {
@@ -109,7 +113,7 @@
       margin-right: 10px;
 
       &:last-of-type {
-          margin: 0;
+        margin: 0;
       }
     }
 
