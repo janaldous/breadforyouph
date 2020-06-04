@@ -42,10 +42,8 @@
   }
 
   section {
-    padding-top: 30px;
-    padding-right: 20vw;
-    padding-left: 20vw;
-    height: 95vh;
+    padding: 40px 20vw;
+    min-height: 95vh;
 
     display: flex;
     flex-direction: column;
