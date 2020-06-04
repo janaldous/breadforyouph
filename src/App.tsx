@@ -5,6 +5,8 @@ import bananabread1 from "./bananabread.jpg";
 import bananabread3 from "./bananabread3.jpg";
 import lemon from "./lemon.jpg";
 import Jumbotron from "react-bootstrap/Jumbotron";
+import instagram96 from "./icons8-instagram-96.png";
+import instagram48 from "./icons8-instagram-48.png";
 
 function App() {
   return (
@@ -87,8 +89,14 @@ function App() {
         <div className="footer-item">
           All profits will go towards COVID-19 charties
         </div>
-        <div className="footer-item placeholder-logo">IG</div>
-        <div className="footer-item placeholder-logo">FB</div>
+        <div className="footer-item">
+          <a href="https://www.instagram.com/breadforyouph/">
+          <picture>
+            <source srcSet={instagram96} media="(min-width: 550px)"/>
+            <img className="instagram-icon" srcSet={instagram48} alt="Instagram link"/>
+          </picture>
+          </a>
+        </div>
       </footer>
     </div>
   );
