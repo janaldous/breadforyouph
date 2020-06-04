@@ -11,7 +11,7 @@ function App() {
     <div className="app-container">
       <Jumbotron>
         <div className="company-name">
-          <img src={logo} alt="Logo" />
+          <img src={logo} alt="Logo" className="logo" />
           <p className="lead ">Healthy. Delicious. Kind.</p>
           <a
             className="btn btn-primary btn-lg"
