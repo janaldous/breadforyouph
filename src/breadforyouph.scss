@@ -1,5 +1,8 @@
 @import "~bootstrap/scss/bootstrap";
 
+$blue: #4b5c7d;
+$blue-hover: #56698e;
+
 html {
   scroll-behavior: smooth;
 }
@@ -20,6 +23,27 @@ html {
   }
 }
 
+// override bootstrap default
+.btn {
+  background-color: $blue;
+  border-color: $blue;
+}
+
+.btn-primary:hover {
+  background-color: $blue;
+  border-color: $blue;
+}
+
+.jumbotron {
+  margin-top: 100px;
+  margin-bottom: 100px;
+}
+
+#btn-order {
+  margin-top: 16px;
+  //   font-size: 1rem;
+}
+
 .grid-img {
   width: 100%;
   padding-top: 32px;
@@ -31,6 +55,22 @@ html {
 
 .instagram-icon {
   max-width: 60px;
+}
+
+.instructions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+}
+.instruction-step {
+  margin-top: 32px;
+  width: 100%;
+
+  &:first-of-type {
+    margin-top: 0px;
+  }
 }
 
 .app-container {
@@ -50,7 +90,7 @@ html {
   }
 
   section {
-    padding: 40px 20vw;
+    padding: 40px 10vw;
     min-height: 95vh;
 
     display: flex;
@@ -62,22 +102,68 @@ html {
     }
 
     .section-title {
-      font-size: 30px;
-    }
-    .instructions {
+      font-size: 35px;
+      font-weight: 500;
+      width: 100%;
       margin-top: 16px;
-      font-style: italic;
+      margin-bottom: 16px;
+
+      &.center {
+        text-align: center;
+      }
     }
+
+    $elem-spacing: 16px;
+
+    .comms-medium {
+      margin-top: $elem-spacing;
+      //   padding: 32px;
+      width: 100%;
+      //   background-color: rgb(240, 137, 53);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      .comms-or {
+        width: 100%;
+        text-align: center;
+        margin: 4px 0;
+      }
+      .comms-option {
+        width: 100%;
+        text-align: center;
+
+        &:first-of-type {
+          margin-left: 0;
+        }
+      }
+    }
+
     .message {
-      margin-top: 8px;
-      background-color: #8080804a;
-      padding: 32px;
+      margin-top: $elem-spacing;
+      //   background-color: #f3f3f3;
+      //   padding: 32px;
+      height: 100%;
+
       .message-line {
         margin-top: 4px;
-        font-weight: bold;
+        // font-weight: bold;
+
         span {
-          font-weight: normal;
-          font-style: italic;
+          white-space: nowrap;
+          margin-top: 4px;
+          &.choice {
+            font-weight: normal;
+            // background-color: rgb(22, 22, 156);
+            border-radius: 16px;
+            padding: 2px 8px;
+            // color: white;
+          }
+
+          &.or {
+            font-weight: normal;
+          }
         }
       }
     }
@@ -115,12 +201,31 @@ html {
         margin: 0;
       }
     }
+  }
 
-    .placeholder-logo {
-      border-radius: 60px;
-      padding: 15px;
-      color: white;
-      background-color: saddlebrown;
+  #the-bread {
+    $circle-diameter: 140px;
+    .flavor {
+      background-color: white;
+      height: 90px;
+      width: $circle-diameter;
+      //   text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 32px;
+    }
+  }
+}
+
+@include media-breakpoint-up(sm) {
+  .instruction-step {
+    margin-top: 32px;
+    width: 400px;
+
+    &:first-of-type {
+      margin-top: 0px;
+      width: 400px;
     }
   }
 }
