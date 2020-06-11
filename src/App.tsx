@@ -45,17 +45,17 @@ function App() {
           <div className="section-title center">The Bread</div>
         </div>
         <div className="row justify-content-center">
-          <div className="col-sm flavor shadow">
-            <div>Walnut</div>
-          </div>
-          <div className="col-sm flavor shadow">
-            <div>Almond</div>
-          </div>
-          <div className="col-sm flavor shadow">
-            <div>Cinnamon</div>
-          </div>
-          <div className="col-sm flavor shadow">
-            <div>Original</div>
+          <div className="description">
+            <p>
+              Freshly baked and healthy banana bread with almonds, walnuts,
+              cinnamon, lemon zest and muscovado sugar.
+            </p>
+            <p>
+              Crunchy and nutty on the top and light and moist in the inside.
+            </p>
+            <p>
+              Only <b>₱165</b> per loaf (delivery included)
+            </p>
           </div>
         </div>
       </section>
@@ -76,20 +76,16 @@ function App() {
           <div className="instruction-step">
             <div className="message">
               <div className="message-line">
-                Name: <span className="choice">Juan de la Cruz</span>
+                Name: Juan de la Cruz
               </div>
               <div className="message-line">
-                Order: <span className="choice">2 original banana bread</span>
+                Order: 2 original banana bread
               </div>
               <div className="message-line">
-                Mode of payment: <span className="choice">COD</span>{" "}
-                <span className="or">or</span>{" "}
-                <span className="choice">GCash to 09178001866</span>
+                Mode of payment: COD or GCash to 09178001866
               </div>
               <div className="message-line">
-                Delivery: <span className="choice">Meet up location</span>{" "}
-                <span className="or">or</span>{" "}
-                <span className="choice">Drop off address</span>
+                Delivery: Meet up location or Drop off address
               </div>
             </div>
           </div>
@@ -97,8 +93,18 @@ function App() {
       </section>
       <section>
         <div className="section-title center">About us</div>
-        <div className="instructions">
-          100% of profits go to COVID-19 Relief Fund
+        <div className="row justify-content-center">
+          <div className="description">
+            <p>
+              100% of profits go to the Covid-19 Relief Initiative by Saddleback
+              Sta. Rosa.
+            </p>
+            <p>
+              Aim: Food Pantry with the goal to feed 5,000 people from
+              Sitio Mangumpit, Sitio Buntog, Inchican, Don Jose, Bgry. San
+              Antonio, San Pedro, Sitio Hemedes.
+            </p>
+          </div>
         </div>
       </section>
       <footer>

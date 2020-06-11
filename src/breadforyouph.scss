@@ -1,8 +1,8 @@
 @import "~bootstrap/scss/bootstrap";
 
 @font-face {
-  font-family: 'Orchide';
-  src: local('Orchide'), url(./fonts/Orchide.otf) format('truetype');
+  font-family: "Orchide";
+  src: local("Orchide"), url(./fonts/Orchide.otf) format("truetype");
 }
 
 $blue: #4b5c7d;
@@ -39,6 +39,12 @@ html {
   border-color: $blue;
 }
 
+.btn-primary:not(:disabled):not(.disabled):active,
+.btn-primary:not(:disabled):not(.disabled):active {
+  background-color: $blue-hover;
+  border-color: $blue-hover;
+}
+
 .jumbotron {
   margin-top: 100px;
   margin-bottom: 100px;
@@ -46,7 +52,6 @@ html {
 
 #btn-order {
   margin-top: 16px;
-  //   font-size: 1rem;
 }
 
 .grid-img {
@@ -62,13 +67,22 @@ html {
   max-width: 60px;
 }
 
-.instructions {
+.description {
   width: 100%;
+
+  &.center {
+    text-align: center;
+  }
+}
+
+.instructions {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   padding: 40px;
 }
+
 .instruction-step {
   margin-top: 32px;
   width: 100%;
@@ -122,9 +136,7 @@ html {
 
     .comms-medium {
       margin-top: $elem-spacing;
-      //   padding: 32px;
       width: 100%;
-      //   background-color: rgb(240, 137, 53);
       height: 100%;
       display: flex;
       flex-direction: column;
@@ -147,23 +159,18 @@ html {
 
     .message {
       margin-top: $elem-spacing;
-      //   background-color: #f3f3f3;
-      //   padding: 32px;
       height: 100%;
 
       .message-line {
         margin-top: 4px;
-        // font-weight: bold;
 
         span {
           white-space: nowrap;
           margin-top: 4px;
           &.choice {
             font-weight: normal;
-            // background-color: rgb(22, 22, 156);
             border-radius: 16px;
             padding: 2px 8px;
-            // color: white;
           }
 
           &.or {
@@ -214,7 +221,6 @@ html {
       background-color: white;
       height: 90px;
       width: $circle-diameter;
-      //   text-align: center;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -232,5 +238,9 @@ html {
       margin-top: 0px;
       width: 400px;
     }
+  }
+
+  .description {
+    width: 400px;
   }
 }
