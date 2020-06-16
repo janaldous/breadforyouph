@@ -8,7 +8,10 @@ const OrderConfirmation: React.FC<OrderComponentProps> = (props) => {
     <div className="app-container">
       <section id="order">
         <div className="row">
-          <div className="section-title center">Order</div>
+          <div className="section-title center">Confirmed</div>
+        </div>
+        <div className="row justify-content-center">
+          <div className="description">Order confirmation</div>
         </div>
         <div className="row justify-content-center">
           <div className="description">

@@ -14,6 +14,7 @@ const OrderInfo: React.FC<OrderComponentProps> = (props) => {
         </div>
         <div className="row justify-content-center">
           <div className="description">
+            <div className="description">Order information</div>
             <Form>
               <Form.Group controlId="quantity">
                 <Form.Label>Quantity</Form.Label>
@@ -24,8 +25,12 @@ const OrderInfo: React.FC<OrderComponentProps> = (props) => {
                 </Form.Control>
               </Form.Group>
 
-              <Button variant="primary" onClick={props.onNext}>
-                Next
+              <Button
+                variant="primary"
+                className="w-100"
+                onClick={props.onNext}
+              >
+                One more step
               </Button>
             </Form>
           </div>

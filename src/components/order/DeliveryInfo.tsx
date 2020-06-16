@@ -6,12 +6,15 @@ import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import { OrderComponentProps } from "./OrderModel";
 
-const DeliveryInfo:React.FC<OrderComponentProps> = (props) => {
+const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
   return (
     <div className="app-container">
       <section id="order">
         <div className="row">
           <div className="section-title center">Order</div>
+        </div>
+        <div className="row justify-content-center">
+          <div className="description">Delivery information</div>
         </div>
         <div className="row justify-content-center">
           <div className="description">
@@ -32,7 +35,10 @@ const DeliveryInfo:React.FC<OrderComponentProps> = (props) => {
 
               <Form.Group controlId="address">
                 <Form.Label>Address 1</Form.Label>
-                <Form.Control type="string" placeholder={"e.g. Street, Landmark"} />
+                <Form.Control
+                  type="string"
+                  placeholder={"e.g. Street, Landmark"}
+                />
                 <Form.Label>Address 2</Form.Label>
                 <Form.Control type="string" placeholder={"e.g. Village"} />
                 <Form.Text className="text-muted">
@@ -76,8 +82,12 @@ const DeliveryInfo:React.FC<OrderComponentProps> = (props) => {
                 </Form.Row>
               </Form.Group>
 
-              <Button variant="primary" onClick={props.onNext}>
-                Submit
+              <Button
+                variant="primary"
+                className="w-100"
+                onClick={props.onNext}
+              >
+                Place order
               </Button>
             </Form>
           </div>
@@ -99,6 +109,6 @@ const DeliveryInfo:React.FC<OrderComponentProps> = (props) => {
       </footer>
     </div>
   );
-}
+};
 
 export default DeliveryInfo;
