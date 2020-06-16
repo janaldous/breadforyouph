@@ -35,7 +35,7 @@ export default function Order() {
       case 0:
         return <OrderInfo onNext={handleNext} />;
       case 1:
-        return <DeliveryInfo onNext={handleNext} onPrev={handlePrev} />;
+        return <DeliveryInfo onNext={handleNext} />;
       case 2:
         return <OrderSummary onNext={handleNext} />;
       case 3:

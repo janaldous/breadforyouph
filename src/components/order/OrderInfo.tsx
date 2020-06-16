@@ -16,7 +16,7 @@ const OrderInfo: React.FC<OrderComponentProps> = (props) => {
             <div className="bold-title">Your order</div>
             <Form className="order-form">
               <Form.Group as={Row} controlId="formOrders">
-                <Col sm={3}>
+                <Col xs={3}>
                   <Form.Control as="select">
                     {Array.from({ length: MAX_ORDERS }, (v, k) => k + 1).map(
                       (x) => (
@@ -25,10 +25,10 @@ const OrderInfo: React.FC<OrderComponentProps> = (props) => {
                     )}
                   </Form.Control>
                 </Col>
-                <Form.Label column sm={6}>
+                <Form.Label column xs={6}>
                   Original Banana Bread
                 </Form.Label>
-                <Col sm={3}>₱165</Col>
+                <Col xs={3}>₱165</Col>
               </Form.Group>
               <div className="line-separator"></div>
               <div className="subtotal">
