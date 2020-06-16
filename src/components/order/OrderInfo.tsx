@@ -17,7 +17,7 @@ const OrderInfo: React.FC<OrderComponentProps> = (props) => {
             <Form className="order-form">
               <Form.Group as={Row} controlId="formOrders">
                 <Col xs={3}>
-                  <Form.Control as="select">
+                  <Form.Control as="select" data-testid={"quantity"} onChange={props.onChange}>
                     {Array.from({ length: MAX_ORDERS }, (v, k) => k + 1).map(
                       (x) => (
                         <option key={`quantity-${x}`}>{x}</option>
@@ -28,17 +28,17 @@ const OrderInfo: React.FC<OrderComponentProps> = (props) => {
                 <Form.Label column xs={6}>
                   Original Banana Bread
                 </Form.Label>
-                <Col xs={3}>₱165</Col>
+                <Col xs={3}>₱{props.data.price}</Col>
               </Form.Group>
               <div className="line-separator"></div>
               <div className="subtotal">
                 <Row>
                   <Col xs={9}>Subtotal</Col>
-                  <Col xs={3}>₱200</Col>
+                  <Col xs={3}>₱<span data-testid="subtotal">{props.data.subtotal}</span></Col>
                 </Row>
                 <Row>
                   <Col xs={9}>Delivery fee</Col>
-                  <Col xs={3}>₱0</Col>
+                  <Col xs={3}>₱<span data-testid="delivery-fee">{props.data.deliveryFee}</span></Col>
                 </Row>
               </div>
               <div className="line-separator"></div>
@@ -48,7 +48,7 @@ const OrderInfo: React.FC<OrderComponentProps> = (props) => {
                     <b>Total</b>
                   </Col>
                   <Col xs={3}>
-                    <b>₱200</b>
+                    <b>₱<span data-testid="total">{props.data.total}</span></b>
                   </Col>
                 </Row>
               </div>

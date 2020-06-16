@@ -5,9 +5,17 @@ import OrderConfirmation from "./OrderConfirmation";
 import Navbar from "react-bootstrap/Navbar";
 import logo from "../../logo.jpg";
 import OrderSummary from "./OrderSummary";
+import { OrderData } from "./OrderModel";
 
 export default function Order() {
-  const [step, setStep] = React.useState(0);
+  const [step, setStep] = React.useState<number>(0);
+  const [data, setData] = React.useState<OrderData>({
+    quantity: 1,
+    subtotal: 165,
+    deliveryFee: 0,
+    total: 165,
+    price: 165,
+  });
 
   const handleNext = () => {
     setStep((oldStep) => oldStep + 1);
@@ -15,6 +23,12 @@ export default function Order() {
 
   const handlePrev = () => {
     setStep((oldStep) => oldStep - 1);
+  };
+
+  const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
+    const value = e.currentTarget.value;
+    const subtotal = value * data.price;
+    setData(oldData => ({...oldData, total: subtotal, subtotal}));
   };
 
   const getBackButton = (step: number) => {
@@ -33,11 +47,11 @@ export default function Order() {
   const getContent = (step: number) => {
     switch (step) {
       case 0:
-        return <OrderInfo onNext={handleNext} />;
+        return <OrderInfo onNext={handleNext} data={data} onChange={handleChange}/>;
       case 1:
         return <DeliveryInfo onNext={handleNext} />;
       case 2:
-        return <OrderSummary onNext={handleNext} />;
+        return <OrderSummary onNext={handleNext} data={data}/>;
       case 3:
         return <OrderConfirmation />;
       default:

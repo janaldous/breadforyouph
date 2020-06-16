@@ -46,4 +46,28 @@ describe("Order component", () => {
 
     expect(getByText("Order")).toBeInTheDocument();
   });
+
+  it("changes total and subtotal when quantity is changed to 2", () => {
+    const { getByTestId } = render(<Order />);
+    fireEvent.change(getByTestId("quantity"), {target: {value: "2"}});
+    expect(getByTestId("subtotal").textContent).toBe("330");
+    expect(getByTestId("delivery-fee").textContent).toBe("0");
+    expect(getByTestId("subtotal").textContent).toBe("330");
+  });
+
+  it("changes total and subtotal when quantity is changed to 3", () => {
+    const { getByTestId, getByText } = render(<Order />);
+    fireEvent.change(getByTestId("quantity"), {target: {value: "3"}});
+    expect(getByTestId("subtotal").textContent).toBe("495");
+    expect(getByTestId("delivery-fee").textContent).toBe("0");
+    expect(getByTestId("subtotal").textContent).toBe("495");
+
+    fireEvent.click(getByText("Two more steps"));
+    fireEvent.click(getByText("One more step"));
+    fireEvent.click(getByText("Place order"));
+
+    expect(getByTestId("subtotal").textContent).toBe("495");
+    expect(getByTestId("delivery-fee").textContent).toBe("0");
+    expect(getByTestId("subtotal").textContent).toBe("495");
+  });
 });
