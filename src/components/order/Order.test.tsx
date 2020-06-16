@@ -11,14 +11,24 @@ describe("Order component", () => {
   it("shows delivery info page as 2nd page", () => {
     const { getByText } = render(<Order />);
     
-    fireEvent.click(getByText("One more step"));
+    fireEvent.click(getByText("Two more steps"));
 
     expect(getByText("Delivery information")).toBeInTheDocument();
   });
 
-  it("shows confirmation page as 3rd page", () => {
+  it("shows place order page as 3rd page", () => {
     const { getByText } = render(<Order />);
     
+    fireEvent.click(getByText("Two more steps"));
+    fireEvent.click(getByText("One more step"));
+
+    expect(getByText("Order")).toBeInTheDocument();
+  });
+
+  it("shows order confirmation as 4th page", () => {
+    const { getByText } = render(<Order />);
+    
+    fireEvent.click(getByText("Two more steps"));
     fireEvent.click(getByText("One more step"));
     fireEvent.click(getByText("Place order"));
 

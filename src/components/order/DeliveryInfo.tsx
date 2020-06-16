@@ -90,7 +90,7 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                 className="btn-next w-100"
                 onClick={props.onNext}
               >
-                Place order
+                One more step
               </Button>
             </Form>
           </div>

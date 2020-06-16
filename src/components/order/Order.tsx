@@ -4,6 +4,7 @@ import DeliveryInfo from "./DeliveryInfo";
 import OrderConfirmation from "./OrderConfirmation";
 import Navbar from "react-bootstrap/Navbar";
 import logo from "../../logo.jpg";
+import OrderSummary from "./OrderSummary";
 
 export default function Order() {
   const [step, setStep] = React.useState(0);
@@ -19,6 +20,8 @@ export default function Order() {
       case 1:
         return <DeliveryInfo onNext={handleNext} />;
       case 2:
+        return <OrderSummary onNext={handleNext} />;
+      case 3:
         return <OrderConfirmation />;
       default:
         throw new Error("invalid step");
@@ -28,7 +31,9 @@ export default function Order() {
   return (
     <div className="order-container">
       <Navbar className="custom-navbar">
-        <div className="flex-1-only"><a href={"/"}>{"< Back to Home"}</a></div>
+        <div className="flex-1-only">
+          <a href={"/"}>{"< Back to Home"}</a>
+        </div>
         <Navbar.Brand className="nav-brand" href="/">
           <img src={logo} alt="Logo" className="logo" />
         </Navbar.Brand>
