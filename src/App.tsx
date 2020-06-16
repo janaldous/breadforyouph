@@ -3,11 +3,13 @@ import "./breadforyouph.scss";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./Home";
 import Order from "./components/order/Order";
+import instagramLogo from "./icons8-instagram-96.png";
 
 function App() {
   return (
-    <Router>
-      <Switch>
+    <div className="app-container">
+      <Router>
+        <Switch>
           <Route path="/order">
             <Order />
           </Route>
@@ -15,7 +17,22 @@ function App() {
             <Home />
           </Route>
         </Switch>
-    </Router>
+      </Router>
+      <footer>
+        <div className="footer-item">breadforyouph</div>
+        <div className="footer-item">
+          <a href="https://www.instagram.com/breadforyouph/">
+            <picture>
+              <img
+                className="instagram-icon"
+                srcSet={instagramLogo}
+                alt="Instagram link"
+              />
+            </picture>
+          </a>
+        </div>
+      </footer>
+    </div>
   );
 }
 

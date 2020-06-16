@@ -73,20 +73,6 @@ const OrderInfo: React.FC<OrderComponentProps> = (props) => {
           </div>
         </div>
       </section>
-      <footer>
-        <div className="footer-item">breadforyouph</div>
-        <div className="footer-item">
-          <a href="https://www.instagram.com/breadforyouph/">
-            <picture>
-              <img
-                className="instagram-icon"
-                srcSet={instagramLogo}
-                alt="Instagram link"
-              />
-            </picture>
-          </a>
-        </div>
-      </footer>
     </div>
   );
 };

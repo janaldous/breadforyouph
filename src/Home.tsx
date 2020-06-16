@@ -5,7 +5,6 @@ import bananabread1 from "./bananabread.jpg";
 import bananabread3 from "./bananabread3.jpg";
 import lemon from "./lemon.jpg";
 import Jumbotron from "react-bootstrap/Jumbotron";
-import instagramLogo from "./icons8-instagram-96.png";
 import { Link } from "react-router-dom";
 
 const defaultMessage = "Name:\nOrder:\nPayment:\nDelivery:";
@@ -109,20 +108,6 @@ function Home() {
           </div>
         </div>
       </section>
-      <footer>
-        <div className="footer-item">breadforyouph</div>
-        <div className="footer-item">
-          <a href="https://www.instagram.com/breadforyouph/">
-            <picture>
-              <img
-                className="instagram-icon"
-                srcSet={instagramLogo}
-                alt="Instagram link"
-              />
-            </picture>
-          </a>
-        </div>
-      </footer>
     </div>
   );
 }
