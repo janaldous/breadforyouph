@@ -6,17 +6,21 @@ import instagramLogo from "../../icons8-instagram-96.png";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Navbar from "react-bootstrap/Navbar";
 import { OrderComponentProps } from "./OrderModel";
+import logo from "../../logo.jpg";
 
 const OrderInfo: React.FC<OrderComponentProps> = (props) => {
   const MAX_ORDERS = 6;
 
   return (
     <div className="app-container">
+      <Navbar className="custom-navbar">
+        <div className="flex-1-only">{"< Back to Home"}</div>
+        <Navbar.Brand className="nav-brand" href="/"><img src={logo} alt="Logo" className="logo" /></Navbar.Brand>
+        <div className="flex-1-only"></div>
+      </Navbar>
       <section id="order">
-        <div className="row">
-          <div className="section-title center">Order</div>
-        </div>
         <div className="row justify-content-center">
           <div className="description">
             <div className="bold-title">Your order</div>
@@ -34,9 +38,7 @@ const OrderInfo: React.FC<OrderComponentProps> = (props) => {
                 <Form.Label column sm={6}>
                   Original Banana Bread
                 </Form.Label>
-                <Col sm={3}>
-                  ₱165
-                </Col>
+                <Col sm={3}>₱165</Col>
               </Form.Group>
               <div className="line-separator"></div>
               <div className="subtotal">
@@ -52,8 +54,12 @@ const OrderInfo: React.FC<OrderComponentProps> = (props) => {
               <div className="line-separator"></div>
               <div className="total">
                 <Row>
-                  <Col xs={9}><b>Total</b></Col>
-                  <Col xs={3}><b>₱200</b></Col>
+                  <Col xs={9}>
+                    <b>Total</b>
+                  </Col>
+                  <Col xs={3}>
+                    <b>₱200</b>
+                  </Col>
                 </Row>
               </div>
               <Button

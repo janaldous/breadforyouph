@@ -1,20 +1,39 @@
 .line-separator {
-    border: 1px solid #0000004f;
+  border: 1px solid #0000004f;
 }
 
 .subtotal {
-    padding: 10px 0;
+  padding: 10px 0;
 }
 
 .total {
-    padding: 10px 0;
+  padding: 10px 0;
 }
 
 .bold-title {
-    font-size: 18px;
-    font-weight: bold;
+  font-size: 18px;
+  font-weight: bold;
 }
 
 .order-form {
-    padding: 10px 0;
+  padding: 10px 0;
+}
+
+.custom-navbar {
+  display: flex;
+  align-items: center;
+  padding-left: 30px;
+  padding-right: 30px;
+  background-color: white;
+
+  .flex-1-only {
+    flex: 1 1;
+    font-size: 15px;
+  }
+  .nav-brand {
+    flex: none;
+    .logo {
+        height: 32px;
+    }
+  }
 }
