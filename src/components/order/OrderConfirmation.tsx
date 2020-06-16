@@ -1,6 +1,5 @@
 import React from "react";
 import "../../breadforyouph.scss";
-import instagramLogo from "../../icons8-instagram-96.png";
 import { OrderComponentProps } from "./OrderModel";
 
 const OrderConfirmation: React.FC<OrderComponentProps> = (props) => {
