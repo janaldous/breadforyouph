@@ -92,7 +92,7 @@ html {
   }
 }
 
-.app-container {
+.home-container {
   .jumbotron {
     background-color: white;
   }
@@ -195,25 +195,6 @@ html {
     padding: 10px 5px;
   }
 
-  footer {
-    padding: 16px;
-    width: 100%;
-    background-color: #1e1e1e;
-    min-height: 50px;
-    display: flex;
-    justify-content: flex-end;
-    color: white;
-    display: flex;
-    align-items: center;
-
-    .footer-item {
-      margin-right: 10px;
-
-      &:last-of-type {
-        margin: 0;
-      }
-    }
-  }
 
   #the-bread {
     $circle-diameter: 140px;

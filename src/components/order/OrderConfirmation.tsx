@@ -1,5 +1,4 @@
 import React from "react";
-import "../../breadforyouph.scss";
 import { OrderComponentProps } from "./OrderModel";
 
 const OrderConfirmation: React.FC<OrderComponentProps> = (props) => {

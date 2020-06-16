@@ -4,7 +4,6 @@ import DeliveryInfo from "./DeliveryInfo";
 import OrderConfirmation from "./OrderConfirmation";
 import Navbar from "react-bootstrap/Navbar";
 import logo from "../../logo.jpg";
-import { Link } from "react-router-dom";
 
 export default function Order() {
   const [step, setStep] = React.useState(0);

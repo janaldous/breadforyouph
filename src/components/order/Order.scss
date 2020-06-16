@@ -33,7 +33,19 @@
   .nav-brand {
     flex: none;
     .logo {
-        height: 32px;
+      height: 32px;
     }
+  }
+}
+
+.order-container {
+  section {
+    padding: 40px 10vw;
+    min-height: 95vh;
+
+    display: flex;
+    flex-direction: column;
+
+    background-color: #f6f6f4;
   }
 }

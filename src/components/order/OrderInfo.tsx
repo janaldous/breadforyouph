@@ -1,5 +1,4 @@
 import React from "react";
-import "../../breadforyouph.scss";
 import "./Order.scss";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -11,7 +10,6 @@ const OrderInfo: React.FC<OrderComponentProps> = (props) => {
   const MAX_ORDERS = 6;
 
   return (
-    <div className="app-container">
       <section id="order">
         <div className="row justify-content-center">
           <div className="description">
@@ -65,7 +63,6 @@ const OrderInfo: React.FC<OrderComponentProps> = (props) => {
           </div>
         </div>
       </section>
-    </div>
   );
 };
 

@@ -1,11 +1,11 @@
 import React from "react";
-import "./breadforyouph.scss";
 import logo from "./logo.jpg";
 import bananabread1 from "./bananabread.jpg";
 import bananabread3 from "./bananabread3.jpg";
 import lemon from "./lemon.jpg";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import { Link } from "react-router-dom";
+import "./Home.scss";
 
 const defaultMessage = "Name:\nOrder:\nPayment:\nDelivery:";
 const uriDefaultMessage = encodeURIComponent(defaultMessage);
@@ -13,7 +13,7 @@ const smsURI = `sms:09178001866;?&body=${uriDefaultMessage}`;
 
 function Home() {
   return (
-    <div className="app-container">
+    <div className="home-container">
       <Jumbotron>
         <div className="company-name">
           <img src={logo} alt="Logo" className="logo" />

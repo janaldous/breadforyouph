@@ -1,9 +1,9 @@
 import React from "react";
-import "./breadforyouph.scss";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./Home";
 import Order from "./components/order/Order";
 import instagramLogo from "./icons8-instagram-96.png";
+import "./App.scss";
 
 function App() {
   return (
