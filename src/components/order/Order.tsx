@@ -28,7 +28,7 @@ export default function Order() {
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
     const value = e.currentTarget.value;
     const subtotal = value * data.price;
-    setData(oldData => ({...oldData, total: subtotal, subtotal}));
+    setData((oldData) => ({ ...oldData, total: subtotal, subtotal }));
   };
 
   const getBackButton = (step: number) => {
@@ -37,8 +37,13 @@ export default function Order() {
         return <a href={"/"}>{"< Back to Home"}</a>;
       case 1:
       case 2:
+        return (
+          <div className="btn-back" onClick={handlePrev}>
+            {"< Back"}
+          </div>
+        );
       case 3:
-        return <div className="btn-back" onClick={handlePrev}>{"< Back"}</div>;
+        return <div></div>;
       default:
         throw new Error("invalid step");
     }
@@ -47,11 +52,13 @@ export default function Order() {
   const getContent = (step: number) => {
     switch (step) {
       case 0:
-        return <OrderInfo onNext={handleNext} data={data} onChange={handleChange}/>;
+        return (
+          <OrderInfo onNext={handleNext} data={data} onChange={handleChange} />
+        );
       case 1:
         return <DeliveryInfo onNext={handleNext} />;
       case 2:
-        return <OrderSummary onNext={handleNext} data={data}/>;
+        return <OrderSummary onNext={handleNext} data={data} />;
       case 3:
         return <OrderConfirmation />;
       default:

@@ -22,18 +22,18 @@ const OrderSummary: React.FC<OrderComponentProps> = (props) => {
           <div className="products">
             <Row>
               <Col xs={9}>1 Original Banana Bread</Col>
-              <Col xs={3}>₱{props.data.price}</Col>
+              <Col xs={3}>₱<span data-testid="price">{props.data.price}</span></Col>
             </Row>
           </div>
           <div className="line-separator"></div>
           <div className="subtotal">
             <Row>
               <Col xs={9}>Subtotal</Col>
-              <Col xs={3}>₱{props.data.subtotal}</Col>
+              <Col xs={3}>₱<span data-testid="subtotal">{props.data.subtotal}</span></Col>
             </Row>
             <Row>
               <Col xs={9}>Delivery fee</Col>
-              <Col xs={3}>₱{props.data.deliveryFee}</Col>
+              <Col xs={3}>₱<span data-testid="delivery-fee">{props.data.deliveryFee}</span></Col>
             </Row>
           </div>
           <div className="line-separator"></div>
@@ -43,7 +43,7 @@ const OrderSummary: React.FC<OrderComponentProps> = (props) => {
                 <b>Total</b>
               </Col>
               <Col xs={3}>
-                <b>₱{props.data.total}</b>
+                <b>₱<span data-testid="total">{props.data.total}</span></b>
               </Col>
             </Row>
           </div>
