@@ -54,7 +54,7 @@ const OrderInfo: React.FC<OrderComponentProps> = (props) => {
               </div>
               <Button
                 variant="primary"
-                className="w-100"
+                className="btn-next w-100"
                 onClick={props.onNext}
               >
                 One more step

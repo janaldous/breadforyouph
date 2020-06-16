@@ -8,11 +8,10 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
   return (
     <div className="app-container">
       <section id="order">
-        <div className="row">
-          <div className="section-title center">Order</div>
-        </div>
         <div className="row justify-content-center">
-          <div className="description">Delivery information</div>
+          <div className="description">
+            <div className="bold-title">Delivery information</div>
+          </div>
         </div>
         <div className="row justify-content-center">
           <div className="description">
@@ -21,10 +20,10 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                 <Form.Label>Full name</Form.Label>
                 <Form.Row>
                   <Col>
-                    <Form.Control placeholder="First name" />
+                    <Form.Control name="firstname" placeholder="First name" />
                   </Col>
                   <Col>
-                    <Form.Control placeholder="Last name" />
+                    <Form.Control name="firstname"  placeholder="Last name" />
                   </Col>
                 </Form.Row>
                 <Form.Label>Contact number</Form.Label>
@@ -62,8 +61,9 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                 </Form.Row>
               </Form.Group>
 
+              <div className="bold-title">Payment information</div>
+
               <Form.Group controlId="paymentOption">
-                <Form.Label>Payment option</Form.Label>
                 <Form.Row>
                   <Form.Check
                     inline={true}
