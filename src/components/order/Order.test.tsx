@@ -5,7 +5,7 @@ import Order from "./Order";
 describe("Order component", () => {
   it("shows order page on load", () => {
     const { getByText } = render(<Order />);
-    expect(getByText("Order information")).toBeInTheDocument();
+    expect(getByText("Your order")).toBeInTheDocument();
   });
 
   it("shows delivery info page as 2nd page", () => {
