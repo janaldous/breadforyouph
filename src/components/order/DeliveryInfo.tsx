@@ -20,24 +20,29 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                 <Form.Label>Full name</Form.Label>
                 <Form.Row>
                   <Col>
-                    <Form.Control name="firstname" placeholder="First name" />
+                    <Form.Control name="given-name" placeholder="First name" />
                   </Col>
                   <Col>
-                    <Form.Control name="firstname"  placeholder="Last name" />
+                    <Form.Control name="family-name" placeholder="Last name" />
                   </Col>
                 </Form.Row>
                 <Form.Label>Contact number</Form.Label>
-                <Form.Control type="string" />
+                <Form.Control name="tel" type="string" />
               </Form.Group>
 
               <Form.Group controlId="address">
                 <Form.Label>Address 1</Form.Label>
                 <Form.Control
                   type="string"
+                  name="address-line1"
                   placeholder={"e.g. Street, Landmark"}
                 />
                 <Form.Label>Address 2</Form.Label>
-                <Form.Control type="string" placeholder={"e.g. Village"} />
+                <Form.Control
+                  type="string"
+                  name="address-line2"
+                  placeholder={"e.g. Village"}
+                />
                 <Form.Text className="text-muted">
                   We currently only deliver to Sta. Rosa, Laguna
                 </Form.Text>
@@ -82,7 +87,7 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
 
               <Button
                 variant="primary"
-                className="w-100"
+                className="btn-next w-100"
                 onClick={props.onNext}
               >
                 Place order
