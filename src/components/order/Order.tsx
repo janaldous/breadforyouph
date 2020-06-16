@@ -29,7 +29,7 @@ export default function Order() {
   return (
     <div className="order-container">
       <Navbar className="custom-navbar">
-        <div className="flex-1-only"><Link to={"/"}>{"< Back to Home"}</Link></div>
+        <div className="flex-1-only"><a href={"/"}>{"< Back to Home"}</a></div>
         <Navbar.Brand className="nav-brand" href="/">
           <img src={logo} alt="Logo" className="logo" />
         </Navbar.Brand>
