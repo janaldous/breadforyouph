@@ -10,10 +10,12 @@ const OrderSummary: React.FC<OrderComponentProps> = (props) => {
     <section id="order">
       <div className="row justify-content-center">
         <div className="description payment-information">
-          <div className="customer-name">Mickey Mouse</div>
-          <div>Main Street</div>
-          <div>Disneyland Village</div>
-          <div>Cash on Delivery</div>
+          <div className="customer-name" data-testid="customer-name">{`${props.data.firstName} ${props.data.lastName}`}</div>
+          <div data-testid="contact-number">{props.data.contactNumber}</div>
+          <div data-testid="delivery-type">Will be delivered at:</div>
+          <div data-testid="address1">Main Street</div>
+          <div data-testid="address1">Disneyland Village</div>
+          <div data-testid="payment-type">Cash on Delivery</div>
         </div>
       </div>
       <div className="row justify-content-center">

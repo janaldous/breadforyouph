@@ -21,6 +21,7 @@ const OrderInfo: React.FC<OrderComponentProps> = (props) => {
                   as="select"
                   data-testid={"quantity"}
                   onChange={props.onChange}
+                  name="quantity"
                 >
                   {Array.from({ length: MAX_ORDERS }, (v, k) => k + 1).map(
                     (x) => (

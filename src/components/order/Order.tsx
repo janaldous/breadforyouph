@@ -7,6 +7,12 @@ import logo from "../../logo.jpg";
 import OrderSummary from "./OrderSummary";
 import { OrderData } from "./OrderModel";
 
+const inputNameMapper = {
+  "given-name": "firstName",
+  "family-name": "lastName",
+  "phone": "contactNumber",
+};
+
 export default function Order() {
   const [step, setStep] = React.useState<number>(0);
   const [data, setData] = React.useState<OrderData>({
@@ -15,6 +21,9 @@ export default function Order() {
     deliveryFee: 0,
     total: 165,
     price: 165,
+    firstName: null,
+    lastName: null,
+    contactNumber: null,
   });
 
   const handleNext = () => {
@@ -27,8 +36,13 @@ export default function Order() {
 
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
     const value = e.currentTarget.value;
-    const subtotal = value * data.price;
-    setData((oldData) => ({ ...oldData, total: subtotal, subtotal }));
+    if (e.currentTarget.name === "quantity") {
+      const subtotal = value * data.price;
+      setData((oldData) => ({ ...oldData, total: subtotal, subtotal }));
+    } else {
+      let name = inputNameMapper[e.currentTarget.name] || e.currentTarget.name;
+      setData((oldData) => ({ ...oldData, [name]: value }));
+    }
   };
 
   const getBackButton = (step: number) => {
@@ -56,7 +70,7 @@ export default function Order() {
           <OrderInfo onNext={handleNext} data={data} onChange={handleChange} />
         );
       case 1:
-        return <DeliveryInfo onNext={handleNext} />;
+        return <DeliveryInfo onNext={handleNext} onChange={handleChange}/>;
       case 2:
         return <OrderSummary onNext={handleNext} data={data} />;
       case 3:

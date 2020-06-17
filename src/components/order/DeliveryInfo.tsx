@@ -20,14 +20,27 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                 <Form.Label>Full name</Form.Label>
                 <Form.Row>
                   <Col>
-                    <Form.Control name="given-name" placeholder="First name" />
+                    <Form.Control
+                      name="given-name"
+                      placeholder="First name"
+                      onChange={props.onChange}
+                    />
                   </Col>
                   <Col>
-                    <Form.Control name="family-name" placeholder="Last name" />
+                    <Form.Control
+                      name="family-name"
+                      placeholder="Last name"
+                      onChange={props.onChange}
+                    />
                   </Col>
                 </Form.Row>
                 <Form.Label>Contact number</Form.Label>
-                <Form.Control type="tel" name="phone" />
+                <Form.Control
+                  type="tel"
+                  name="phone"
+                  aria-label={"contactNumber"}
+                  onChange={props.onChange}
+                />
               </Form.Group>
 
               <Form.Group controlId="address">
@@ -35,12 +48,14 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                 <Form.Control
                   type="string"
                   name="address-line1"
+                  aria-label={"addressLine1"}
                   placeholder={"e.g. Street, Landmark"}
                 />
                 <Form.Label>Address 2</Form.Label>
                 <Form.Control
                   type="string"
                   name="address-line2"
+                  aria-label={"addressLine2"}
                   placeholder={"e.g. Village"}
                 />
                 <Form.Text className="text-muted">

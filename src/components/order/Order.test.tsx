@@ -1,5 +1,5 @@
 import React from "react";
-import { render, fireEvent } from "@testing-library/react";
+import { render, fireEvent, getByLabelText } from "@testing-library/react";
 import Order from "./Order";
 import "@testing-library/jest-dom/extend-expect";
 
@@ -66,5 +66,27 @@ describe("Order component", () => {
     expect(getByTestId("subtotal").textContent).toBe("495");
     expect(getByTestId("delivery-fee").textContent).toBe("0");
     expect(getByTestId("total").textContent).toBe("495");
+  });
+
+  it("changes name and address when they are filled in", () => {
+    const { getByTestId, getByText, getByPlaceholderText, getByLabelText } = render(
+      <Order />
+    );
+
+    fireEvent.click(getByText("Two more steps"));
+    fireEvent.change(getByPlaceholderText("First name"), {
+      target: { value: "John" },
+    });
+    fireEvent.change(getByPlaceholderText("Last name"), {
+      target: { value: "Doe" },
+    });
+    expect(getByLabelText("contactNumber")).toBeInTheDocument();
+    fireEvent.change(getByLabelText("contactNumber"), {
+      target: { value: "0123456789" },
+    });
+
+    fireEvent.click(getByText("One more step"));
+    expect(getByTestId("customer-name").textContent).toBe("John Doe");
+    expect(getByTestId("contact-number").textContent).toBe("0123456789");
   });
 });
