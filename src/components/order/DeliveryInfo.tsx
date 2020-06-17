@@ -27,7 +27,7 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                   </Col>
                 </Form.Row>
                 <Form.Label>Contact number</Form.Label>
-                <Form.Control name="tel" type="string" />
+                <Form.Control type="tel" name="phone" />
               </Form.Group>
 
               <Form.Group controlId="address">
