@@ -10,7 +10,11 @@ import { OrderData } from "./OrderModel";
 const inputNameMapper = {
   "given-name": "firstName",
   "family-name": "lastName",
-  "phone": "contactNumber",
+  phone: "contactNumber",
+  "address-line1": "addressLine1",
+  "address-line2": "addressLine2",
+  deliveryOption: "deliveryType",
+  paymentOption: "paymentType",
 };
 
 export default function Order() {
@@ -24,6 +28,10 @@ export default function Order() {
     firstName: null,
     lastName: null,
     contactNumber: null,
+    addressLine1: null,
+    addressLine2: null,
+    deliveryType: null,
+    paymentType: null,
   });
 
   const handleNext = () => {
@@ -35,12 +43,14 @@ export default function Order() {
   };
 
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
-    const value = e.currentTarget.value;
+    const value = e.target.value;
+    // console.log(`${e.currentTarget.name}`)
     if (e.currentTarget.name === "quantity") {
       const subtotal = value * data.price;
       setData((oldData) => ({ ...oldData, total: subtotal, subtotal }));
     } else {
       let name = inputNameMapper[e.currentTarget.name] || e.currentTarget.name;
+      console.log(`changing ${name} to ${value} ${e.target.value}`)
       setData((oldData) => ({ ...oldData, [name]: value }));
     }
   };
@@ -70,7 +80,13 @@ export default function Order() {
           <OrderInfo onNext={handleNext} data={data} onChange={handleChange} />
         );
       case 1:
-        return <DeliveryInfo onNext={handleNext} onChange={handleChange}/>;
+        return (
+          <DeliveryInfo
+            onNext={handleNext}
+            data={data}
+            onChange={handleChange}
+          />
+        );
       case 2:
         return <OrderSummary onNext={handleNext} data={data} />;
       case 3:

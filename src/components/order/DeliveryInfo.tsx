@@ -23,14 +23,18 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                     <Form.Control
                       name="given-name"
                       placeholder="First name"
+                      aria-label={"firstName"}
                       onChange={props.onChange}
+                      value={props.data && props.data.firstName || ""}
                     />
                   </Col>
                   <Col>
                     <Form.Control
                       name="family-name"
                       placeholder="Last name"
+                      aria-label={"lastName"}
                       onChange={props.onChange}
+                      value={props.data && props.data.lastName || ""}
                     />
                   </Col>
                 </Form.Row>
@@ -40,6 +44,7 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                   name="phone"
                   aria-label={"contactNumber"}
                   onChange={props.onChange}
+                  value={props.data && props.data.contactNumber || ""}
                 />
               </Form.Group>
 
@@ -50,6 +55,8 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                   name="address-line1"
                   aria-label={"addressLine1"}
                   placeholder={"e.g. Street, Landmark"}
+                  onChange={props.onChange}
+                  value={props.data && props.data.addressLine1 || ""}
                 />
                 <Form.Label>Address 2</Form.Label>
                 <Form.Control
@@ -57,6 +64,8 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                   name="address-line2"
                   aria-label={"addressLine2"}
                   placeholder={"e.g. Village"}
+                  onChange={props.onChange}
+                  value={props.data && props.data.addressLine2 || ""}
                 />
                 <Form.Text className="text-muted">
                   We currently only deliver to Sta. Rosa, Laguna
@@ -71,12 +80,18 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                     name={"deliveryOption"}
                     type={"radio"}
                     label={"Deliver"}
+                    value={"deliver"}
+                    onChange={props.onChange}
+                    checked={props.data.deliveryType === "deliver"}
                   />
                   <Form.Check
                     inline={true}
                     name={"deliveryOption"}
                     type={"radio"}
-                    label={"Pick up/Meet up"}
+                    label={"Meet up"}
+                    value={"meetup"}
+                    onChange={props.onChange}
+                    checked={props.data.deliveryType === "meetup"}
                   />
                 </Form.Row>
               </Form.Group>
@@ -90,12 +105,18 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                     name={"paymentOption"}
                     type={"radio"}
                     label={"Cash"}
+                    value={"cash"}
+                    onChange={props.onChange}
+                    checked={props.data.paymentType === "cash"}
                   />
                   <Form.Check
                     inline={true}
                     name={"paymentOption"}
                     type={"radio"}
                     label={"GCash"}
+                    value={"gcash"}
+                    onChange={props.onChange}
+                    checked={props.data.paymentType === "gcash"}
                   />
                 </Form.Row>
               </Form.Group>

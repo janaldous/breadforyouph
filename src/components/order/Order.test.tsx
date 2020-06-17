@@ -2,6 +2,7 @@ import React from "react";
 import { render, fireEvent, getByLabelText } from "@testing-library/react";
 import Order from "./Order";
 import "@testing-library/jest-dom/extend-expect";
+import ReactTestUtils from "react-dom/test-utils";
 
 describe("Order component", () => {
   it("shows order page on load", () => {
@@ -69,9 +70,13 @@ describe("Order component", () => {
   });
 
   it("changes name and address when they are filled in", () => {
-    const { getByTestId, getByText, getByPlaceholderText, getByLabelText } = render(
-      <Order />
-    );
+    const {
+      getByTestId,
+      getByText,
+      getByPlaceholderText,
+      getByLabelText,
+      container,
+    } = render(<Order />);
 
     fireEvent.click(getByText("Two more steps"));
     fireEvent.change(getByPlaceholderText("First name"), {
@@ -80,13 +85,40 @@ describe("Order component", () => {
     fireEvent.change(getByPlaceholderText("Last name"), {
       target: { value: "Doe" },
     });
-    expect(getByLabelText("contactNumber")).toBeInTheDocument();
     fireEvent.change(getByLabelText("contactNumber"), {
       target: { value: "0123456789" },
     });
 
+    const addressLine1Elem = container.querySelector("input[name=address-line1]");
+    if (addressLine1Elem) {
+      ReactTestUtils.Simulate.change(addressLine1Elem, {
+        target: { value: "street name" },
+      });
+    }
+
+    const addressLine2Elem = container.querySelector("input[name=address-line2]");
+    if (addressLine2Elem) {
+      ReactTestUtils.Simulate.change(addressLine2Elem, {
+        target: { value: "village name" },
+      });
+    }
+
+    const rbDelivery = container.querySelectorAll("input[name=deliveryOption]")[1];
+    if (rbDelivery) {
+      ReactTestUtils.Simulate.change(rbDelivery);
+    }
+
+    const rbPayment = container.querySelectorAll("input[name=paymentOption]")[1];
+    if (rbPayment) {
+      ReactTestUtils.Simulate.change(rbPayment);
+    }
+
     fireEvent.click(getByText("One more step"));
     expect(getByTestId("customer-name").textContent).toBe("John Doe");
     expect(getByTestId("contact-number").textContent).toBe("0123456789");
+    expect(getByTestId("addressLine1").textContent).toBe("street name");
+    expect(getByTestId("addressLine2").textContent).toBe("village name");
+    expect(getByTestId("delivery-type").textContent).toBe("We will meet up at:");
+    expect(getByTestId("payment-type").textContent).toContain("Paying with GCash");
   });
 });
