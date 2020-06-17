@@ -50,7 +50,7 @@ export default function Order() {
       setData((oldData) => ({ ...oldData, total: subtotal, subtotal }));
     } else {
       let name = inputNameMapper[e.currentTarget.name] || e.currentTarget.name;
-      console.log(`changing ${name} to ${value} ${e.target.value}`)
+      // console.log(`changing ${name} to ${value} ${e.target.value}`)
       setData((oldData) => ({ ...oldData, [name]: value }));
     }
   };
