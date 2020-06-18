@@ -16,7 +16,7 @@ export interface OrderData {
 }
 
 export interface OrderComponentProps {
-  onNext: () => void;
+  onNext?: () => void;
   data: OrderData;
-  onChange: (e: React.FormEvent<HTMLInputElement>) => void;
+  onChange?: (e: any) => void;
 }

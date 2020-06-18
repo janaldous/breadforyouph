@@ -25,13 +25,13 @@ export default function Order() {
     deliveryFee: 0,
     total: 165,
     price: 165,
-    firstName: null,
-    lastName: null,
-    contactNumber: null,
-    addressLine1: null,
-    addressLine2: null,
-    deliveryType: null,
-    paymentType: null,
+    firstName: "",
+    lastName: "",
+    contactNumber: "",
+    addressLine1: "",
+    addressLine2: "",
+    deliveryType: "",
+    paymentType: "",
   });
 
   const handleNext = () => {
@@ -42,7 +42,7 @@ export default function Order() {
     setStep((oldStep) => oldStep - 1);
   };
 
-  const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
+  const handleChange = (e: any) => {
     const value = e.target.value;
     // console.log(`${e.currentTarget.name}`)
     if (e.currentTarget.name === "quantity") {
@@ -90,7 +90,7 @@ export default function Order() {
       case 2:
         return <OrderSummary onNext={handleNext} data={data} />;
       case 3:
-        return <OrderConfirmation />;
+        return <OrderConfirmation data={data} />;
       default:
         throw new Error("invalid step");
     }
