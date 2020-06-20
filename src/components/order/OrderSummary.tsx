@@ -16,6 +16,9 @@ const paymentTypeMapper = {
 }
 
 const OrderSummary: React.FC<OrderComponentProps> = (props) => {
+
+  const formValues = props.data.deliveryForm.formValues;
+
   return (
     <section id="order">
       <div className="row justify-content-center">
@@ -23,14 +26,14 @@ const OrderSummary: React.FC<OrderComponentProps> = (props) => {
           <div
             className="customer-name"
             data-testid="customer-name"
-          >{`${props.data.firstName} ${props.data.lastName}`}</div>
-          <div data-testid="contact-number">{props.data.contactNumber}</div>
+          >{`${formValues.firstName} ${formValues.lastName}`}</div>
+          <div data-testid="contact-number">{formValues.contactNumber}</div>
           <div data-testid="delivery-type">
-            {deliveryTypeMapper[props.data.deliveryType]}
+            {deliveryTypeMapper[formValues.deliveryType]}
           </div>
-          <div data-testid="addressLine1">{props.data.addressLine1}</div>
-          <div data-testid="addressLine2">{props.data.addressLine2}</div>
-          <div data-testid="payment-type">{paymentTypeMapper[props.data.paymentType]}</div>
+          <div data-testid="addressLine1">{formValues.addressLine1}</div>
+          <div data-testid="addressLine2">{formValues.addressLine2}</div>
+          <div data-testid="payment-type">{paymentTypeMapper[formValues.paymentType]}</div>
         </div>
       </div>
       <div className="row justify-content-center">

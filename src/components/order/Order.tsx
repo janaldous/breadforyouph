@@ -5,7 +5,7 @@ import OrderConfirmation from "./OrderConfirmation";
 import Navbar from "react-bootstrap/Navbar";
 import logo from "../../logo.jpg";
 import OrderSummary from "./OrderSummary";
-import { OrderData } from "./OrderModel";
+import { OrderData, DeliveryData } from "./OrderModel";
 
 const inputNameMapper = {
   "given-name": "firstName",
@@ -25,13 +25,28 @@ export default function Order() {
     deliveryFee: 0,
     total: 165,
     price: 165,
-    firstName: "",
-    lastName: "",
-    contactNumber: "",
-    addressLine1: "",
-    addressLine2: "",
-    deliveryType: "",
-    paymentType: "",
+    deliveryForm: {
+      formValues: {
+        firstName: "",
+        lastName: "",
+        contactNumber: "",
+        addressLine1: "",
+        addressLine2: "",
+        deliveryType: "",
+        paymentType: "",
+      },
+      formErrors: {},
+      formTouched: {
+        firstName: false,
+        lastName: false,
+        contactNumber: false,
+        addressLine1: false,
+        addressLine2: false,
+        deliveryType: false,
+        paymentType: false,
+      },
+      isSubmitting: false,
+    },
   });
 
   const handleNext = () => {
@@ -51,8 +66,50 @@ export default function Order() {
     } else {
       let name = inputNameMapper[e.currentTarget.name] || e.currentTarget.name;
       // console.log(`changing ${name} to ${value} ${e.target.value}`)
-      setData((oldData) => ({ ...oldData, [name]: value }));
+      setData((oldData) => {
+        const newData = {
+          ...oldData,
+          deliveryForm: {
+            ...oldData.deliveryForm,
+            formValues: { ...oldData.deliveryForm.formValues, [name]: value },
+            formTouched: { ...oldData.deliveryForm.formTouched, [name]: true },
+          },
+        };
+        const errors = validate(newData.deliveryForm.formValues);
+        if (newData.deliveryForm.formTouched) {
+          newData.deliveryForm.formErrors = {
+            ...newData.deliveryForm.formErrors,
+            [name]: errors[name],
+          };
+        }
+        newData.deliveryForm.isSubmitting = Object.keys(errors).length === 0;
+        return newData;
+      });
     }
+  };
+
+  const handleSubmit = () => {
+    const errors = validate(data.deliveryForm.formValues);
+    setData((oldData) => {
+      const newData = { ...oldData };
+      newData.deliveryForm.formErrors = errors;
+      return newData;
+    });
+    return Object.keys(errors).length === 0;
+  };
+
+  const validate = (values: DeliveryData) => {
+    const errors: any = {};
+    if (!values.firstName) errors.firstName = "Required";
+    if (!values.lastName) errors.lastName = "Required";
+    if (!values.contactNumber) errors.contactNumber = "Required";
+    if (!values.addressLine1) errors.addressLine1 = "Required";
+    if (!values.addressLine2) errors.addressLine2 = "Required";
+    if (!values.addressLine2) errors.addressLine2 = "Required";
+    if (!values.deliveryType) errors.deliveryType = "Required";
+    if (!values.paymentType) errors.paymentType = "Required";
+
+    return errors;
   };
 
   const getBackButton = (step: number) => {
@@ -85,6 +142,7 @@ export default function Order() {
             onNext={handleNext}
             data={data}
             onChange={handleChange}
+            onSubmit={handleSubmit}
           />
         );
       case 2:

@@ -37,8 +37,12 @@
   }
 
   // bootstrap override
-  .form-check-inline {
+  .form-check {
     padding-left: 5px;
+
+    .invalid-feedback {
+      display:none;
+    }
   }
 
   .line-separator {

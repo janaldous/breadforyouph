@@ -5,6 +5,20 @@ import Col from "react-bootstrap/Col";
 import { OrderComponentProps } from "./OrderModel";
 
 const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
+  const handleSubmit = (e: any) => {
+    if (props.onSubmit && props.onNext) {
+      e.preventDefault();
+      const submit = props.onSubmit();
+      submit && props.onNext();
+    }
+  };
+
+  const handleChange = (e: any) => {
+    props.onChange && props.onChange(e);
+  };
+
+  const { formValues, formErrors } = props.data.deliveryForm;
+
   return (
     <div className="app-container">
       <section id="order">
@@ -24,20 +38,26 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                       name="given-name"
                       placeholder="First name"
                       aria-label={"firstName"}
-                      onChange={props.onChange}
-                      required={true}
-                      value={props?.data?.firstName || ""}
+                      onChange={handleChange}
+                      value={formValues.firstName}
+                      isInvalid={!!formErrors.firstName}
                     />
+                    <Form.Control.Feedback type="invalid">
+                      {formErrors.firstName}
+                    </Form.Control.Feedback>
                   </Col>
                   <Col>
                     <Form.Control
                       name="family-name"
                       placeholder="Last name"
                       aria-label={"lastName"}
-                      onChange={props.onChange}
-                      required={true}
-                      value={props?.data?.lastName || ""}
+                      onChange={handleChange}
+                      value={formValues.lastName}
+                      isInvalid={!!formErrors.lastName}
                     />
+                    <Form.Control.Feedback type="invalid">
+                      {formErrors.lastName}
+                    </Form.Control.Feedback>
                   </Col>
                 </Form.Row>
                 <Form.Label>Contact number</Form.Label>
@@ -45,9 +65,13 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                   type="tel"
                   name="phone"
                   aria-label={"contactNumber"}
-                  onChange={props.onChange}
-                  value={props?.data?.contactNumber || ""}
+                  onChange={handleChange}
+                  value={formValues.contactNumber}
+                  isInvalid={!!formErrors.contactNumber}
                 />
+                <Form.Control.Feedback type="invalid">
+                  {formErrors.contactNumber}
+                </Form.Control.Feedback>
               </Form.Group>
 
               <Form.Group controlId="address">
@@ -57,18 +81,26 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                   name="address-line1"
                   aria-label={"addressLine1"}
                   placeholder={"e.g. Street, Landmark"}
-                  onChange={props.onChange}
-                  value={props?.data?.addressLine1 || ""}
+                  onChange={handleChange}
+                  value={formValues.addressLine1}
+                  isInvalid={!!formErrors.addressLine1}
                 />
+                <Form.Control.Feedback type="invalid">
+                  {formErrors.addressLine1}
+                </Form.Control.Feedback>
                 <Form.Label>Address 2</Form.Label>
                 <Form.Control
                   type="string"
                   name="address-line2"
                   aria-label={"addressLine2"}
                   placeholder={"e.g. Village"}
-                  onChange={props.onChange}
-                  value={props?.data?.addressLine2 || ""}
+                  onChange={handleChange}
+                  value={formValues.addressLine2}
+                  isInvalid={!!formErrors.addressLine2}
                 />
+                <Form.Control.Feedback type="invalid">
+                  {formErrors.addressLine2}
+                </Form.Control.Feedback>
                 <Form.Text className="text-muted">
                   We currently only deliver to Sta. Rosa, Laguna
                 </Form.Text>
@@ -83,8 +115,9 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                     type={"radio"}
                     label={"Deliver"}
                     value={"deliver"}
-                    onChange={props.onChange}
-                    checked={props.data.deliveryType === "deliver"}
+                    onChange={handleChange}
+                    checked={formValues.deliveryType === "deliver"}
+                    isInvalid={!!formErrors.deliveryType}
                   />
                   <Form.Check
                     inline={true}
@@ -92,8 +125,9 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                     type={"radio"}
                     label={"Meet up"}
                     value={"meetup"}
-                    onChange={props.onChange}
-                    checked={props.data.deliveryType === "meetup"}
+                    onChange={handleChange}
+                    checked={formValues.deliveryType === "meetup"}
+                    isInvalid={!!formErrors.deliveryType}
                   />
                 </Form.Row>
               </Form.Group>
@@ -108,8 +142,9 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                     type={"radio"}
                     label={"Cash"}
                     value={"cash"}
-                    onChange={props.onChange}
-                    checked={props.data.paymentType === "cash"}
+                    onChange={handleChange}
+                    checked={formValues.paymentType === "cash"}
+                    isInvalid={!!formErrors.paymentType}
                   />
                   <Form.Check
                     inline={true}
@@ -117,8 +152,9 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                     type={"radio"}
                     label={"GCash"}
                     value={"gcash"}
-                    onChange={props.onChange}
-                    checked={props.data.paymentType === "gcash"}
+                    onChange={handleChange}
+                    checked={formValues.paymentType === "gcash"}
+                    isInvalid={!!formErrors.paymentType}
                   />
                 </Form.Row>
               </Form.Group>
@@ -126,7 +162,7 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
               <Button
                 variant="primary"
                 className="btn-next w-100"
-                onClick={props.onNext}
+                onClick={handleSubmit}
               >
                 One more step
               </Button>
