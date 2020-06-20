@@ -25,7 +25,8 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                       placeholder="First name"
                       aria-label={"firstName"}
                       onChange={props.onChange}
-                      value={props.data && props.data.firstName || ""}
+                      required={true}
+                      value={props?.data?.firstName || ""}
                     />
                   </Col>
                   <Col>
@@ -34,7 +35,8 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                       placeholder="Last name"
                       aria-label={"lastName"}
                       onChange={props.onChange}
-                      value={props.data && props.data.lastName || ""}
+                      required={true}
+                      value={props?.data?.lastName || ""}
                     />
                   </Col>
                 </Form.Row>
@@ -44,7 +46,7 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                   name="phone"
                   aria-label={"contactNumber"}
                   onChange={props.onChange}
-                  value={props.data && props.data.contactNumber || ""}
+                  value={props?.data?.contactNumber || ""}
                 />
               </Form.Group>
 
@@ -56,7 +58,7 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                   aria-label={"addressLine1"}
                   placeholder={"e.g. Street, Landmark"}
                   onChange={props.onChange}
-                  value={props.data && props.data.addressLine1 || ""}
+                  value={props?.data?.addressLine1 || ""}
                 />
                 <Form.Label>Address 2</Form.Label>
                 <Form.Control
@@ -65,7 +67,7 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                   aria-label={"addressLine2"}
                   placeholder={"e.g. Village"}
                   onChange={props.onChange}
-                  value={props.data && props.data.addressLine2 || ""}
+                  value={props?.data?.addressLine2 || ""}
                 />
                 <Form.Text className="text-muted">
                   We currently only deliver to Sta. Rosa, Laguna
