@@ -2,8 +2,9 @@ import React from "react";
 import {
   render,
   fireEvent,
-  getByLabelText,
   RenderResult,
+  act,
+  wait,
 } from "@testing-library/react";
 import Order from "./Order";
 import "@testing-library/jest-dom/extend-expect";
@@ -12,9 +13,9 @@ import { DeliveryData } from "./OrderModel";
 import {
   OrderDtoDeliveryTypeEnum,
   OrderDtoPaymentTypeEnum,
-  OrderControllerApi,
+  OrderConfirmationOrderStatusEnum,
 } from "breadforyou-fetch-api";
-import { mocked } from "ts-jest/utils";
+import OrderApi from "../../api/OrderApi";
 
 const fillInDeliveryFormDefault = (result: RenderResult) => {
   const defaultVaues: DeliveryData = {
@@ -71,9 +72,25 @@ const fillInDeliveryForm = (
   }
 };
 
-jest.mock("breadforyou-fetch-api");
-
 describe("Order component", () => {
+  let orderResponsePromise = Promise.resolve({
+    orderNumber: 1234,
+    orderStatus: OrderConfirmationOrderStatusEnum.REGISTERED,
+    user: {
+      firstName: "John",
+      lastName: "Doe",
+      contactNumber: "0123456789",
+    },
+  });
+  
+  beforeEach(() => {
+    OrderApi.postOrder = jest.fn(() => orderResponsePromise);
+  });
+  
+  afterEach(() => {
+    jest.resetAllMocks();
+  })
+
   it("shows order page on load", () => {
     const { getByText } = render(<Order />);
     expect(getByText("Your order")).toBeInTheDocument();
@@ -108,19 +125,22 @@ describe("Order component", () => {
     expect(getByText("Delivery information")).toBeInTheDocument();
   });
 
-  it("shows order confirmation as 4th page", () => {
-    const mockOrderApiCall = mocked(OrderControllerApi);
+  it("shows order confirmation as 4th page", async () => {
     const renderResult = render(<Order />);
-    const { getByText } = renderResult;
+    const { getByText, container } = renderResult;
 
     fireEvent.click(getByText("Two more steps"));
     fillInDeliveryFormDefault(renderResult);
     fireEvent.click(getByText("One more step"));
-    expect(mockOrderApiCall.mock.calls.length).toBe(0);
+
+    expect(OrderApi.postOrder).toBeCalledTimes(0);
+
     fireEvent.click(getByText("Place order"));
-    expect(mockOrderApiCall.mock.calls.length).toBe(1);
+    expect(container.querySelector(".order-spinner")).toBeInTheDocument();
+    await wait(() => expect(OrderApi.postOrder).toBeCalled());
 
     expect(getByText("Order confirmation")).toBeInTheDocument();
+    expect(getByText(/Your order number is 1234. Expect/)).toBeInTheDocument();
     // TODO expect < Back not found
   });
 
@@ -132,7 +152,7 @@ describe("Order component", () => {
     expect(getByTestId("total").textContent).toBe("330");
   });
 
-  it("changes total and subtotal when quantity is changed to 3", () => {
+  it("changes total and subtotal when quantity is changed to 3", async () => {
     const renderResult = render(<Order />);
     const { getByTestId, getByText } = renderResult;
     fireEvent.change(getByTestId("quantity"), { target: { value: "3" } });
@@ -149,7 +169,7 @@ describe("Order component", () => {
     expect(getByTestId("total").textContent).toBe("495");
   });
 
-  it("changes name and address when they are filled in", () => {
+  it("changes name and address when they are filled in", async () => {
     const renderResult = render(<Order />);
     const { getByTestId, getByText } = renderResult;
 
@@ -158,6 +178,7 @@ describe("Order component", () => {
     fillInDeliveryFormDefault(renderResult);
 
     fireEvent.click(getByText("One more step"));
+
     expect(getByTestId("customer-name").textContent).toBe("John Doe");
     expect(getByTestId("contact-number").textContent).toBe("0123456789");
     expect(getByTestId("addressLine1").textContent).toBe("street name");

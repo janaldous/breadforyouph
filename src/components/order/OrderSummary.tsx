@@ -34,8 +34,8 @@ const OrderSummary: React.FC<OrderComponentProps> = (props) => {
   const handleSubmit = (e: any) => {
     e.preventDefault();
     if (props.onNext && props.onSubmit) {
-      props.onSubmit();
-      props.onNext();
+      const submitted = props.onSubmit();
+      submitted && props.onNext();
     }
   }
 

@@ -6,10 +6,9 @@ import Navbar from "react-bootstrap/Navbar";
 import logo from "../../logo.jpg";
 import OrderSummary from "./OrderSummary";
 import { OrderData, DeliveryData } from "./OrderModel";
-import {
-  OrderControllerApi,
-  OrderDto,
-} from "breadforyou-fetch-api";
+import { OrderDto } from "breadforyou-fetch-api";
+import OrderApi from "../../api/OrderApi";
+import Spinner from "react-bootstrap/Spinner";
 
 const inputNameMapper = {
   "given-name": "firstName",
@@ -23,6 +22,7 @@ const inputNameMapper = {
 
 export default function Order() {
   const [step, setStep] = React.useState<number>(0);
+  const [loading, setLoading] = React.useState<boolean>(false);
   const [data, setData] = React.useState<OrderData>({
     quantity: 1,
     subtotal: 165,
@@ -92,7 +92,7 @@ export default function Order() {
     }
   };
 
-  const handleSubmitForm = () => {
+  const validateForm = () => {
     const errors = validate(data.deliveryForm.formValues);
     setData((oldData) => {
       const newData = { ...oldData };
@@ -103,8 +103,7 @@ export default function Order() {
     return isValid;
   };
 
-  const handleSubmitOrder = () => {
-    const orderApi = new OrderControllerApi();
+  const getOrderDto = () => {
     const deliveryInfo = data.deliveryForm.formValues;
 
     if (!deliveryInfo.deliveryType || !deliveryInfo.paymentType) {
@@ -128,7 +127,21 @@ export default function Order() {
         contactNumber: deliveryInfo.contactNumber,
       },
     };
-    orderApi.orderUsingPOST({ orderDto });
+    return orderDto;
+  };
+
+  const handleSubmitOrder = async () => {
+    const orderDto = getOrderDto();
+    setLoading(true);
+    await OrderApi.postOrder(orderDto).then((res) => {
+      setData((oldData) => ({
+        ...oldData,
+        orderConfirmation: {
+          orderNumber: res.orderNumber,
+        },
+      }));
+      setLoading(false);
+    });
 
     return true;
   };
@@ -177,16 +190,34 @@ export default function Order() {
             onNext={handleNext}
             data={data}
             onChange={handleChange}
-            onSubmit={handleSubmitForm}
+            onValidate={validateForm}
           />
         );
       case 2:
-        return <OrderSummary onNext={handleNext} data={data} onSubmit={handleSubmitOrder}/>;
+        return (
+          <OrderSummary
+            onNext={handleNext}
+            data={data}
+            onSubmit={handleSubmitOrder}
+          />
+        );
       case 3:
         return <OrderConfirmation data={data} />;
       default:
         throw new Error("invalid step");
     }
+  };
+
+  const getSpinner = () => {
+    return (
+      <section id="order">
+        <div className="order-spinner">
+          <Spinner animation="border" role="status" variant="primary">
+            <span className="sr-only">Processing order...</span>
+          </Spinner>
+        </div>
+      </section>
+    );
   };
 
   return (
@@ -198,7 +229,7 @@ export default function Order() {
         </Navbar.Brand>
         <div className="flex-1-only"></div>
       </Navbar>
-      <div className="content">{getContent(step)}</div>
+      <div className="content">{loading ? getSpinner() : getContent(step)}</div>
     </div>
   );
 }

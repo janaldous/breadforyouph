@@ -12,7 +12,7 @@ const OrderConfirmation: React.FC<OrderComponentProps> = (props) => {
         </div>
         <div className="row justify-content-center">
           <div className="description">
-            Success! Your order number is ... Expect the delivery at...
+            Success! Your order number is {props.data?.orderConfirmation?.orderNumber}. Expect the delivery at...
           </div>
         </div>
       </section>

@@ -12,6 +12,9 @@ export interface OrderData {
     formTouched: DeliveryDataTouched;
     isSubmitting: boolean;
   }
+  orderConfirmation?: {
+    orderNumber?: number;
+  }
 }
 
 export interface DeliveryData {
@@ -38,5 +41,6 @@ export interface OrderComponentProps {
   onNext?: () => void;
   data: OrderData;
   onChange?: (e: any) => void;
-  onSubmit?: () => boolean;
+  onSubmit?: () => Promise<boolean>;
+  onValidate?: () => boolean;
 }

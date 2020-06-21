@@ -10,9 +10,9 @@ import {
 
 const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
   const handleSubmit = (e: any) => {
-    if (props.onSubmit && props.onNext) {
-      e.preventDefault();
-      const submit = props.onSubmit();
+    e.preventDefault();
+    if (props.onValidate && props.onNext) {
+      const submit = props.onValidate();
       submit && props.onNext();
     }
   };
