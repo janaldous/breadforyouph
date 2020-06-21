@@ -46,6 +46,7 @@
     ]
   },
   "devDependencies": {
-    "openapi-ts-client-gen": "^1.1.1"
+    "openapi-ts-client-gen": "^1.1.1",
+    "ts-jest": "^26.1.0"
   }
 }

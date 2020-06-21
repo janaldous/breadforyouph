@@ -9,6 +9,12 @@ import Order from "./Order";
 import "@testing-library/jest-dom/extend-expect";
 import ReactTestUtils from "react-dom/test-utils";
 import { DeliveryData } from "./OrderModel";
+import {
+  OrderDtoDeliveryTypeEnum,
+  OrderDtoPaymentTypeEnum,
+  OrderControllerApi,
+} from "breadforyou-fetch-api";
+import { mocked } from "ts-jest/utils";
 
 const fillInDeliveryFormDefault = (result: RenderResult) => {
   const defaultVaues: DeliveryData = {
@@ -17,8 +23,8 @@ const fillInDeliveryFormDefault = (result: RenderResult) => {
     contactNumber: "0123456789",
     addressLine1: "street name",
     addressLine2: "village name",
-    deliveryType: "meetup",
-    paymentType: "gcash",
+    deliveryType: OrderDtoDeliveryTypeEnum.DELIVER,
+    paymentType: OrderDtoPaymentTypeEnum.CASH,
   };
   fillInDeliveryForm(defaultVaues, result);
 };
@@ -65,6 +71,8 @@ const fillInDeliveryForm = (
   }
 };
 
+jest.mock("breadforyou-fetch-api");
+
 describe("Order component", () => {
   it("shows order page on load", () => {
     const { getByText } = render(<Order />);
@@ -101,13 +109,16 @@ describe("Order component", () => {
   });
 
   it("shows order confirmation as 4th page", () => {
+    const mockOrderApiCall = mocked(OrderControllerApi);
     const renderResult = render(<Order />);
     const { getByText } = renderResult;
 
     fireEvent.click(getByText("Two more steps"));
     fillInDeliveryFormDefault(renderResult);
     fireEvent.click(getByText("One more step"));
+    expect(mockOrderApiCall.mock.calls.length).toBe(0);
     fireEvent.click(getByText("Place order"));
+    expect(mockOrderApiCall.mock.calls.length).toBe(1);
 
     expect(getByText("Order confirmation")).toBeInTheDocument();
     // TODO expect < Back not found

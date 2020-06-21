@@ -1,3 +1,5 @@
+import { OrderDtoDeliveryTypeEnum, OrderDtoPaymentTypeEnum } from "breadforyou-fetch-api";
+
 export interface OrderData {
   quantity: number;
   subtotal: number;
@@ -18,8 +20,8 @@ export interface DeliveryData {
   contactNumber: string;
   addressLine1: string;
   addressLine2: string;
-  deliveryType: string;
-  paymentType: string;
+  deliveryType?: OrderDtoDeliveryTypeEnum;
+  paymentType?: OrderDtoPaymentTypeEnum;
 }
 
 export interface DeliveryDataTouched {

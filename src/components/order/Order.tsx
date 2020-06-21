@@ -6,6 +6,10 @@ import Navbar from "react-bootstrap/Navbar";
 import logo from "../../logo.jpg";
 import OrderSummary from "./OrderSummary";
 import { OrderData, DeliveryData } from "./OrderModel";
+import {
+  OrderControllerApi,
+  OrderDto,
+} from "breadforyou-fetch-api";
 
 const inputNameMapper = {
   "given-name": "firstName",
@@ -32,8 +36,8 @@ export default function Order() {
         contactNumber: "",
         addressLine1: "",
         addressLine2: "",
-        deliveryType: "",
-        paymentType: "",
+        deliveryType: undefined,
+        paymentType: undefined,
       },
       formErrors: {},
       formTouched: {
@@ -88,14 +92,45 @@ export default function Order() {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmitForm = () => {
     const errors = validate(data.deliveryForm.formValues);
     setData((oldData) => {
       const newData = { ...oldData };
       newData.deliveryForm.formErrors = errors;
       return newData;
     });
-    return Object.keys(errors).length === 0;
+    const isValid = Object.keys(errors).length === 0;
+    return isValid;
+  };
+
+  const handleSubmitOrder = () => {
+    const orderApi = new OrderControllerApi();
+    const deliveryInfo = data.deliveryForm.formValues;
+
+    if (!deliveryInfo.deliveryType || !deliveryInfo.paymentType) {
+      throw new Error();
+    }
+
+    const orderDto: OrderDto = {
+      address: {
+        line1: deliveryInfo.addressLine1,
+        village: deliveryInfo.addressLine2,
+        city: "Sta. Rosa",
+        province: "Laguna",
+        postcode: "4026",
+      },
+      deliveryType: deliveryInfo.deliveryType,
+      paymentType: deliveryInfo.paymentType,
+      quantity: data.quantity,
+      user: {
+        firstName: deliveryInfo.firstName,
+        lastName: deliveryInfo.lastName,
+        contactNumber: deliveryInfo.contactNumber,
+      },
+    };
+    orderApi.orderUsingPOST({ orderDto });
+
+    return true;
   };
 
   const validate = (values: DeliveryData) => {
@@ -142,11 +177,11 @@ export default function Order() {
             onNext={handleNext}
             data={data}
             onChange={handleChange}
-            onSubmit={handleSubmit}
+            onSubmit={handleSubmitForm}
           />
         );
       case 2:
-        return <OrderSummary onNext={handleNext} data={data} />;
+        return <OrderSummary onNext={handleNext} data={data} onSubmit={handleSubmitOrder}/>;
       case 3:
         return <OrderConfirmation data={data} />;
       default:

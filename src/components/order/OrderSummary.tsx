@@ -4,20 +4,40 @@ import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { OrderComponentProps } from "./OrderModel";
+import { OrderDtoDeliveryTypeEnum, OrderDtoPaymentTypeEnum } from "breadforyou-fetch-api";
 
-const deliveryTypeMapper = {
-  "meetup": "We will meet up at:",
-  "deliver": "We will deliver to:",
+const deliveryTypeMapper = (input: any) => {
+  switch (input) {
+    case OrderDtoDeliveryTypeEnum.PICKUP:
+      return "We will meet up at:";
+    case OrderDtoDeliveryTypeEnum.DELIVER:
+      return "We will deliver to:";
+    default:
+      throw new Error();
+  }
 };
 
-const paymentTypeMapper = {
-  "cash": "Cash on Delivery",
-  "gcash": "Paying with GCash",
-}
+const paymentTypeMapper = (input: any) => {
+  switch (input) {
+    case OrderDtoPaymentTypeEnum.CASH:
+      return "Cash on Delivery";
+    case OrderDtoPaymentTypeEnum.GCASH:
+      return "Paying with GCash";
+    default:
+      throw new Error();
+  }
+};
 
 const OrderSummary: React.FC<OrderComponentProps> = (props) => {
-
   const formValues = props.data.deliveryForm.formValues;
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    if (props.onNext && props.onSubmit) {
+      props.onSubmit();
+      props.onNext();
+    }
+  }
 
   return (
     <section id="order">
@@ -29,11 +49,13 @@ const OrderSummary: React.FC<OrderComponentProps> = (props) => {
           >{`${formValues.firstName} ${formValues.lastName}`}</div>
           <div data-testid="contact-number">{formValues.contactNumber}</div>
           <div data-testid="delivery-type">
-            {deliveryTypeMapper[formValues.deliveryType]}
+            {deliveryTypeMapper(formValues.deliveryType)}
           </div>
           <div data-testid="addressLine1">{formValues.addressLine1}</div>
           <div data-testid="addressLine2">{formValues.addressLine2}</div>
-          <div data-testid="payment-type">{paymentTypeMapper[formValues.paymentType]}</div>
+          <div data-testid="payment-type">
+            {paymentTypeMapper(formValues.paymentType)}
+          </div>
         </div>
       </div>
       <div className="row justify-content-center">
@@ -79,7 +101,7 @@ const OrderSummary: React.FC<OrderComponentProps> = (props) => {
           <Button
             variant="primary"
             className="btn-next w-100"
-            onClick={props.onNext}
+            onClick={handleSubmit}
           >
             Place order
           </Button>

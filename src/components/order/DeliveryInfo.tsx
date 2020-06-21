@@ -3,6 +3,10 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import { OrderComponentProps } from "./OrderModel";
+import {
+  OrderDtoDeliveryTypeEnum,
+  OrderDtoPaymentTypeEnum,
+} from "breadforyou-fetch-api";
 
 const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
   const handleSubmit = (e: any) => {
@@ -114,9 +118,12 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                     name={"deliveryOption"}
                     type={"radio"}
                     label={"Deliver"}
-                    value={"deliver"}
+                    value={OrderDtoDeliveryTypeEnum.DELIVER}
                     onChange={handleChange}
-                    checked={formValues.deliveryType === "deliver"}
+                    checked={
+                      formValues.deliveryType ===
+                      OrderDtoDeliveryTypeEnum.DELIVER
+                    }
                     isInvalid={!!formErrors.deliveryType}
                   />
                   <Form.Check
@@ -124,9 +131,12 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                     name={"deliveryOption"}
                     type={"radio"}
                     label={"Meet up"}
-                    value={"meetup"}
+                    value={OrderDtoDeliveryTypeEnum.PICKUP}
                     onChange={handleChange}
-                    checked={formValues.deliveryType === "meetup"}
+                    checked={
+                      formValues.deliveryType ===
+                      OrderDtoDeliveryTypeEnum.PICKUP
+                    }
                     isInvalid={!!formErrors.deliveryType}
                   />
                 </Form.Row>
@@ -141,9 +151,11 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                     name={"paymentOption"}
                     type={"radio"}
                     label={"Cash"}
-                    value={"cash"}
+                    value={OrderDtoPaymentTypeEnum.CASH}
                     onChange={handleChange}
-                    checked={formValues.paymentType === "cash"}
+                    checked={
+                      formValues.paymentType === OrderDtoPaymentTypeEnum.CASH
+                    }
                     isInvalid={!!formErrors.paymentType}
                   />
                   <Form.Check
@@ -151,9 +163,11 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                     name={"paymentOption"}
                     type={"radio"}
                     label={"GCash"}
-                    value={"gcash"}
+                    value={OrderDtoPaymentTypeEnum.GCASH}
                     onChange={handleChange}
-                    checked={formValues.paymentType === "gcash"}
+                    checked={
+                      formValues.paymentType === OrderDtoPaymentTypeEnum.GCASH
+                    }
                     isInvalid={!!formErrors.paymentType}
                   />
                 </Form.Row>
