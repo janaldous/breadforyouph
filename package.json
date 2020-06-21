@@ -20,13 +20,15 @@
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
-    "typescript": "~3.7.2"
+    "typescript": "~3.7.2",
+    "breadforyou-fetch-api": "file:gen/api"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "api": "rm -rf gen/api && openapi-generator generate -i   http://localhost:8080/v2/api-docs --generator-name typescript-fetch -o gen/api --config api.json && cd gen/api && npm install"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -42,5 +44,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "openapi-ts-client-gen": "^1.1.1"
   }
 }
