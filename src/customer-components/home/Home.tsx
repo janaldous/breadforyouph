@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "./logo.jpg";
+import logo from "../../logo.jpg";
 import bananabread1 from "./bananabread.jpg";
 import bananabread3 from "./bananabread3.jpg";
 import lemon from "./lemon.jpg";

@@ -1,20 +1,22 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Home from "./Home";
-import Order from "./components/order/Order";
-import instagramLogo from "./icons8-instagram-96.png";
+import Home from "./customer-components/home/Home";
+import Order from "./customer-components/order/Order";
+import instagramLogo from "./customer-components/home/icons8-instagram-96.png";
 import "./App.scss";
+import Admin from "./admin-components/Admin";
+import Customer from "./customer-components/Customer";
 
 function App() {
   return (
     <div className="app-container">
       <Router>
         <Switch>
-          <Route path="/order">
-            <Order />
+          <Route path="/admin">
+            <Admin />
           </Route>
           <Route path="/">
-            <Home />
+            <Customer />
           </Route>
         </Switch>
       </Router>
