@@ -4,7 +4,7 @@ import OrderAdmin from "./OrderAdmin";
 
 const Admin: React.FC<{}> = () => {
   return (
-    <Router >
+    <Router basename="/admin">
       <Switch>
         <Route path="/orders">
           <OrderAdmin />

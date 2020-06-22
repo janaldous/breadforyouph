@@ -28,7 +28,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "api": "rm -rf gen/api && openapi-generator generate -i   http://localhost:8080/v2/api-docs --generator-name typescript-fetch -o gen/api --config api.json && cd gen/api && npm install"
+    "api": "rm -rf gen/api && openapi-generator generate -i https://breadforyouph-api.herokuapp.com/v2/api-docs --generator-name typescript-fetch -o gen/api --config api.json && cd gen/api && npm install"
   },
   "eslintConfig": {
     "extends": "react-app"
