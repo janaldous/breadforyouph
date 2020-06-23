@@ -8,6 +8,8 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+import Button from "@material-ui/core/Button";
+import { Link } from "react-router-dom";
 
 const OrderAdmin: React.FC = () => {
   const [orders, setOrders] = React.useState<Array<OrderDetail>>([]);
@@ -27,8 +29,8 @@ const OrderAdmin: React.FC = () => {
             <TableRow>
               <TableCell>Order No</TableCell>
               <TableCell>Customer</TableCell>
-              <TableCell>Order qty</TableCell>
               <TableCell>Order status</TableCell>
+              <TableCell>View</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -38,8 +40,14 @@ const OrderAdmin: React.FC = () => {
                   {row.id}
                 </TableCell>
                 <TableCell>{`${row.user?.firstName} ${row.user?.lastName}`}</TableCell>
-                <TableCell>view order</TableCell>
                 <TableCell>{row.tracking?.status}</TableCell>
+                <TableCell>
+                  <Link to={`/orders/${row.id}`}>
+                  <Button variant="contained" color="primary">
+                    View
+                  </Button>
+                  </Link>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
