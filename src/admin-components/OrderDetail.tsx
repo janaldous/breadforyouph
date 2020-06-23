@@ -10,17 +10,52 @@ const OrderDetail: React.FC = () => {
   const { id } = useParams();
 
   React.useEffect(() => {
-    OrderApi.getOrders().then((res) => {
-      //   setOrder(res);
+    OrderApi.getOrder(id).then((res) => {
+      setOrder(res);
     });
-  }, []);
+  }, [id]);
 
   return (
     <div className="order-detail-container">
       <h2>Order #{id}</h2>
-      <div>Order number</div>
+      <div>
+        <b>Order</b>
+      </div>
       <div>{id}</div>
-      <Link to={"/orders"}><Button variant="contained" color="primary">Back</Button></Link>
+      <div>Status</div>
+      <div>{order?.tracking?.status}</div>
+      <div>Last updated</div>
+      <div>{order?.tracking?.dateLastUpdated?.toDateString()}</div>
+      <br />
+      <div>
+        <b>Customer</b>
+      </div>
+      <div>Name</div>
+      <div>{`${order?.user?.firstName} ${order?.user?.lastName}`}</div>
+      <div>Contact number</div>
+      <div>{order?.user?.contactNumber}</div>
+      <br />
+      <div>
+        <b>Shipping address</b>
+      </div>
+      <div>Delivery Type</div>
+      <div>{order?.deliveryType}</div>
+      <div>{order?.shipping?.addressLineOne}</div>
+      <div>{order?.shipping?.addressLineTwo}</div>
+      <div>{order?.shipping?.city}</div>
+      <div>{order?.shipping?.province}</div>
+      <div>{order?.shipping?.postalCode}</div>
+      <br />
+      <div>
+        <b>Payment information</b>
+      </div>
+      <div>{order?.paymentType}</div>
+      <br />
+      <Link to={"/orders"}>
+        <Button variant="contained" color="primary">
+          Back
+        </Button>
+      </Link>
     </div>
   );
 };

@@ -29,6 +29,10 @@ import {
     OrderUpdateDtoToJSON,
 } from '../models';
 
+export interface GetOrderUsingGETRequest {
+    id: string;
+}
+
 export interface GetOrdersUsingGETRequest {
     status?: GetOrdersUsingGETStatusEnum;
 }
@@ -46,6 +50,36 @@ export interface UpdateOrderUsingPUTRequest {
  * no description
  */
 export class OrderControllerApi extends runtime.BaseAPI {
+
+    /**
+     * getOrder
+     */
+    async getOrderUsingGETRaw(requestParameters: GetOrderUsingGETRequest): Promise<runtime.ApiResponse<OrderDetail>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getOrderUsingGET.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/order/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => OrderDetailFromJSON(jsonValue));
+    }
+
+    /**
+     * getOrder
+     */
+    async getOrderUsingGET(requestParameters: GetOrderUsingGETRequest): Promise<OrderDetail> {
+        const response = await this.getOrderUsingGETRaw(requestParameters);
+        return await response.value();
+    }
 
     /**
      * getOrders

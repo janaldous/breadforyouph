@@ -18,4 +18,9 @@ export default class OrderApi {
     const orderApi = new OrderControllerApi();
     return orderApi.getOrdersUsingGET({status});
   }
+
+  static getOrder(id: string): Promise<OrderDetail> {
+    const orderApi = new OrderControllerApi();
+    return orderApi.getOrderUsingGET({id});
+  }
 }
