@@ -3,6 +3,7 @@ import OrderApi from "../api/OrderApi";
 import { OrderDetail as OrderDetailModel } from "breadforyou-fetch-api";
 import { useParams, Link } from "react-router-dom";
 import { Button } from "@material-ui/core";
+import Receipt from "./Receipt";
 
 const OrderDetail: React.FC = () => {
   const [order, setOrder] = React.useState<OrderDetailModel>();
@@ -26,6 +27,8 @@ const OrderDetail: React.FC = () => {
       <div>{order?.tracking?.status}</div>
       <div>Last updated</div>
       <div>{order?.tracking?.dateLastUpdated?.toDateString()}</div>
+      <br />
+      <Receipt orderDetail={order} />
       <br />
       <div>
         <b>Customer</b>
