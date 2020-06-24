@@ -3,6 +3,7 @@ import OrderApi from "../api/OrderApi";
 import {
   OrderDetail as OrderDetailModel,
   OrderTrackingStatusEnum,
+  OrderUpdateDtoStatusEnum,
 } from "breadforyou-fetch-api";
 import { useParams, Link } from "react-router-dom";
 import Receipt from "./Receipt";
@@ -19,7 +20,7 @@ import Select from "@material-ui/core/Select";
 const OrderDetail: React.FC = () => {
   const [order, setOrder] = React.useState<OrderDetailModel>();
   const [open, setOpen] = React.useState(false);
-  const [status, setStatus] = React.useState<string>();
+  const [status, setStatus] = React.useState<OrderTrackingStatusEnum>();
 
   const { id } = useParams();
 
@@ -36,6 +37,27 @@ const OrderDetail: React.FC = () => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleOk = () => {
+    const mapper = (status: OrderTrackingStatusEnum) => {
+      switch (status) {
+        case OrderTrackingStatusEnum.REGISTERED:
+          return OrderUpdateDtoStatusEnum.REGISTERED;
+        case OrderTrackingStatusEnum.COOKING:
+          return OrderUpdateDtoStatusEnum.COOKING;
+        case OrderTrackingStatusEnum.OTW:
+          return OrderUpdateDtoStatusEnum.OTW;
+        case OrderTrackingStatusEnum.DELIVERED:
+          return OrderUpdateDtoStatusEnum.DELIVERED;
+        default:
+          throw new Error();
+      }
+    };
+    if (!order || !status) throw new Error();
+    OrderApi.updateStatus(order.id + "", mapper(status))
+      .then((res) => setOrder(res))
+      .finally(() => setOpen(false));
   };
 
   const handleChange = (e: any) => {
@@ -123,7 +145,7 @@ const OrderDetail: React.FC = () => {
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleOk} color="primary">
             Ok
           </Button>
         </DialogActions>
