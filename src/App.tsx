@@ -2,9 +2,11 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Admin from "./admin-components/Admin";
 import Customer from "./customer-components/Customer";
+import ErrorBoundary from "./ErrorBoundary";
 
 function App() {
   return (
+    <ErrorBoundary>
       <Router>
         <Switch>
           <Route path="/admin">
@@ -15,6 +17,7 @@ function App() {
           </Route>
         </Switch>
       </Router>
+    </ErrorBoundary>
   );
 }
 
