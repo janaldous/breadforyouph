@@ -23,6 +23,8 @@ export interface DeliveryData {
   contactNumber: string;
   addressLine1: string;
   addressLine2: string;
+  city: string;
+  specialInstructions?: string;
   deliveryType?: OrderDtoDeliveryTypeEnum;
   paymentType?: OrderDtoPaymentTypeEnum;
 }
@@ -35,6 +37,8 @@ export interface DeliveryDataTouched {
   addressLine2: boolean;
   deliveryType: boolean;
   paymentType: boolean;
+  city: boolean;
+  specialInstructions: boolean;
 }
 
 export interface OrderComponentProps {

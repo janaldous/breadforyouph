@@ -34,7 +34,7 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
         <div className="row justify-content-center">
           <div className="description">
             <Form>
-              <Form.Group controlId="name">
+              <Form.Group>
                 <Form.Label>Full name</Form.Label>
                 <Form.Row>
                   <Col>
@@ -112,7 +112,7 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                 </Form.Row>
               </Form.Group>
 
-              <Form.Group>
+              <Form.Group controlId="addressLine1">
                 <Form.Label>Address Line 1</Form.Label>
                 <Form.Control
                   type="string"
@@ -128,7 +128,7 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                 </Form.Control.Feedback>
               </Form.Group>
 
-              <Form.Group>
+              <Form.Group controlId="addressLine2">
                 <Form.Label>Address Line 2</Form.Label>
                 <Form.Control
                   type="string"
@@ -146,15 +146,36 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
 
               <Form.Group controlId="city">
                 <Form.Label>City</Form.Label>
-                <Form.Control as="select">
+                <Form.Control
+                  as="select"
+                  name="city"
+                  isInvalid={!!formErrors.city}
+                  onChange={handleChange}
+                  value={formValues.city}
+                >
                   <option>Sta. Rosa</option>
                   <option>Other</option>
                 </Form.Control>
+                <Form.Control.Feedback type="invalid">
+                  {formErrors.city}
+                </Form.Control.Feedback>
+              </Form.Group>
+
+              <Form.Group controlId="special-instructions">
+                <Form.Label>Special Instructions</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  rows={3}
+                  name="special-instructions"
+                  onChange={handleChange}
+                  value={formValues.specialInstructions}
+                  placeholder={"e.g. Please leave the parcel at the guardhouse"}
+                />
               </Form.Group>
 
               <div className="bold-title">Payment information</div>
 
-              <Form.Group controlId="paymentOption">
+              <Form.Group>
                 <Form.Row>
                   <Form.Check
                     inline={true}

@@ -5,6 +5,7 @@ import {
   RenderResult,
   act,
   wait,
+  getByPlaceholderText,
 } from "@testing-library/react";
 import Order from "./Order";
 import "@testing-library/jest-dom/extend-expect";
@@ -82,14 +83,14 @@ describe("Order component", () => {
       contactNumber: "0123456789",
     },
   });
-  
+
   beforeEach(() => {
     OrderApi.postOrder = jest.fn(() => orderResponsePromise);
   });
-  
+
   afterEach(() => {
     jest.resetAllMocks();
-  })
+  });
 
   it("shows order page on load", () => {
     const { getByText } = render(<Order />);
@@ -171,11 +172,14 @@ describe("Order component", () => {
 
   it("changes name and address when they are filled in", async () => {
     const renderResult = render(<Order />);
-    const { getByTestId, getByText } = renderResult;
+    const { getByTestId, getByText, getByLabelText } = renderResult;
 
     fireEvent.click(getByText("Two more steps"));
 
     fillInDeliveryFormDefault(renderResult);
+    fireEvent.change(getByLabelText("Special Instructions"), {
+      target: { value: "Please leave the parcel at the guardhouse" },
+    });
 
     fireEvent.click(getByText("One more step"));
 
@@ -189,11 +193,39 @@ describe("Order component", () => {
     expect(getByTestId("payment-type").textContent).toContain(
       "Paying with GCash"
     );
+    expect(getByTestId("specialInstructions").textContent).toContain(
+      "Please leave the parcel at the guardhouse"
+    );
+  });
+
+  it("still keeps values in delivery form even when going back to delivery form", async () => {
+    const renderResult = render(<Order />);
+    const { getByText, getByLabelText, getByPlaceholderText } = renderResult;
+
+    fireEvent.click(getByText("Two more steps"));
+
+    fillInDeliveryFormDefault(renderResult);
+    fireEvent.change(getByLabelText("Special Instructions"), {
+      target: { value: "Please leave the parcel at the guardhouse" },
+    });
+
+    fireEvent.click(getByText("One more step"));
+    fireEvent.click(getByText("< Back"));
+
+    expect(getByPlaceholderText("First name").value).toBe("John");
+    expect(getByPlaceholderText("Last name").value).toBe("Doe");
+    expect(getByLabelText("contactNumber").value).toBe("0123456789");
+    expect(getByLabelText("Address Line 1").value).toBe("street name");
+    expect(getByLabelText("Address Line 2").value).toBe("village name");
+    expect(getByLabelText("City").value).toBe("Sta. Rosa");
+    expect(getByLabelText("Special Instructions").value).toBe(
+      "Please leave the parcel at the guardhouse"
+    );
   });
 
   it("does not let you continue when delivery form is not completed", () => {
     const renderResult = render(<Order />);
-    const { getByTestId, getByText, getAllByText } = renderResult;
+    const { getByText, getAllByText } = renderResult;
 
     fireEvent.click(getByText("Two more steps"));
 
@@ -213,5 +245,23 @@ describe("Order component", () => {
     fireEvent.click(getByText("One more step"));
 
     expect(getAllByText("Required").length).toBe(4);
+  });
+
+  it("does not let you continue when delivery form city is not in Sta Rosa", () => {
+    const renderResult = render(<Order />);
+    const { getByText, getByLabelText, getAllByText } = renderResult;
+
+    fireEvent.click(getByText("Two more steps"));
+
+    expect(getByText("Delivery information")).toBeInTheDocument();
+
+    fillInDeliveryFormDefault(renderResult);
+    fireEvent.change(getByLabelText("City"), {
+      target: { value: "Other" },
+    });
+
+    fireEvent.click(getByText("One more step"));
+
+    expect(getAllByText(/Sorry/).length).toBe(1);
   });
 });

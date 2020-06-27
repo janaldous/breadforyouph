@@ -18,6 +18,8 @@ const inputNameMapper = {
   "address-line2": "addressLine2",
   deliveryOption: "deliveryType",
   paymentOption: "paymentType",
+  city: "city",
+  "special-instructions": "specialInstructions",
 };
 
 export default function Order() {
@@ -36,6 +38,7 @@ export default function Order() {
         contactNumber: "",
         addressLine1: "",
         addressLine2: "",
+        city: "Sta. Rosa",
         deliveryType: undefined,
         paymentType: undefined,
       },
@@ -48,6 +51,8 @@ export default function Order() {
         addressLine2: false,
         deliveryType: false,
         paymentType: false,
+        city: false,
+        specialInstructions: false,
       },
       isSubmitting: false,
     },
@@ -156,6 +161,7 @@ export default function Order() {
     if (!values.addressLine2) errors.addressLine2 = "Required";
     if (!values.deliveryType) errors.deliveryType = "Required";
     if (!values.paymentType) errors.paymentType = "Required";
+    if (values.city !== "Sta. Rosa") errors.city = "Sorry, we currently only deliver to Sta. Rosa";
 
     return errors;
   };
