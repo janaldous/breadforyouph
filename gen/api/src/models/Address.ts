@@ -73,6 +73,12 @@ export interface Address {
      * @memberof Address
      */
     shipping?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof Address
+     */
+    specialInstructions?: string;
 }
 
 export function AddressFromJSON(json: any): Address {
@@ -94,6 +100,7 @@ export function AddressFromJSONTyped(json: any, ignoreDiscriminator: boolean): A
         'postalCode': !exists(json, 'postalCode') ? undefined : json['postalCode'],
         'province': !exists(json, 'province') ? undefined : json['province'],
         'shipping': !exists(json, 'shipping') ? undefined : json['shipping'],
+        'specialInstructions': !exists(json, 'specialInstructions') ? undefined : json['specialInstructions'],
     };
 }
 
@@ -115,6 +122,7 @@ export function AddressToJSON(value?: Address | null): any {
         'postalCode': value.postalCode,
         'province': value.province,
         'shipping': value.shipping,
+        'specialInstructions': value.specialInstructions,
     };
 }
 

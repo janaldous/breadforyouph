@@ -48,6 +48,12 @@ export interface AddressDto {
      * @type {string}
      * @memberof AddressDto
      */
+    specialInstructions?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AddressDto
+     */
     village: string;
 }
 
@@ -65,6 +71,7 @@ export function AddressDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'line1': json['line1'],
         'postcode': json['postcode'],
         'province': json['province'],
+        'specialInstructions': !exists(json, 'specialInstructions') ? undefined : json['specialInstructions'],
         'village': json['village'],
     };
 }
@@ -82,6 +89,7 @@ export function AddressDtoToJSON(value?: AddressDto | null): any {
         'line1': value.line1,
         'postcode': value.postcode,
         'province': value.province,
+        'specialInstructions': value.specialInstructions,
         'village': value.village,
     };
 }
