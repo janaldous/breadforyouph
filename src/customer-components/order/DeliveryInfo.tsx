@@ -123,6 +123,7 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                     name={"deliveryOption"}
                     type={"radio"}
                     label={"Deliver"}
+                    id={"delivery-option-deliver"}
                     value={OrderDtoDeliveryTypeEnum.DELIVER}
                     onChange={handleChange}
                     checked={
@@ -136,6 +137,7 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                     name={"deliveryOption"}
                     type={"radio"}
                     label={"Meet up"}
+                    id={"delivery-option-meetup"}
                     value={OrderDtoDeliveryTypeEnum.PICKUP}
                     onChange={handleChange}
                     checked={
@@ -159,6 +161,7 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                     type={"radio"}
                     label={"Cash"}
                     value={OrderDtoPaymentTypeEnum.CASH}
+                    id={"payment-option-cash"}
                     onChange={handleChange}
                     checked={
                       formValues.paymentType === OrderDtoPaymentTypeEnum.CASH
@@ -171,6 +174,7 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                     type={"radio"}
                     label={"GCash"}
                     value={OrderDtoPaymentTypeEnum.GCASH}
+                    id={"payment-option-gcash"}
                     onChange={handleChange}
                     checked={
                       formValues.paymentType === OrderDtoPaymentTypeEnum.GCASH

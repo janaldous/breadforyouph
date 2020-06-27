@@ -4,7 +4,10 @@ import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { OrderComponentProps } from "./OrderModel";
-import { OrderDtoDeliveryTypeEnum, OrderDtoPaymentTypeEnum } from "breadforyou-fetch-api";
+import {
+  OrderDtoDeliveryTypeEnum,
+  OrderDtoPaymentTypeEnum,
+} from "breadforyou-fetch-api";
 
 const deliveryTypeMapper = (input: any) => {
   switch (input) {
@@ -34,10 +37,11 @@ const OrderSummary: React.FC<OrderComponentProps> = (props) => {
   const handleSubmit = (e: any) => {
     e.preventDefault();
     if (props.onNext && props.onSubmit) {
-      const submitted = props.onSubmit();
-      submitted && props.onNext();
+      props.onSubmit().then(() => {
+        props.onNext && props.onNext();
+      });
     }
-  }
+  };
 
   return (
     <section id="order">
@@ -53,7 +57,9 @@ const OrderSummary: React.FC<OrderComponentProps> = (props) => {
           </div>
           <div data-testid="addressLine1">{formValues.addressLine1}</div>
           <div data-testid="addressLine2">{formValues.addressLine2}</div>
-          <div data-testid="specialInstructions">{formValues.specialInstructions}</div>
+          <div data-testid="specialInstructions">
+            {formValues.specialInstructions}
+          </div>
           <div data-testid="payment-type">
             {paymentTypeMapper(formValues.paymentType)}
           </div>
