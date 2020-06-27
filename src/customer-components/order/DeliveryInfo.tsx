@@ -2,7 +2,7 @@ import React from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
-import { OrderComponentProps } from "./OrderModel";
+import { OrderComponentProps, DeliveryData } from "./OrderModel";
 import {
   OrderDtoDeliveryTypeEnum,
   OrderDtoPaymentTypeEnum,
@@ -112,66 +112,32 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                 </Form.Row>
               </Form.Group>
 
-              <Form.Group controlId="addressLine1">
-                <Form.Label>Address Line 1</Form.Label>
-                <Form.Control
-                  type="string"
-                  name="address-line1"
-                  aria-label={"addressLine1"}
-                  placeholder={"e.g. Street, Landmark"}
+              {formValues.deliveryType === OrderDtoDeliveryTypeEnum.DELIVER ||
+              !formValues.deliveryType ? (
+                <AddressSection
+                  formErrors={formErrors}
+                  formValues={formValues}
                   onChange={handleChange}
-                  value={formValues.addressLine1}
-                  isInvalid={!!formErrors.addressLine1}
                 />
-                <Form.Control.Feedback type="invalid">
-                  {formErrors.addressLine1}
-                </Form.Control.Feedback>
-              </Form.Group>
-
-              <Form.Group controlId="addressLine2">
-                <Form.Label>Address Line 2</Form.Label>
-                <Form.Control
-                  type="string"
-                  name="address-line2"
-                  aria-label={"addressLine2"}
-                  placeholder={"e.g. Village"}
-                  onChange={handleChange}
-                  value={formValues.addressLine2}
-                  isInvalid={!!formErrors.addressLine2}
-                />
-                <Form.Control.Feedback type="invalid">
-                  {formErrors.addressLine2}
-                </Form.Control.Feedback>
-              </Form.Group>
-
-              <Form.Group controlId="city">
-                <Form.Label>City</Form.Label>
-                <Form.Control
-                  as="select"
-                  name="city"
-                  isInvalid={!!formErrors.city}
-                  onChange={handleChange}
-                  value={formValues.city}
-                >
-                  <option>Sta. Rosa</option>
-                  <option>Other</option>
-                </Form.Control>
-                <Form.Control.Feedback type="invalid">
-                  {formErrors.city}
-                </Form.Control.Feedback>
-              </Form.Group>
-
-              <Form.Group controlId="special-instructions">
-                <Form.Label>Special Instructions</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  rows={3}
-                  name="special-instructions"
-                  onChange={handleChange}
-                  value={formValues.specialInstructions}
-                  placeholder={"e.g. Please leave the parcel at the guardhouse"}
-                />
-              </Form.Group>
+              ) : (
+                <React.Fragment>
+                  <Form.Group controlId="special-instructions">
+                    <Form.Label>Special Instructions</Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      rows={3}
+                      name="special-instructions"
+                      onChange={handleChange}
+                      value={formValues.specialInstructions}
+                      placeholder={"e.g. Let's meet up at Nuvali"}
+                      isInvalid={!!formErrors.specialInstructions}
+                    />
+                  </Form.Group>
+                  <Form.Control.Feedback type="invalid">
+                    {formErrors.specialInstructions}
+                  </Form.Control.Feedback>
+                </React.Fragment>
+              )}
 
               <div className="bold-title">Payment information</div>
 
@@ -216,6 +182,77 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
         </div>
       </section>
     </div>
+  );
+};
+
+const AddressSection: React.FC<{
+  onChange?: (e: any) => void;
+  formValues: DeliveryData;
+  formErrors: Partial<DeliveryData>;
+}> = (props) => {
+  return (
+    <React.Fragment>
+      <Form.Group controlId="addressLine1">
+        <Form.Label>Address Line 1</Form.Label>
+        <Form.Control
+          type="string"
+          name="address-line1"
+          aria-label={"addressLine1"}
+          placeholder={"e.g. Street, Landmark"}
+          onChange={props.onChange}
+          value={props.formValues.addressLine1}
+          isInvalid={!!props.formErrors.addressLine1}
+        />
+        <Form.Control.Feedback type="invalid">
+          {props.formErrors.addressLine1}
+        </Form.Control.Feedback>
+      </Form.Group>
+
+      <Form.Group controlId="addressLine2">
+        <Form.Label>Address Line 2</Form.Label>
+        <Form.Control
+          type="string"
+          name="address-line2"
+          aria-label={"addressLine2"}
+          placeholder={"e.g. Village"}
+          onChange={props.onChange}
+          value={props.formValues.addressLine2}
+          isInvalid={!!props.formErrors.addressLine2}
+        />
+        <Form.Control.Feedback type="invalid">
+          {props.formErrors.addressLine2}
+        </Form.Control.Feedback>
+      </Form.Group>
+
+      <Form.Group controlId="city">
+        <Form.Label>City</Form.Label>
+        <Form.Control
+          as="select"
+          name="city"
+          isInvalid={!!props.formErrors.city}
+          onChange={props.onChange}
+          value={props.formValues.city}
+        >
+          <option>Sta. Rosa</option>
+          <option>Other</option>
+        </Form.Control>
+        <Form.Control.Feedback type="invalid">
+          {props.formErrors.city}
+        </Form.Control.Feedback>
+      </Form.Group>
+
+      <Form.Group controlId="special-instructions">
+        <Form.Label>Special Instructions</Form.Label>
+        <Form.Control
+          as="textarea"
+          rows={3}
+          name="special-instructions"
+          onChange={props.onChange}
+          value={props.formValues.specialInstructions}
+          placeholder={"e.g. Please leave the parcel at the guardhouse"}
+        />
+      </Form.Group>
+    </React.Fragment>
   );
 };
 

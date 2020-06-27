@@ -18,17 +18,19 @@ import {
 } from "breadforyou-fetch-api";
 import OrderApi from "../../api/OrderApi";
 
+const defaultValues: DeliveryData = {
+  firstName: "John",
+  lastName: "Doe",
+  contactNumber: "0123456789",
+  addressLine1: "street name",
+  addressLine2: "village name",
+  city: "Sta. Rosa",
+  deliveryType: OrderDtoDeliveryTypeEnum.DELIVER,
+  paymentType: OrderDtoPaymentTypeEnum.CASH,
+};
+
 const fillInDeliveryFormDefault = (result: RenderResult) => {
-  const defaultVaues: DeliveryData = {
-    firstName: "John",
-    lastName: "Doe",
-    contactNumber: "0123456789",
-    addressLine1: "street name",
-    addressLine2: "village name",
-    deliveryType: OrderDtoDeliveryTypeEnum.DELIVER,
-    paymentType: OrderDtoPaymentTypeEnum.CASH,
-  };
-  fillInDeliveryForm(defaultVaues, result);
+  fillInDeliveryForm(defaultValues, result);
 };
 
 const fillInDeliveryForm = (
@@ -60,17 +62,29 @@ const fillInDeliveryForm = (
     });
   }
 
-  const rbDelivery = container.querySelectorAll(
-    "input[name=deliveryOption]"
-  )[1];
-  if (rbDelivery) {
-    ReactTestUtils.Simulate.change(rbDelivery);
+  if (values.deliveryType) {
+    const rbDeliveries = Array.from(
+      container.querySelectorAll("input[name=deliveryOption]")
+    );
+    const rbDeliveryType = rbDeliveries.filter(
+      (x) => x.value === values.deliveryType
+    )[0];
+    ReactTestUtils.Simulate.change(rbDeliveryType);
   }
 
-  const rbPayment = container.querySelectorAll("input[name=paymentOption]")[1];
-  if (rbPayment) {
-    ReactTestUtils.Simulate.change(rbPayment);
+  if (values.paymentType) {
+    const rbPayment = Array.from(
+      container.querySelectorAll("input[name=paymentOption]")
+    );
+    const rbPaymentType = rbPayment.filter(
+      (x) => x.value === values.paymentType
+    )[0];
+    ReactTestUtils.Simulate.change(rbPaymentType);
   }
+
+  fireEvent.change(getByLabelText("Special Instructions"), {
+    target: { value: values.specialInstructions },
+  });
 };
 
 describe("Order component", () => {
@@ -188,10 +202,10 @@ describe("Order component", () => {
     expect(getByTestId("addressLine1").textContent).toBe("street name");
     expect(getByTestId("addressLine2").textContent).toBe("village name");
     expect(getByTestId("delivery-type").textContent).toBe(
-      "We will meet up at:"
+      "We will deliver to:"
     );
     expect(getByTestId("payment-type").textContent).toContain(
-      "Paying with GCash"
+      "Cash on Delivery"
     );
     expect(getByTestId("specialInstructions").textContent).toContain(
       "Please leave the parcel at the guardhouse"
@@ -236,7 +250,7 @@ describe("Order component", () => {
         contactNumber: "",
         addressLine1: "",
         addressLine2: "",
-        deliveryType: undefined,
+        deliveryType: OrderDtoDeliveryTypeEnum.DELIVER,
         paymentType: undefined,
       },
       renderResult
@@ -245,6 +259,32 @@ describe("Order component", () => {
     fireEvent.click(getByText("One more step"));
 
     expect(getAllByText("Required").length).toBe(4);
+  });
+
+  it("does not let you continue when delivery form is not completed - meet up", () => {
+    const renderResult = render(<Order />);
+    const { getByText, getAllByText } = renderResult;
+
+    fireEvent.click(getByText("Two more steps"));
+
+    fillInDeliveryForm(
+      {
+        firstName: "John",
+        lastName: "Doe",
+        contactNumber: "0123456789",
+        addressLine1: "",
+        addressLine2: "",
+        city: "",
+        specialInstructions: "",
+        deliveryType: OrderDtoDeliveryTypeEnum.PICKUP,
+        paymentType: OrderDtoPaymentTypeEnum.CASH,
+      },
+      renderResult
+    );
+
+    fireEvent.click(getByText("One more step"));
+
+    expect(getAllByText("Required").length).toBe(1);
   });
 
   it("does not let you continue when delivery form city is not in Sta Rosa", () => {
@@ -263,5 +303,31 @@ describe("Order component", () => {
     fireEvent.click(getByText("One more step"));
 
     expect(getAllByText(/Sorry/).length).toBe(1);
+  });
+
+  it("lets you continue when delivery form is completed - meet up", () => {
+    const renderResult = render(<Order />);
+    const { getByText } = renderResult;
+
+    fireEvent.click(getByText("Two more steps"));
+
+    expect(getByText("Delivery information")).toBeInTheDocument();
+
+    const mockValues: DeliveryData = {
+      firstName: "John",
+      lastName: "Doe",
+      contactNumber: "0123456789",
+      addressLine1: "",
+      addressLine2: "",
+      city: "",
+      deliveryType: OrderDtoDeliveryTypeEnum.PICKUP,
+      paymentType: OrderDtoPaymentTypeEnum.CASH,
+      specialInstructions: "Let's meet in Nuvali",
+    };
+    fillInDeliveryForm(mockValues, renderResult);
+
+    fireEvent.click(getByText("One more step"));
+
+    expect(getByText("Order")).toBeInTheDocument();
   });
 });

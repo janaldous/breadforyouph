@@ -6,7 +6,7 @@ import Navbar from "react-bootstrap/Navbar";
 import logo from "../../logo.jpg";
 import OrderSummary from "./OrderSummary";
 import { OrderData, DeliveryData } from "./OrderModel";
-import { OrderDto } from "breadforyou-fetch-api";
+import { OrderDto, OrderDtoDeliveryTypeEnum } from "breadforyou-fetch-api";
 import OrderApi from "../../api/OrderApi";
 import Spinner from "react-bootstrap/Spinner";
 
@@ -156,13 +156,16 @@ export default function Order() {
     if (!values.firstName) errors.firstName = "Required";
     if (!values.lastName) errors.lastName = "Required";
     if (!values.contactNumber) errors.contactNumber = "Required";
-    if (!values.addressLine1) errors.addressLine1 = "Required";
-    if (!values.addressLine2) errors.addressLine2 = "Required";
-    if (!values.addressLine2) errors.addressLine2 = "Required";
     if (!values.deliveryType) errors.deliveryType = "Required";
     if (!values.paymentType) errors.paymentType = "Required";
-    if (values.city !== "Sta. Rosa") errors.city = "Sorry, we currently only deliver to Sta. Rosa";
-
+    if (values.deliveryType === OrderDtoDeliveryTypeEnum.DELIVER) {
+      if (!values.addressLine1) errors.addressLine1 = "Required";
+      if (!values.addressLine2) errors.addressLine2 = "Required";
+      if (values.city !== "Sta. Rosa")
+        errors.city = "Sorry, we currently only deliver to Sta. Rosa";
+    } else if (values.deliveryType === OrderDtoDeliveryTypeEnum.PICKUP) {
+      if (!values.specialInstructions) errors.specialInstructions = "Required";
+    }
     return errors;
   };
 
