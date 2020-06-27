@@ -4,6 +4,7 @@ import {
   OrderDetail as OrderDetailModel,
   OrderTrackingStatusEnum,
   OrderUpdateDtoStatusEnum,
+  OrderDetailDeliveryTypeEnum,
 } from "breadforyou-fetch-api";
 import { useParams, Link } from "react-router-dom";
 import Receipt from "./Receipt";
@@ -64,6 +65,20 @@ const OrderDetail: React.FC = () => {
     setStatus(e.target.value);
   };
 
+  const deliveryInfo =
+    order?.deliveryType === OrderDetailDeliveryTypeEnum.DELIVER ? (
+      <React.Fragment>
+        <div>{order?.shipping?.addressLineOne}</div>
+        <div>{order?.shipping?.addressLineTwo}</div>
+        <div>{order?.shipping?.city}</div>
+        <div>{order?.shipping?.province}</div>
+        <div>{order?.shipping?.postalCode}</div>
+        <div>{order?.shipping?.specialInstructions}</div>
+      </React.Fragment>
+    ) : (
+      <div>{order?.shipping?.specialInstructions}</div>
+    );
+
   return (
     <div className="order-detail-container">
       <h2>Order #{id}</h2>
@@ -96,11 +111,7 @@ const OrderDetail: React.FC = () => {
       </div>
       <div>Delivery Type</div>
       <div>{order?.deliveryType}</div>
-      <div>{order?.shipping?.addressLineOne}</div>
-      <div>{order?.shipping?.addressLineTwo}</div>
-      <div>{order?.shipping?.city}</div>
-      <div>{order?.shipping?.province}</div>
-      <div>{order?.shipping?.postalCode}</div>
+      {deliveryInfo}
       <br />
       <div>
         <b>Payment information</b>
