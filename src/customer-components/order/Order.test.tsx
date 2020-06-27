@@ -6,6 +6,7 @@ import {
   act,
   wait,
   getByPlaceholderText,
+  getByLabelText,
 } from "@testing-library/react";
 import Order from "./Order";
 import "@testing-library/jest-dom/extend-expect";
@@ -33,6 +34,11 @@ const fillInDeliveryFormDefault = (result: RenderResult) => {
   fillInDeliveryForm(defaultValues, result);
 };
 
+const changeRadioButton = (radioButtons: Array<Element>, value: string) => {
+  const rbSelect = radioButtons.filter((x) => x.value === value)[0];
+  ReactTestUtils.Simulate.change(rbSelect);
+};
+
 const fillInDeliveryForm = (
   values: Partial<DeliveryData>,
   result: RenderResult
@@ -48,6 +54,13 @@ const fillInDeliveryForm = (
     target: { value: values.contactNumber },
   });
 
+  if (values.deliveryType) {
+    const rbDeliveries = Array.from(
+      container.querySelectorAll("input[name=deliveryOption]")
+    );
+    changeRadioButton(rbDeliveries, values.deliveryType);
+  }
+
   const addressLine1Elem = container.querySelector("input[name=address-line1]");
   if (addressLine1Elem) {
     ReactTestUtils.Simulate.change(addressLine1Elem, {
@@ -62,24 +75,11 @@ const fillInDeliveryForm = (
     });
   }
 
-  if (values.deliveryType) {
-    const rbDeliveries = Array.from(
-      container.querySelectorAll("input[name=deliveryOption]")
-    );
-    const rbDeliveryType = rbDeliveries.filter(
-      (x) => x.value === values.deliveryType
-    )[0];
-    ReactTestUtils.Simulate.change(rbDeliveryType);
-  }
-
   if (values.paymentType) {
     const rbPayment = Array.from(
       container.querySelectorAll("input[name=paymentOption]")
     );
-    const rbPaymentType = rbPayment.filter(
-      (x) => x.value === values.paymentType
-    )[0];
-    ReactTestUtils.Simulate.change(rbPaymentType);
+    changeRadioButton(rbPayment, values.paymentType);
   }
 
   fireEvent.change(getByLabelText("Special Instructions"), {
@@ -329,5 +329,45 @@ describe("Order component", () => {
     fireEvent.click(getByText("One more step"));
 
     expect(getByText("Order")).toBeInTheDocument();
+  });
+
+  it("removes address info when changing between delivery types", () => {
+    const renderResult = render(<Order />);
+    const { getByText, container, getByLabelText } = renderResult;
+
+    fireEvent.click(getByText("Two more steps"));
+
+    expect(getByText("Delivery information")).toBeInTheDocument();
+
+    const mockValues: DeliveryData = {
+      firstName: "John",
+      lastName: "Doe",
+      contactNumber: "0123456789",
+      addressLine1: "street",
+      addressLine2: "village",
+      city: "Sta. Rosa",
+      deliveryType: OrderDtoDeliveryTypeEnum.DELIVER,
+      paymentType: OrderDtoPaymentTypeEnum.CASH,
+      specialInstructions: "Let's meet in Nuvali",
+    };
+    fillInDeliveryForm(mockValues, renderResult);
+
+    changeRadioButton(
+      Array.from(container.querySelectorAll("input[name=deliveryOption]")),
+      OrderDtoDeliveryTypeEnum.PICKUP
+    );
+
+    expect((getByLabelText("Special Instructions") as HTMLInputElement).value).toBe("");
+
+    fireEvent.change(getByLabelText("Special Instructions"), {
+      target: { value: "My special instructions" },
+    });
+
+    changeRadioButton(
+      Array.from(container.querySelectorAll("input[name=deliveryOption]")),
+      OrderDtoDeliveryTypeEnum.DELIVER
+    );
+
+    expect((getByLabelText("Special Instructions") as HTMLInputElement).value).toBe("");
   });
 });

@@ -84,6 +84,14 @@ export default function Order() {
             formTouched: { ...oldData.deliveryForm.formTouched, [name]: true },
           },
         };
+
+        if (newData.deliveryForm.formValues.deliveryType !== oldData.deliveryForm.formValues.deliveryType) {
+          const {formValues} = newData.deliveryForm;
+          formValues.addressLine1 = "";
+          formValues.addressLine2 = "";
+          formValues.specialInstructions = "";
+        }
+
         const errors = validate(newData.deliveryForm.formValues);
         if (newData.deliveryForm.formTouched) {
           newData.deliveryForm.formErrors = {

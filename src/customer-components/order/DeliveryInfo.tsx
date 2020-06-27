@@ -23,6 +23,41 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
 
   const { formValues, formErrors } = props.data.deliveryForm;
 
+  const addressSection = () => {
+    switch (formValues.deliveryType) {
+      case OrderDtoDeliveryTypeEnum.DELIVER:
+        return (
+          <AddressSection
+            formErrors={formErrors}
+            formValues={formValues}
+            onChange={handleChange}
+          />
+        );
+      case OrderDtoDeliveryTypeEnum.PICKUP:
+        return (
+          <React.Fragment>
+            <Form.Group controlId="special-instructions">
+              <Form.Label>Special Instructions</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                name="special-instructions"
+                onChange={handleChange}
+                value={formValues.specialInstructions}
+                placeholder={"e.g. Let's meet up at Nuvali"}
+                isInvalid={!!formErrors.specialInstructions}
+              />
+            </Form.Group>
+            <Form.Control.Feedback type="invalid">
+              {formErrors.specialInstructions}
+            </Form.Control.Feedback>
+          </React.Fragment>
+        );
+      default:
+        return <div></div>;
+    }
+  };
+
   return (
     <div className="app-container">
       <section id="order">
@@ -112,32 +147,7 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                 </Form.Row>
               </Form.Group>
 
-              {formValues.deliveryType === OrderDtoDeliveryTypeEnum.DELIVER ||
-              !formValues.deliveryType ? (
-                <AddressSection
-                  formErrors={formErrors}
-                  formValues={formValues}
-                  onChange={handleChange}
-                />
-              ) : (
-                <React.Fragment>
-                  <Form.Group controlId="special-instructions">
-                    <Form.Label>Special Instructions</Form.Label>
-                    <Form.Control
-                      as="textarea"
-                      rows={3}
-                      name="special-instructions"
-                      onChange={handleChange}
-                      value={formValues.specialInstructions}
-                      placeholder={"e.g. Let's meet up at Nuvali"}
-                      isInvalid={!!formErrors.specialInstructions}
-                    />
-                  </Form.Group>
-                  <Form.Control.Feedback type="invalid">
-                    {formErrors.specialInstructions}
-                  </Form.Control.Feedback>
-                </React.Fragment>
-              )}
+              {addressSection()}
 
               <div className="bold-title">Payment information</div>
 

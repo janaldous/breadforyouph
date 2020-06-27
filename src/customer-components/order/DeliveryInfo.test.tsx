@@ -66,15 +66,30 @@ describe("Order component", () => {
     );
   });
 
-  it("shows all address fields when no delivery type is selected", () => {
-    const { container, getByLabelText } = render(
+  it("shows no address fields when no delivery type is selected", () => {
+    const { queryByLabelText } = render(
       <DeliveryInfo data={data} onChange={onChangeMock} onNext={onNextMock} />
     );
 
-    expect(getByLabelText("Address Line 1")).toBeInTheDocument();
-    expect(getByLabelText("Address Line 2")).toBeInTheDocument();
-    expect(getByLabelText("City")).toBeInTheDocument();
-    expect(getByLabelText("Special Instructions")).toBeInTheDocument();
+    expect(queryByLabelText("Address Line 1")).not.toBeInTheDocument();
+    expect(queryByLabelText("Address Line 2")).not.toBeInTheDocument();
+    expect(queryByLabelText("City")).not.toBeInTheDocument();
+    expect(queryByLabelText("Special Instructions")).not.toBeInTheDocument();
+  });
+
+  it("shows address fields when no delivery type Deliver is selected", () => {
+    data.deliveryForm.formValues = {
+      ...data.deliveryForm.formValues,
+      deliveryType: OrderDtoDeliveryTypeEnum.DELIVER,
+    };
+    const { queryByLabelText } = render(
+      <DeliveryInfo data={data} onChange={onChangeMock} onNext={onNextMock} />
+    );
+
+    expect(queryByLabelText("Address Line 1")).toBeInTheDocument();
+    expect(queryByLabelText("Address Line 2")).toBeInTheDocument();
+    expect(queryByLabelText("City")).toBeInTheDocument();
+    expect(queryByLabelText("Special Instructions")).toBeInTheDocument();
   });
 
   it("shows special instructions only when delivery type Meet up is selected", () => {
