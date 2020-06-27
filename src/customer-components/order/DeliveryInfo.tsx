@@ -64,6 +64,8 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                     </Form.Control.Feedback>
                   </Col>
                 </Form.Row>
+              </Form.Group>
+              <Form.Group>
                 <Form.Label>Contact number</Form.Label>
                 <Form.Control
                   type="tel"
@@ -78,39 +80,7 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                 </Form.Control.Feedback>
               </Form.Group>
 
-              <Form.Group controlId="address">
-                <Form.Label>Address 1</Form.Label>
-                <Form.Control
-                  type="string"
-                  name="address-line1"
-                  aria-label={"addressLine1"}
-                  placeholder={"e.g. Street, Landmark"}
-                  onChange={handleChange}
-                  value={formValues.addressLine1}
-                  isInvalid={!!formErrors.addressLine1}
-                />
-                <Form.Control.Feedback type="invalid">
-                  {formErrors.addressLine1}
-                </Form.Control.Feedback>
-                <Form.Label>Address 2</Form.Label>
-                <Form.Control
-                  type="string"
-                  name="address-line2"
-                  aria-label={"addressLine2"}
-                  placeholder={"e.g. Village"}
-                  onChange={handleChange}
-                  value={formValues.addressLine2}
-                  isInvalid={!!formErrors.addressLine2}
-                />
-                <Form.Control.Feedback type="invalid">
-                  {formErrors.addressLine2}
-                </Form.Control.Feedback>
-                <Form.Text className="text-muted">
-                  We currently only deliver to Sta. Rosa, Laguna
-                </Form.Text>
-              </Form.Group>
-
-              <Form.Group controlId="deliveryOption">
+              <Form.Group>
                 <Form.Label>Delivery option</Form.Label>
                 <Form.Row>
                   <Form.Check
@@ -140,6 +110,46 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                     isInvalid={!!formErrors.deliveryType}
                   />
                 </Form.Row>
+              </Form.Group>
+
+              <Form.Group>
+                <Form.Label>Address Line 1</Form.Label>
+                <Form.Control
+                  type="string"
+                  name="address-line1"
+                  aria-label={"addressLine1"}
+                  placeholder={"e.g. Street, Landmark"}
+                  onChange={handleChange}
+                  value={formValues.addressLine1}
+                  isInvalid={!!formErrors.addressLine1}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {formErrors.addressLine1}
+                </Form.Control.Feedback>
+              </Form.Group>
+
+              <Form.Group>
+                <Form.Label>Address Line 2</Form.Label>
+                <Form.Control
+                  type="string"
+                  name="address-line2"
+                  aria-label={"addressLine2"}
+                  placeholder={"e.g. Village"}
+                  onChange={handleChange}
+                  value={formValues.addressLine2}
+                  isInvalid={!!formErrors.addressLine2}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {formErrors.addressLine2}
+                </Form.Control.Feedback>
+              </Form.Group>
+
+              <Form.Group controlId="city">
+                <Form.Label>City</Form.Label>
+                <Form.Control as="select">
+                  <option>Sta. Rosa</option>
+                  <option>Other</option>
+                </Form.Control>
               </Form.Group>
 
               <div className="bold-title">Payment information</div>
