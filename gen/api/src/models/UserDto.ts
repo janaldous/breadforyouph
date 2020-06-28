@@ -24,7 +24,7 @@ export interface UserDto {
      * @type {string}
      * @memberof UserDto
      */
-    contactNumber: string;
+    contactNumber?: string;
     /**
      * 
      * @type {string}
@@ -55,7 +55,7 @@ export function UserDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): U
     }
     return {
         
-        'contactNumber': json['contactNumber'],
+        'contactNumber': !exists(json, 'contactNumber') ? undefined : json['contactNumber'],
         'email': !exists(json, 'email') ? undefined : json['email'],
         'firstName': json['firstName'],
         'lastName': json['lastName'],

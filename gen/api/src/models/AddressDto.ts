@@ -24,25 +24,25 @@ export interface AddressDto {
      * @type {string}
      * @memberof AddressDto
      */
-    city: string;
+    city?: string;
     /**
      * 
      * @type {string}
      * @memberof AddressDto
      */
-    line1: string;
+    line1?: string;
     /**
      * 
      * @type {string}
      * @memberof AddressDto
      */
-    postcode: string;
+    postcode?: string;
     /**
      * 
      * @type {string}
      * @memberof AddressDto
      */
-    province: string;
+    province?: string;
     /**
      * 
      * @type {string}
@@ -54,7 +54,7 @@ export interface AddressDto {
      * @type {string}
      * @memberof AddressDto
      */
-    village: string;
+    village?: string;
 }
 
 export function AddressDtoFromJSON(json: any): AddressDto {
@@ -67,12 +67,12 @@ export function AddressDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
     }
     return {
         
-        'city': json['city'],
-        'line1': json['line1'],
-        'postcode': json['postcode'],
-        'province': json['province'],
+        'city': !exists(json, 'city') ? undefined : json['city'],
+        'line1': !exists(json, 'line1') ? undefined : json['line1'],
+        'postcode': !exists(json, 'postcode') ? undefined : json['postcode'],
+        'province': !exists(json, 'province') ? undefined : json['province'],
         'specialInstructions': !exists(json, 'specialInstructions') ? undefined : json['specialInstructions'],
-        'village': json['village'],
+        'village': !exists(json, 'village') ? undefined : json['village'],
     };
 }
 

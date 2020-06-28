@@ -103,7 +103,8 @@ export function OrderDtoToJSON(value?: OrderDto | null): any {
 */
 export enum OrderDtoDeliveryTypeEnum {
     DELIVER = 'DELIVER',
-    PICKUP = 'PICK_UP'
+    PICKUP = 'PICK_UP',
+    MEETUP = 'MEET_UP'
 }
 /**
 * @export

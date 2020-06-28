@@ -85,8 +85,11 @@ export default function Order() {
           },
         };
 
-        if (newData.deliveryForm.formValues.deliveryType !== oldData.deliveryForm.formValues.deliveryType) {
-          const {formValues} = newData.deliveryForm;
+        if (
+          newData.deliveryForm.formValues.deliveryType !==
+          oldData.deliveryForm.formValues.deliveryType
+        ) {
+          const { formValues } = newData.deliveryForm;
           formValues.addressLine1 = "";
           formValues.addressLine2 = "";
           formValues.specialInstructions = "";
@@ -164,6 +167,13 @@ export default function Order() {
     if (!values.firstName) errors.firstName = "Required";
     if (!values.lastName) errors.lastName = "Required";
     if (!values.contactNumber) errors.contactNumber = "Required";
+    const regexMobileNumber = RegExp("09[0-9]{9}");
+    if (
+      values.contactNumber &&
+      !regexMobileNumber.test(values.contactNumber)
+    ) {
+      errors.contactNumber = "Invalid mobile number";
+    }
     if (!values.deliveryType) errors.deliveryType = "Required";
     if (!values.paymentType) errors.paymentType = "Required";
     if (values.deliveryType === OrderDtoDeliveryTypeEnum.DELIVER) {

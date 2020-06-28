@@ -3,10 +3,7 @@ import {
   render,
   fireEvent,
   RenderResult,
-  act,
   wait,
-  getByPlaceholderText,
-  getByLabelText,
 } from "@testing-library/react";
 import Order from "./Order";
 import "@testing-library/jest-dom/extend-expect";
@@ -22,7 +19,7 @@ import OrderApi from "../../api/OrderApi";
 const defaultValues: DeliveryData = {
   firstName: "John",
   lastName: "Doe",
-  contactNumber: "0123456789",
+  contactNumber: "09123456789",
   addressLine1: "street name",
   addressLine2: "village name",
   city: "Sta. Rosa",
@@ -198,7 +195,7 @@ describe("Order component", () => {
     fireEvent.click(getByText("One more step"));
 
     expect(getByTestId("customer-name").textContent).toBe("John Doe");
-    expect(getByTestId("contact-number").textContent).toBe("0123456789");
+    expect(getByTestId("contact-number").textContent).toBe("09123456789");
     expect(getByTestId("addressLine1").textContent).toBe("street name");
     expect(getByTestId("addressLine2").textContent).toBe("village name");
     expect(getByTestId("delivery-type").textContent).toBe(
@@ -228,7 +225,7 @@ describe("Order component", () => {
 
     expect(getByPlaceholderText("First name").value).toBe("John");
     expect(getByPlaceholderText("Last name").value).toBe("Doe");
-    expect(getByLabelText("contactNumber").value).toBe("0123456789");
+    expect(getByLabelText("contactNumber").value).toBe("09123456789");
     expect(getByLabelText("Address Line 1").value).toBe("street name");
     expect(getByLabelText("Address Line 2").value).toBe("village name");
     expect(getByLabelText("City").value).toBe("Sta. Rosa");
@@ -271,7 +268,7 @@ describe("Order component", () => {
       {
         firstName: "John",
         lastName: "Doe",
-        contactNumber: "0123456789",
+        contactNumber: "09123456789",
         addressLine1: "",
         addressLine2: "",
         city: "",
@@ -316,7 +313,7 @@ describe("Order component", () => {
     const mockValues: DeliveryData = {
       firstName: "John",
       lastName: "Doe",
-      contactNumber: "0123456789",
+      contactNumber: "09123456789",
       addressLine1: "",
       addressLine2: "",
       city: "",
@@ -342,7 +339,7 @@ describe("Order component", () => {
     const mockValues: DeliveryData = {
       firstName: "John",
       lastName: "Doe",
-      contactNumber: "0123456789",
+      contactNumber: "09123456789",
       addressLine1: "street",
       addressLine2: "village",
       city: "Sta. Rosa",
@@ -369,5 +366,31 @@ describe("Order component", () => {
     );
 
     expect((getByLabelText("Special Instructions") as HTMLInputElement).value).toBe("");
+  });
+
+  it("shows validation error when given invalid contact number", () => {
+    const renderResult = render(<Order />);
+    const { getByText, getAllByText } = renderResult;
+
+    fireEvent.click(getByText("Two more steps"));
+
+    expect(getByText("Delivery information")).toBeInTheDocument();
+
+    const mockValues: DeliveryData = {
+      firstName: "John",
+      lastName: "Doe",
+      contactNumber: "0123456789",
+      addressLine1: "street",
+      addressLine2: "village",
+      city: "Sta. Rosa",
+      deliveryType: OrderDtoDeliveryTypeEnum.DELIVER,
+      paymentType: OrderDtoPaymentTypeEnum.CASH,
+      specialInstructions: "Let's meet in Nuvali",
+    };
+    fillInDeliveryForm(mockValues, renderResult);
+
+    fireEvent.click(getByText("One more step"));
+
+    expect(getAllByText(/Invalid/i).length).toBe(1);
   });
 });

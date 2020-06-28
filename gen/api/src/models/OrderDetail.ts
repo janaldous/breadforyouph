@@ -151,7 +151,8 @@ export function OrderDetailToJSON(value?: OrderDetail | null): any {
 */
 export enum OrderDetailDeliveryTypeEnum {
     DELIVER = 'DELIVER',
-    PICKUP = 'PICK_UP'
+    PICKUP = 'PICK_UP',
+    MEETUP = 'MEET_UP'
 }
 /**
 * @export
