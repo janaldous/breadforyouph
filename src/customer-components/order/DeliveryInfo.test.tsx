@@ -95,7 +95,7 @@ describe("Order component", () => {
   it("shows special instructions only when delivery type Meet up is selected", () => {
     data.deliveryForm.formValues = {
       ...data.deliveryForm.formValues,
-      deliveryType: OrderDtoDeliveryTypeEnum.PICKUP,
+      deliveryType: OrderDtoDeliveryTypeEnum.MEETUP,
     };
 
     const { queryByLabelText } = render(

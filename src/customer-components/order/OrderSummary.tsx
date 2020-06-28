@@ -11,7 +11,7 @@ import {
 
 const deliveryTypeMapper = (input: any) => {
   switch (input) {
-    case OrderDtoDeliveryTypeEnum.PICKUP:
+    case OrderDtoDeliveryTypeEnum.MEETUP:
       return "We will meet up at:";
     case OrderDtoDeliveryTypeEnum.DELIVER:
       return "We will deliver to:";

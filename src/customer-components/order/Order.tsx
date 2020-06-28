@@ -130,9 +130,10 @@ export default function Order() {
       address: {
         line1: deliveryInfo.addressLine1,
         village: deliveryInfo.addressLine2,
-        city: "Sta. Rosa",
+        city: deliveryInfo.city,
         province: "Laguna",
         postcode: "4026",
+        specialInstructions: deliveryInfo.specialInstructions,
       },
       deliveryType: deliveryInfo.deliveryType,
       paymentType: deliveryInfo.paymentType,
@@ -167,7 +168,7 @@ export default function Order() {
     if (!values.firstName) errors.firstName = "Required";
     if (!values.lastName) errors.lastName = "Required";
     if (!values.contactNumber) errors.contactNumber = "Required";
-    const regexMobileNumber = RegExp("09[0-9]{9}");
+    const regexMobileNumber = RegExp("^09[0-9]{9}$");
     if (
       values.contactNumber &&
       !regexMobileNumber.test(values.contactNumber)
@@ -181,7 +182,7 @@ export default function Order() {
       if (!values.addressLine2) errors.addressLine2 = "Required";
       if (values.city !== "Sta. Rosa")
         errors.city = "Sorry, we currently only deliver to Sta. Rosa";
-    } else if (values.deliveryType === OrderDtoDeliveryTypeEnum.PICKUP) {
+    } else if (values.deliveryType === OrderDtoDeliveryTypeEnum.MEETUP) {
       if (!values.specialInstructions) errors.specialInstructions = "Required";
     }
     return errors;

@@ -33,7 +33,7 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
             onChange={handleChange}
           />
         );
-      case OrderDtoDeliveryTypeEnum.PICKUP:
+      case OrderDtoDeliveryTypeEnum.MEETUP:
         return (
           <React.Fragment>
             <Form.Group controlId="special-instructions">
@@ -138,11 +138,11 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
                     type={"radio"}
                     label={"Meet up"}
                     id={"delivery-option-meetup"}
-                    value={OrderDtoDeliveryTypeEnum.PICKUP}
+                    value={OrderDtoDeliveryTypeEnum.MEETUP}
                     onChange={handleChange}
                     checked={
                       formValues.deliveryType ===
-                      OrderDtoDeliveryTypeEnum.PICKUP
+                      OrderDtoDeliveryTypeEnum.MEETUP
                     }
                     isInvalid={!!formErrors.deliveryType}
                   />

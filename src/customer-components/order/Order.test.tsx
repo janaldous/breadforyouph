@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  render,
-  fireEvent,
-  RenderResult,
-  wait,
-} from "@testing-library/react";
+import { render, fireEvent, RenderResult, wait } from "@testing-library/react";
 import Order from "./Order";
 import "@testing-library/jest-dom/extend-expect";
 import ReactTestUtils from "react-dom/test-utils";
@@ -13,8 +8,10 @@ import {
   OrderDtoDeliveryTypeEnum,
   OrderDtoPaymentTypeEnum,
   OrderConfirmationOrderStatusEnum,
+  OrderDto,
 } from "breadforyou-fetch-api";
 import OrderApi from "../../api/OrderApi";
+import { mocked } from "ts-jest/utils";
 
 const defaultValues: DeliveryData = {
   firstName: "John",
@@ -142,14 +139,42 @@ describe("Order component", () => {
     const { getByText, container } = renderResult;
 
     fireEvent.click(getByText("Two more steps"));
-    fillInDeliveryFormDefault(renderResult);
+
+    const values = {
+      ...defaultValues,
+      specialInstructions: "My special instructions",
+    };
+    fillInDeliveryForm(values, renderResult);
     fireEvent.click(getByText("One more step"));
 
     expect(OrderApi.postOrder).toBeCalledTimes(0);
 
     fireEvent.click(getByText("Place order"));
     expect(container.querySelector(".order-spinner")).toBeInTheDocument();
-    await wait(() => expect(OrderApi.postOrder).toBeCalled());
+
+    const expectedOrder: OrderDto = {
+      address: {
+        line1: defaultValues.addressLine1,
+        village: defaultValues.addressLine2,
+        city: defaultValues.city,
+        province: "Laguna",
+        postcode: "4026",
+        specialInstructions: values.specialInstructions,
+      },
+      deliveryType: OrderDtoDeliveryTypeEnum.DELIVER,
+      paymentType: OrderDtoPaymentTypeEnum.CASH,
+      quantity: 1,
+      user: {
+        firstName: defaultValues.firstName,
+        lastName: defaultValues.lastName,
+        contactNumber: defaultValues.contactNumber,
+      },
+    };
+    const mockedApiOrder = mocked(OrderApi.postOrder, true);
+    await wait(() => {
+      expect(mockedApiOrder.mock.calls.length).toBe(1);
+    });
+    expect(mockedApiOrder.mock.calls[0][0]).toStrictEqual(expectedOrder);
 
     expect(getByText("Order confirmation")).toBeInTheDocument();
     expect(getByText(/Your order number is 1234. Expect/)).toBeInTheDocument();
@@ -273,7 +298,7 @@ describe("Order component", () => {
         addressLine2: "",
         city: "",
         specialInstructions: "",
-        deliveryType: OrderDtoDeliveryTypeEnum.PICKUP,
+        deliveryType: OrderDtoDeliveryTypeEnum.MEETUP,
         paymentType: OrderDtoPaymentTypeEnum.CASH,
       },
       renderResult
@@ -317,7 +342,7 @@ describe("Order component", () => {
       addressLine1: "",
       addressLine2: "",
       city: "",
-      deliveryType: OrderDtoDeliveryTypeEnum.PICKUP,
+      deliveryType: OrderDtoDeliveryTypeEnum.MEETUP,
       paymentType: OrderDtoPaymentTypeEnum.CASH,
       specialInstructions: "Let's meet in Nuvali",
     };
@@ -351,10 +376,12 @@ describe("Order component", () => {
 
     changeRadioButton(
       Array.from(container.querySelectorAll("input[name=deliveryOption]")),
-      OrderDtoDeliveryTypeEnum.PICKUP
+      OrderDtoDeliveryTypeEnum.MEETUP
     );
 
-    expect((getByLabelText("Special Instructions") as HTMLInputElement).value).toBe("");
+    expect(
+      (getByLabelText("Special Instructions") as HTMLInputElement).value
+    ).toBe("");
 
     fireEvent.change(getByLabelText("Special Instructions"), {
       target: { value: "My special instructions" },
@@ -365,7 +392,9 @@ describe("Order component", () => {
       OrderDtoDeliveryTypeEnum.DELIVER
     );
 
-    expect((getByLabelText("Special Instructions") as HTMLInputElement).value).toBe("");
+    expect(
+      (getByLabelText("Special Instructions") as HTMLInputElement).value
+    ).toBe("");
   });
 
   it("shows validation error when given invalid contact number", () => {
