@@ -1,5 +1,7 @@
 export * from './Address';
 export * from './AddressDto';
+export * from './DeliveryDate';
+export * from './DeliveryDateDto';
 export * from './OrderConfirmation';
 export * from './OrderDetail';
 export * from './OrderDto';

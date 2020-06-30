@@ -18,6 +18,10 @@ import {
     AddressFromJSON,
     AddressFromJSONTyped,
     AddressToJSON,
+    DeliveryDate,
+    DeliveryDateFromJSON,
+    DeliveryDateFromJSONTyped,
+    DeliveryDateToJSON,
     OrderItem,
     OrderItemFromJSON,
     OrderItemFromJSONTyped,
@@ -44,6 +48,12 @@ export interface OrderDetail {
      * @memberof OrderDetail
      */
     billing?: Address;
+    /**
+     * 
+     * @type {DeliveryDate}
+     * @memberof OrderDetail
+     */
+    deliveryDate?: DeliveryDate;
     /**
      * 
      * @type {string}
@@ -111,6 +121,7 @@ export function OrderDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean
     return {
         
         'billing': !exists(json, 'billing') ? undefined : AddressFromJSON(json['billing']),
+        'deliveryDate': !exists(json, 'deliveryDate') ? undefined : DeliveryDateFromJSON(json['deliveryDate']),
         'deliveryType': !exists(json, 'deliveryType') ? undefined : json['deliveryType'],
         'id': !exists(json, 'id') ? undefined : json['id'],
         'orderDate': !exists(json, 'orderDate') ? undefined : (new Date(json['orderDate'])),
@@ -133,6 +144,7 @@ export function OrderDetailToJSON(value?: OrderDetail | null): any {
     return {
         
         'billing': AddressToJSON(value.billing),
+        'deliveryDate': DeliveryDateToJSON(value.deliveryDate),
         'deliveryType': value.deliveryType,
         'id': value.id,
         'orderDate': value.orderDate === undefined ? undefined : (value.orderDate.toISOString()),
