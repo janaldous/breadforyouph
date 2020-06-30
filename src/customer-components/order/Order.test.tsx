@@ -94,11 +94,11 @@ describe("Order component", () => {
   });
 
   const deliveryDatesPromise = Promise.resolve([
-    {id: 1, date: new Date(), orderLimit: 6},
-    {id: 2, date: new Date(), orderLimit: 6},
-    {id: 3, date: new Date(), orderLimit: 6},
-    {id: 4, date: new Date(), orderLimit: 6},
-    {id: 5, date: new Date(), orderLimit: 6},
+    { id: 1, date: new Date("2020-07-01"), orderLimit: 6 },
+    { id: 2, date: new Date("2020-07-02"), orderLimit: 6 },
+    { id: 3, date: new Date("2020-07-03"), orderLimit: 6 },
+    { id: 4, date: new Date("2020-07-04"), orderLimit: 6 },
+    { id: 5, date: new Date("2020-07-05"), orderLimit: 6 },
   ]);
 
   beforeEach(() => {
@@ -252,6 +252,11 @@ describe("Order component", () => {
       expect(mockedApiDelivery.mock.calls.length).toBe(1);
     });
 
+    // default is first item in dropdown
+    expect(getByLabelText("Preferred delivery date").value).toBe(
+      "Wed Jul 01 2020 08:00:00 GMT+0800 (Malaysia Time)"
+    );
+
     fillInDeliveryFormDefault(renderResult);
     fireEvent.change(getByLabelText("Special Instructions"), {
       target: { value: "Please leave the parcel at the guardhouse" },
@@ -263,6 +268,7 @@ describe("Order component", () => {
     expect(getByTestId("contact-number").textContent).toBe("09123456789");
     expect(getByTestId("addressLine1").textContent).toBe("street name");
     expect(getByTestId("addressLine2").textContent).toBe("village name");
+    expect(getByTestId("deliveryDate").textContent).toBe("Wed Jul 01 2020 08:00:00 GMT+0800 (Malaysia Time)");
     expect(getByTestId("delivery-type").textContent).toBe(
       "We will deliver to:"
     );

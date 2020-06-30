@@ -60,6 +60,9 @@ const OrderSummary: React.FC<OrderComponentProps> = (props) => {
           <div data-testid="specialInstructions">
             {formValues.specialInstructions}
           </div>
+          <div data-testid="deliveryDate">
+            {formValues?.deliveryDate}
+          </div>
           <div data-testid="payment-type">
             {paymentTypeMapper(formValues.paymentType)}
           </div>

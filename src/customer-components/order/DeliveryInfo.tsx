@@ -67,22 +67,33 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
   React.useEffect(() => {
     DeliveryApi.getDeliveryDates(0, 5).then((res) => {
       setDeliveryDates(res);
+      // TODO better way of writing this
+      props.onChange && props.onChange({
+        currentTarget: { value: res.length > 0 && res[0] && res[0]?.date?.toString(), name: "delivery-date" },
+        target: { value: res.length > 0 && res[0] && res[0]?.date?.toString(), name: "delivery-date" },
+      });
     });
   }, []);
 
   const deliverySchedule = (
-    <Form.Group>
+    <Form.Group controlId="delivery-date">
       <Form.Label>Preferred delivery date</Form.Label>
       <Form.Control
         as="select"
         name="delivery-date"
         onChange={props.onChange}
-        value={formValues?.deliveryDate?.toString() || "Other"}
+        value={
+          formValues?.deliveryDate?.toString() ||
+          (deliveryDates.length > 0 &&
+            deliveryDates[0] &&
+            deliveryDates[0]?.date &&
+            deliveryDates[0]?.date.toString()) ||
+          ""
+        }
       >
         {deliveryDates?.map((date) => (
           <option key={date.id}>{date?.date?.toString()}</option>
         ))}
-        <option>Other</option>
       </Form.Control>
       <Form.Control.Feedback type="invalid">
         {formErrors.deliveryDate}
