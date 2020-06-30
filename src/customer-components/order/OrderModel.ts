@@ -27,6 +27,7 @@ export interface DeliveryData {
   specialInstructions?: string;
   deliveryType?: OrderDtoDeliveryTypeEnum;
   paymentType?: OrderDtoPaymentTypeEnum;
+  deliveryDate?: Date;
 }
 
 export interface DeliveryDataTouched {
@@ -39,6 +40,7 @@ export interface DeliveryDataTouched {
   paymentType: boolean;
   city: boolean;
   specialInstructions: boolean;
+  deliveryDate: boolean;
 }
 
 export interface OrderComponentProps {

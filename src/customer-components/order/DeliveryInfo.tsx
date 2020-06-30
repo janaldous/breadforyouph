@@ -6,7 +6,9 @@ import { OrderComponentProps, DeliveryData } from "./OrderModel";
 import {
   OrderDtoDeliveryTypeEnum,
   OrderDtoPaymentTypeEnum,
+  DeliveryDate,
 } from "breadforyou-fetch-api";
+import DeliveryApi from "../../api/DeliveryApi";
 
 const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
   const handleSubmit = (e: any) => {
@@ -57,6 +59,36 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
         return <div></div>;
     }
   };
+
+  const [deliveryDates, setDeliveryDates] = React.useState<Array<DeliveryDate>>(
+    []
+  );
+
+  React.useEffect(() => {
+    DeliveryApi.getDeliveryDates(0, 5).then((res) => {
+      setDeliveryDates(res);
+    });
+  }, []);
+
+  const deliverySchedule = (
+    <Form.Group>
+      <Form.Label>Preferred delivery date</Form.Label>
+      <Form.Control
+        as="select"
+        name="delivery-date"
+        onChange={props.onChange}
+        value={formValues?.deliveryDate?.toString() || "Other"}
+      >
+        {deliveryDates?.map((date) => (
+          <option key={date.id}>{date?.date?.toString()}</option>
+        ))}
+        <option>Other</option>
+      </Form.Control>
+      <Form.Control.Feedback type="invalid">
+        {formErrors.deliveryDate}
+      </Form.Control.Feedback>
+    </Form.Group>
+  );
 
   return (
     <div className="app-container">
@@ -150,6 +182,8 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
               </Form.Group>
 
               {addressSection()}
+
+              {deliverySchedule}
 
               <div className="bold-title">Payment information</div>
 

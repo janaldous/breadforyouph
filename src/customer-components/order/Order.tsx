@@ -20,6 +20,7 @@ const inputNameMapper = {
   paymentOption: "paymentType",
   city: "city",
   "special-instructions": "specialInstructions",
+  "delivery-date": "deliveryDate",
 };
 
 export default function Order() {
@@ -41,6 +42,7 @@ export default function Order() {
         city: "Sta. Rosa",
         deliveryType: undefined,
         paymentType: undefined,
+        deliveryDate: undefined,
       },
       formErrors: {},
       formTouched: {
@@ -53,6 +55,7 @@ export default function Order() {
         paymentType: false,
         city: false,
         specialInstructions: false,
+        deliveryDate: false,
       },
       isSubmitting: false,
     },

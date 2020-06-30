@@ -45,6 +45,7 @@ describe("Order component", () => {
         paymentType: false,
         city: false,
         specialInstructions: false,
+        deliveryDate: false,
       },
       isSubmitting: false,
     },
