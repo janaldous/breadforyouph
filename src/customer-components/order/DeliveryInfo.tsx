@@ -9,6 +9,12 @@ import {
   DeliveryDate,
 } from "breadforyou-fetch-api";
 import DeliveryApi from "../../api/DeliveryApi";
+import dateformat from "dateformat";
+
+const formatDate = (date?: Date) => {
+  if (!date) return undefined;
+  return dateformat(date, "ddd mmmm d");
+}
 
 const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
   const handleSubmit = (e: any) => {
@@ -83,16 +89,16 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
         name="delivery-date"
         onChange={props.onChange}
         value={
-          formValues?.deliveryDate?.toString() ||
+          formatDate(formValues?.deliveryDate) ||
           (deliveryDates.length > 0 &&
             deliveryDates[0] &&
             deliveryDates[0]?.date &&
-            deliveryDates[0]?.date.toString()) ||
+            formatDate(deliveryDates[0]?.date)) ||
           ""
         }
       >
         {deliveryDates?.map((date) => (
-          <option key={date.id}>{date?.date?.toString()}</option>
+          <option key={date.id}>{formatDate(date?.date)}</option>
         ))}
       </Form.Control>
       <Form.Control.Feedback type="invalid">

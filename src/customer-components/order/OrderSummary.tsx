@@ -8,6 +8,7 @@ import {
   OrderDtoDeliveryTypeEnum,
   OrderDtoPaymentTypeEnum,
 } from "breadforyou-fetch-api";
+import dateformat from "dateformat";
 
 const deliveryTypeMapper = (input: any) => {
   switch (input) {
@@ -61,7 +62,7 @@ const OrderSummary: React.FC<OrderComponentProps> = (props) => {
             {formValues.specialInstructions}
           </div>
           <div data-testid="deliveryDate">
-            {formValues?.deliveryDate}
+            {dateformat(formValues?.deliveryDate, "ddd, mmmm d, yyyy")}
           </div>
           <div data-testid="payment-type">
             {paymentTypeMapper(formValues.paymentType)}

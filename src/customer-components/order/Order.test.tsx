@@ -254,7 +254,7 @@ describe("Order component", () => {
 
     // default is first item in dropdown
     expect(getByLabelText("Preferred delivery date").value).toBe(
-      "Wed Jul 01 2020 08:00:00 GMT+0800 (Malaysia Time)"
+      "Wed July 1"
     );
 
     fillInDeliveryFormDefault(renderResult);
@@ -268,7 +268,7 @@ describe("Order component", () => {
     expect(getByTestId("contact-number").textContent).toBe("09123456789");
     expect(getByTestId("addressLine1").textContent).toBe("street name");
     expect(getByTestId("addressLine2").textContent).toBe("village name");
-    expect(getByTestId("deliveryDate").textContent).toBe("Wed Jul 01 2020 08:00:00 GMT+0800 (Malaysia Time)");
+    expect(getByTestId("deliveryDate").textContent).toBe("Wed, July 1, 2020");
     expect(getByTestId("delivery-type").textContent).toBe(
       "We will deliver to:"
     );

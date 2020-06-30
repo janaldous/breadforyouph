@@ -48,6 +48,8 @@
     ]
   },
   "devDependencies": {
+    "@types/dateformat": "^3.0.1",
+    "dateformat": "^3.0.3",
     "history": "^5.0.0",
     "openapi-ts-client-gen": "^1.1.1",
     "ts-jest": "^26.1.0"
