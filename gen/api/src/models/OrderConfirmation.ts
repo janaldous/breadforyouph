@@ -28,22 +28,28 @@ import {
 export interface OrderConfirmation {
     /**
      * 
+     * @type {Date}
+     * @memberof OrderConfirmation
+     */
+    deliveryDate: Date;
+    /**
+     * 
      * @type {number}
      * @memberof OrderConfirmation
      */
-    orderNumber?: number;
+    orderNumber: number;
     /**
      * 
      * @type {string}
      * @memberof OrderConfirmation
      */
-    orderStatus?: OrderConfirmationOrderStatusEnum;
+    orderStatus: OrderConfirmationOrderStatusEnum;
     /**
      * 
      * @type {UserDto}
      * @memberof OrderConfirmation
      */
-    user?: UserDto;
+    user: UserDto;
 }
 
 export function OrderConfirmationFromJSON(json: any): OrderConfirmation {
@@ -56,9 +62,10 @@ export function OrderConfirmationFromJSONTyped(json: any, ignoreDiscriminator: b
     }
     return {
         
-        'orderNumber': !exists(json, 'orderNumber') ? undefined : json['orderNumber'],
-        'orderStatus': !exists(json, 'orderStatus') ? undefined : json['orderStatus'],
-        'user': !exists(json, 'user') ? undefined : UserDtoFromJSON(json['user']),
+        'deliveryDate': (new Date(json['deliveryDate'])),
+        'orderNumber': json['orderNumber'],
+        'orderStatus': json['orderStatus'],
+        'user': UserDtoFromJSON(json['user']),
     };
 }
 
@@ -71,6 +78,7 @@ export function OrderConfirmationToJSON(value?: OrderConfirmation | null): any {
     }
     return {
         
+        'deliveryDate': (value.deliveryDate.toISOString()),
         'orderNumber': value.orderNumber,
         'orderStatus': value.orderStatus,
         'user': UserDtoToJSON(value.user),

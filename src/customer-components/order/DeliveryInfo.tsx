@@ -14,7 +14,7 @@ import dateformat from "dateformat";
 const formatDate = (date?: Date) => {
   if (!date) return undefined;
   return dateformat(date, "ddd mmmm d");
-}
+};
 
 const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
   const handleSubmit = (e: any) => {
@@ -74,12 +74,23 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
     DeliveryApi.getDeliveryDates(0, 5).then((res) => {
       setDeliveryDates(res);
       // TODO better way of writing this
-      props.onChange && props.onChange({
-        currentTarget: { value: res.length > 0 && res[0] && res[0]?.date?.toString(), name: "delivery-date" },
-        target: { value: res.length > 0 && res[0] && res[0]?.date?.toString(), name: "delivery-date" },
-      });
+      if (!formValues?.deliveryDate) {
+        props.onChange &&
+          props.onChange({
+            currentTarget: {
+              value: res.length > 0 && res[0] && res[0]?.date?.toString(),
+              name: "delivery-date",
+            },
+            target: {
+              value: res.length > 0 && res[0] && res[0]?.date?.toString(),
+              name: "delivery-date",
+            },
+          });
+      }
     });
   }, []);
+
+  console.log(formValues?.deliveryDate);
 
   const deliverySchedule = (
     <Form.Group controlId="delivery-date">
@@ -89,7 +100,7 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
         name="delivery-date"
         onChange={props.onChange}
         value={
-          formatDate(formValues?.deliveryDate) ||
+          formValues.deliveryDate ||
           (deliveryDates.length > 0 &&
             deliveryDates[0] &&
             deliveryDates[0]?.date &&

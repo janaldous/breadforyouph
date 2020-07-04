@@ -27,7 +27,7 @@ export interface DeliveryData {
   specialInstructions?: string;
   deliveryType?: OrderDtoDeliveryTypeEnum;
   paymentType?: OrderDtoPaymentTypeEnum;
-  deliveryDate?: Date;
+  deliveryDate?: string;
 }
 
 export interface DeliveryDataTouched {
