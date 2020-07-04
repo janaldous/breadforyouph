@@ -18,6 +18,7 @@ import Input from "@material-ui/core/Input";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import dateFormat from "dateformat";
+import "./OrderDetail.scss";
 
 const OrderDetail: React.FC = () => {
   const [order, setOrder] = React.useState<OrderDetailModel>();
@@ -69,15 +70,23 @@ const OrderDetail: React.FC = () => {
   const deliveryInfo =
     order?.deliveryType === OrderDetailDeliveryTypeEnum.DELIVER ? (
       <React.Fragment>
-        <div>{order?.shipping?.addressLineOne}</div>
-        <div>{order?.shipping?.addressLineTwo}</div>
-        <div>{order?.shipping?.city}</div>
-        <div>{order?.shipping?.province}</div>
-        <div>{order?.shipping?.postalCode}</div>
-        <div>{order?.shipping?.specialInstructions}</div>
+        <Data name={"Address line 1"} value={order?.shipping?.addressLineOne} />
+        <Data name={"Village"} value={order?.shipping?.addressLineTwo} />
+        <Data name={"City"} value={order?.shipping?.city} />
+        <Data
+          name={"Province"}
+          value={`${order?.shipping?.province} ${order?.shipping?.postalCode}`}
+        />
+        <Data
+          name={"Special Instructions"}
+          value={order?.shipping?.specialInstructions}
+        />
       </React.Fragment>
     ) : (
-      <div>{order?.shipping?.specialInstructions}</div>
+      <Data
+        name={"Meet up location"}
+        value={order?.shipping?.specialInstructions}
+      />
     );
 
   return (
@@ -86,42 +95,38 @@ const OrderDetail: React.FC = () => {
       <div>
         <b>Order</b>
       </div>
-      <div>{id}</div>
-      <div>Status</div>
+      <Data name={"Order id"} value={id} />
       <div>
-        {order?.tracking?.status}
+        <Data name={"Order status"} value={order?.tracking?.status} />
         <Button variant="contained" onClick={handleOpen}>
           Update status
         </Button>
       </div>
-      <div>Last updated</div>
-      <div>{order?.tracking?.dateLastUpdated?.toDateString()}</div>
+      <Data name={"Last updated"} value={order?.tracking?.dateLastUpdated?.toDateString()} />
       <br />
       <Receipt orderDetail={order} />
       <br />
       <div>
         <b>Customer</b>
       </div>
-      <div>Name</div>
-      <div>{`${order?.user?.firstName} ${order?.user?.lastName}`}</div>
-      <div>Contact number</div>
-      <div>{order?.user?.contactNumber}</div>
+      <Data name={"Name"} value={`${order?.user?.firstName} ${order?.user?.lastName}`} />
+      <Data name={"Delivery type"} value={order?.user?.contactNumber} />
       <br />
 
-      
       <div>
         <b>Delivery details</b>
       </div>
-      <div>Delivery Type</div>
-      <div>{order?.deliveryType}</div>
+      <Data name={"Delivery type"} value={order?.deliveryType} />
       {deliveryInfo}
-      <div>Delivery date</div>
-      <div>{dateFormat(order?.deliveryDate?.date, "ddd, mmmm d, yyyy")}</div>
+      <Data
+        name={"Delivery date"}
+        value={dateFormat(order?.deliveryDate?.date, "ddd, mmmm d, yyyy")}
+      />
       <br />
       <div>
         <b>Payment information</b>
       </div>
-      <div>{order?.paymentType}</div>
+      <Data name={"Payment type"} value={order?.paymentType} />
       <br />
       <Link to={"/orders"}>
         <Button variant="contained" color="primary">
@@ -166,6 +171,17 @@ const OrderDetail: React.FC = () => {
           </Button>
         </DialogActions>
       </Dialog>
+    </div>
+  );
+};
+
+const Data: React.FC<{ name: string; value: any }> = (props) => {
+  return (
+    <div className="data-row">
+      <span className="name">
+        {props.name}
+      </span>
+      <span className="value">{props.value}</span>
     </div>
   );
 };
