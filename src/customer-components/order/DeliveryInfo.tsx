@@ -6,9 +6,7 @@ import { OrderComponentProps, DeliveryData } from "./OrderModel";
 import {
   OrderDtoDeliveryTypeEnum,
   OrderDtoPaymentTypeEnum,
-  DeliveryDate,
 } from "breadforyou-fetch-api";
-import DeliveryApi from "../../api/DeliveryApi";
 import dateformat from "dateformat";
 
 const formatDate = (date?: Date) => {
@@ -66,30 +64,6 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
     }
   };
 
-  const [deliveryDates, setDeliveryDates] = React.useState<Array<DeliveryDate>>(
-    []
-  );
-
-  React.useEffect(() => {
-    DeliveryApi.getDeliveryDates(0, 5).then((res) => {
-      setDeliveryDates(res);
-      // TODO better way of writing this
-      if (!formValues?.deliveryDate) {
-        props.onChange &&
-          props.onChange({
-            currentTarget: {
-              value: res.length > 0 && res[0] && res[0]?.date?.toString(),
-              name: "delivery-date",
-            },
-            target: {
-              value: res.length > 0 && res[0] && res[0]?.date?.toString(),
-              name: "delivery-date",
-            },
-          });
-      }
-    });
-  }, []);
-
   const deliverySchedule = (
     <Form.Group controlId="delivery-date">
       <Form.Label>Preferred delivery date</Form.Label>
@@ -99,14 +73,10 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
         onChange={props.onChange}
         value={
           formValues.deliveryDate?.toISOString() ||
-          (deliveryDates.length > 0 &&
-            deliveryDates[0] &&
-            deliveryDates[0]?.date &&
-            deliveryDates[0]?.date.toISOString()) ||
           ""
         }
       >
-        {deliveryDates?.map((date) => (
+        {props.data.availableDeliveryDates?.map((date) => (
           <option key={date.id} value={date?.date?.toISOString()}>{formatDate(date?.date)}</option>
         ))}
       </Form.Control>

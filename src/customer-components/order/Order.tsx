@@ -11,6 +11,7 @@ import OrderApi from "../../api/OrderApi";
 import Spinner from "react-bootstrap/Spinner";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import { isBrowser } from "react-device-detect";
+import DeliveryApi from "../../api/DeliveryApi";
 
 const inputNameMapper = {
   "given-name": "firstName",
@@ -61,7 +62,29 @@ export default function Order() {
       },
       isSubmitting: false,
     },
+    availableDeliveryDates: [],
   });
+
+  React.useEffect(() => {
+    getDeliveryDatesFromApi();
+  }, []);
+
+  const getDeliveryDatesFromApi = () => {
+    DeliveryApi.getDeliveryDates(0, 5).then((res) => {
+      if (res.length <= 0) throw new Error("Api responded with no delivery dates");
+
+      setData((oldData) => {
+        const newData = {...oldData};
+        newData.availableDeliveryDates = res;
+
+        if (!newData.deliveryForm.formValues.deliveryDate) {
+          newData.deliveryForm.formValues.deliveryDate = res[0].date;
+        }
+
+        return newData;
+      });
+    });
+  };
 
   const handleNext = () => {
     setStep((oldStep) => oldStep + 1);
@@ -204,7 +227,7 @@ export default function Order() {
     switch (step) {
       case 0:
         return (
-          <div className="btn-back" onClick={handlePrev}>
+          <div className="btn-back">
             <a href={"/"}>
               {isBrowser ? "< Back to Home" : <ArrowBackIosIcon />}
             </a>

@@ -1,4 +1,4 @@
-import { OrderDtoDeliveryTypeEnum, OrderDtoPaymentTypeEnum } from "breadforyou-fetch-api";
+import { OrderDtoDeliveryTypeEnum, OrderDtoPaymentTypeEnum, DeliveryDate } from "breadforyou-fetch-api";
 
 export interface OrderData {
   quantity: number;
@@ -14,7 +14,8 @@ export interface OrderData {
   }
   orderConfirmation?: {
     orderNumber?: number;
-  }
+  },
+  availableDeliveryDates: Array<DeliveryDate>,
 }
 
 export interface DeliveryData {

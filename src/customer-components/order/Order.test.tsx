@@ -110,20 +110,25 @@ describe("Order component", () => {
     jest.resetAllMocks();
   });
 
-  it("shows order page on load", () => {
+  it("shows order page on load", async () => {
     const { getByText } = render(<Order />);
+    const mockedApiDelivery = mocked(DeliveryApi.getDeliveryDates, true);
+    await wait(() => {
+      expect(mockedApiDelivery.mock.calls.length).toBe(1);
+    });
+
     expect(getByText("Your order")).toBeInTheDocument();
   });
 
   it("shows delivery info page as 2nd page and goes back to 1st page", async () => {
     const { getByText } = render(<Order />);
 
-    fireEvent.click(getByText("Two more steps"));
-
     const mockedApiDelivery = mocked(DeliveryApi.getDeliveryDates, true);
     await wait(() => {
       expect(mockedApiDelivery.mock.calls.length).toBe(1);
     });
+
+    fireEvent.click(getByText("Two more steps"));
 
     expect(getByText("Delivery information")).toBeInTheDocument();
 
@@ -133,15 +138,16 @@ describe("Order component", () => {
   });
 
   it("shows place order page as 3rd page", async () => {
-    const renderResult = await render(<Order />);
+    const renderResult = render(<Order />);
     const { getByText } = renderResult;
-
-    fireEvent.click(getByText("Two more steps"));
-
+    
     const mockedApiDelivery = mocked(DeliveryApi.getDeliveryDates, true);
     await wait(() => {
       expect(mockedApiDelivery.mock.calls.length).toBe(1);
     });
+    
+    fireEvent.click(getByText("Two more steps"));
+
 
     fillInDeliveryFormDefault(renderResult);
 
@@ -152,7 +158,7 @@ describe("Order component", () => {
     fireEvent.click(getByText("< Back"));
 
     await wait(() => {
-      expect(mockedApiDelivery.mock.calls.length).toBe(2);
+      expect(mockedApiDelivery.mock.calls.length).toBe(1);
     });
 
     expect(getByText("Delivery information")).toBeInTheDocument();
@@ -162,12 +168,13 @@ describe("Order component", () => {
     const renderResult = render(<Order />);
     const { getByText, container } = renderResult;
 
-    fireEvent.click(getByText("Two more steps"));
-
     const mockedApiDelivery = mocked(DeliveryApi.getDeliveryDates, true);
     await wait(() => {
       expect(mockedApiDelivery.mock.calls.length).toBe(1);
     });
+    
+    fireEvent.click(getByText("Two more steps"));
+
 
     const values = {
       ...defaultValues,
@@ -211,8 +218,13 @@ describe("Order component", () => {
     // TODO expect < Back not found
   });
 
-  it("changes total and subtotal when quantity is changed to 2", () => {
+  it("changes total and subtotal when quantity is changed to 2", async () => {
     const { getByTestId } = render(<Order />);
+    const mockedApiDelivery = mocked(DeliveryApi.getDeliveryDates, true);
+    await wait(() => {
+      expect(mockedApiDelivery.mock.calls.length).toBe(1);
+    });
+
     fireEvent.change(getByTestId("quantity"), { target: { value: "2" } });
     expect(getByTestId("subtotal").textContent).toBe("330");
     expect(getByTestId("delivery-fee").textContent).toBe("0");
@@ -222,18 +234,17 @@ describe("Order component", () => {
   it("changes total and subtotal when quantity is changed to 3", async () => {
     const renderResult = render(<Order />);
     const { getByTestId, getByText } = renderResult;
+    const mockedApiDelivery = mocked(DeliveryApi.getDeliveryDates, true);
+    await wait(() => {
+      expect(mockedApiDelivery.mock.calls.length).toBe(1);
+    });
+
     fireEvent.change(getByTestId("quantity"), { target: { value: "3" } });
     expect(getByTestId("subtotal").textContent).toBe("495");
     expect(getByTestId("total").textContent).toBe("495");
     expect(getByTestId("delivery-fee").textContent).toBe("0");
 
     fireEvent.click(getByText("Two more steps"));
-
-    const mockedApiDelivery = mocked(DeliveryApi.getDeliveryDates, true);
-    await wait(() => {
-      expect(mockedApiDelivery.mock.calls.length).toBe(1);
-    });
-
     fillInDeliveryFormDefault(renderResult);
     fireEvent.click(getByText("One more step"));
 
@@ -245,13 +256,13 @@ describe("Order component", () => {
   it("changes name and address when they are filled in", async () => {
     const renderResult = render(<Order />);
     const { getByTestId, getByText, getByLabelText } = renderResult;
-
-    fireEvent.click(getByText("Two more steps"));
-
+    
     const mockedApiDelivery = mocked(DeliveryApi.getDeliveryDates, true);
     await wait(() => {
       expect(mockedApiDelivery.mock.calls.length).toBe(1);
     });
+    
+    fireEvent.click(getByText("Two more steps"));
 
     // default is first item in dropdown
     expect(getByLabelText("Preferred delivery date").value).toBe(
@@ -285,12 +296,12 @@ describe("Order component", () => {
     const renderResult = render(<Order />);
     const { getByText, getByLabelText, getByPlaceholderText } = renderResult;
 
-    fireEvent.click(getByText("Two more steps"));
-
     const mockedApiDelivery = mocked(DeliveryApi.getDeliveryDates, true);
     await wait(() => {
       expect(mockedApiDelivery.mock.calls.length).toBe(1);
     });
+    
+    fireEvent.click(getByText("Two more steps"));
 
     fillInDeliveryFormDefault(renderResult);
     fireEvent.change(getByLabelText("Special Instructions"), {
@@ -300,7 +311,7 @@ describe("Order component", () => {
     fireEvent.click(getByText("One more step"));
     fireEvent.click(getByText("< Back"));
     await wait(() => {
-      expect(mockedApiDelivery.mock.calls.length).toBe(2);
+      expect(mockedApiDelivery.mock.calls.length).toBe(1);
     });
 
     expect(getByPlaceholderText("First name").value).toBe("John");
@@ -318,12 +329,12 @@ describe("Order component", () => {
     const renderResult = render(<Order />);
     const { getByText, getAllByText } = renderResult;
 
-    fireEvent.click(getByText("Two more steps"));
-
     const mockedApiDelivery = mocked(DeliveryApi.getDeliveryDates, true);
     await wait(() => {
       expect(mockedApiDelivery.mock.calls.length).toBe(1);
     });
+
+    fireEvent.click(getByText("Two more steps"));
 
     fillInDeliveryForm(
       {
