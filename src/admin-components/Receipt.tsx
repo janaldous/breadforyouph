@@ -1,6 +1,18 @@
 import React from "react";
 import { OrderDetail } from "breadforyou-fetch-api";
 
+import "./Receipt.scss";
+import Data from "./Data";
+import {
+  TableContainer,
+  Table,
+  Paper,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+} from "@material-ui/core";
+
 const Receipt: React.FC<{ orderDetail?: OrderDetail }> = (props) => {
   if (!props.orderDetail) {
     return <div className="receipt-container">No data.</div>;
@@ -13,13 +25,31 @@ const Receipt: React.FC<{ orderDetail?: OrderDetail }> = (props) => {
       <div>
         <b>Order details</b>
       </div>
-      <div>Total items</div>
-      <div>{(orderItems && orderItems.length) || 0}</div>
-      <div>Product, qty</div>
-      {orderItems?.map(row => (
-          <div key={row.id}>{row.product?.name} {row.productCount}</div>
-      ))}
-      <div>{props.orderDetail.total}</div>
+      <Data
+        name={"Total items"}
+        value={(orderItems && orderItems.length) || 0}
+      />
+      <Data name={"Total"} value={props.orderDetail.total} />
+      <div className="receipt-table">
+        <TableContainer component={Paper}>
+          <Table size="small" aria-label="a dense table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Product</TableCell>
+                <TableCell align="right">Qty</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {orderItems?.map((row) => (
+                <TableRow key={row.id}>
+                  <TableCell>{row.product?.name}</TableCell>
+                  <TableCell align="right">{row.productCount}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
     </div>
   );
 };

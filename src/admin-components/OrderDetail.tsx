@@ -18,7 +18,7 @@ import Input from "@material-ui/core/Input";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import dateFormat from "dateformat";
-import "./OrderDetail.scss";
+import Data from "./Data";
 
 const OrderDetail: React.FC = () => {
   const [order, setOrder] = React.useState<OrderDetailModel>();
@@ -171,17 +171,6 @@ const OrderDetail: React.FC = () => {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
-  );
-};
-
-const Data: React.FC<{ name: string; value: any }> = (props) => {
-  return (
-    <div className="data-row">
-      <span className="name">
-        {props.name}
-      </span>
-      <span className="value">{props.value}</span>
     </div>
   );
 };
