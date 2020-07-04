@@ -9,6 +9,8 @@ import { OrderData, DeliveryData } from "./OrderModel";
 import { OrderDto, OrderDtoDeliveryTypeEnum } from "breadforyou-fetch-api";
 import OrderApi from "../../api/OrderApi";
 import Spinner from "react-bootstrap/Spinner";
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
+import { isBrowser } from "react-device-detect";
 
 const inputNameMapper = {
   "given-name": "firstName",
@@ -201,12 +203,18 @@ export default function Order() {
   const getBackButton = (step: number) => {
     switch (step) {
       case 0:
-        return <a href={"/"}>{"< Back to Home"}</a>;
+        return (
+          <div className="btn-back" onClick={handlePrev}>
+            <a href={"/"}>
+              {isBrowser ? "< Back to Home" : <ArrowBackIosIcon />}
+            </a>
+          </div>
+        );
       case 1:
       case 2:
         return (
           <div className="btn-back" onClick={handlePrev}>
-            {"< Back"}
+            {isBrowser ? "< Back" : <ArrowBackIosIcon />}
           </div>
         );
       case 3:

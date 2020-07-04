@@ -110,7 +110,7 @@ const OrderDetail: React.FC = () => {
         <b>Customer</b>
       </div>
       <Data name={"Name"} value={`${order?.user?.firstName} ${order?.user?.lastName}`} />
-      <Data name={"Delivery type"} value={order?.user?.contactNumber} />
+      <Data name={"Contact number"} value={order?.user?.contactNumber} />
       <br />
 
       <div>

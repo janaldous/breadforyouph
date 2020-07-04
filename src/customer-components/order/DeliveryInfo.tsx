@@ -107,7 +107,7 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
         }
       >
         {deliveryDates?.map((date) => (
-          <option key={date.id} value={date?.date?.toISOString()} data-value={date?.date}>{formatDate(date?.date)}</option>
+          <option key={date.id} value={date?.date?.toISOString()}>{formatDate(date?.date)}</option>
         ))}
       </Form.Control>
       <Form.Control.Feedback type="invalid">

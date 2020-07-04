@@ -29,7 +29,7 @@ const Receipt: React.FC<{ orderDetail?: OrderDetail }> = (props) => {
         name={"Total items"}
         value={(orderItems && orderItems.length) || 0}
       />
-      <Data name={"Total"} value={props.orderDetail.total} />
+      <Data name={"Total"} value={`₱ ${props.orderDetail.total}`} />
       <div className="receipt-table">
         <TableContainer component={Paper}>
           <Table size="small" aria-label="a dense table">
