@@ -90,8 +90,6 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
     });
   }, []);
 
-  console.log(formValues?.deliveryDate);
-
   const deliverySchedule = (
     <Form.Group controlId="delivery-date">
       <Form.Label>Preferred delivery date</Form.Label>
@@ -100,16 +98,16 @@ const DeliveryInfo: React.FC<OrderComponentProps> = (props) => {
         name="delivery-date"
         onChange={props.onChange}
         value={
-          formValues.deliveryDate ||
+          formValues.deliveryDate?.toISOString() ||
           (deliveryDates.length > 0 &&
             deliveryDates[0] &&
             deliveryDates[0]?.date &&
-            formatDate(deliveryDates[0]?.date)) ||
+            deliveryDates[0]?.date.toISOString()) ||
           ""
         }
       >
         {deliveryDates?.map((date) => (
-          <option key={date.id}>{formatDate(date?.date)}</option>
+          <option key={date.id} value={date?.date?.toISOString()} data-value={date?.date}>{formatDate(date?.date)}</option>
         ))}
       </Form.Control>
       <Form.Control.Feedback type="invalid">

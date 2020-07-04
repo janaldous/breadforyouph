@@ -70,7 +70,7 @@ export default function Order() {
   };
 
   const handleChange = (e: any) => {
-    const value = e.target.value;
+    let value = e.target.value;
     // console.log(`${e.currentTarget.name}`)
     if (e.currentTarget.name === "quantity") {
       const subtotal = value * data.price;
@@ -78,6 +78,11 @@ export default function Order() {
     } else {
       let name = inputNameMapper[e.currentTarget.name] || e.currentTarget.name;
       // console.log(`changing ${name} to ${value} ${e.target.value}`)
+
+      if (name === "deliveryDate") {
+        value = new Date(e.target.value);
+      }
+
       setData((oldData) => {
         const newData = {
           ...oldData,
@@ -125,7 +130,11 @@ export default function Order() {
   const getOrderDto = () => {
     const deliveryInfo = data.deliveryForm.formValues;
 
-    if (!deliveryInfo.deliveryType || !deliveryInfo.paymentType) {
+    if (
+      !deliveryInfo.deliveryType ||
+      !deliveryInfo.paymentType ||
+      !deliveryInfo.deliveryDate
+    ) {
       throw new Error();
     }
 
@@ -141,6 +150,7 @@ export default function Order() {
       deliveryType: deliveryInfo.deliveryType,
       paymentType: deliveryInfo.paymentType,
       quantity: data.quantity,
+      deliveryDate: deliveryInfo.deliveryDate,
       user: {
         firstName: deliveryInfo.firstName,
         lastName: deliveryInfo.lastName,
@@ -172,10 +182,7 @@ export default function Order() {
     if (!values.lastName) errors.lastName = "Required";
     if (!values.contactNumber) errors.contactNumber = "Required";
     const regexMobileNumber = RegExp("^09[0-9]{9}$");
-    if (
-      values.contactNumber &&
-      !regexMobileNumber.test(values.contactNumber)
-    ) {
+    if (values.contactNumber && !regexMobileNumber.test(values.contactNumber)) {
       errors.contactNumber = "Invalid mobile number";
     }
     if (!values.deliveryType) errors.deliveryType = "Required";

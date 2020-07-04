@@ -192,6 +192,7 @@ describe("Order component", () => {
       },
       deliveryType: OrderDtoDeliveryTypeEnum.DELIVER,
       paymentType: OrderDtoPaymentTypeEnum.CASH,
+      deliveryDate: new Date("2020-07-01"),
       quantity: 1,
       user: {
         firstName: defaultValues.firstName,
@@ -254,7 +255,7 @@ describe("Order component", () => {
 
     // default is first item in dropdown
     expect(getByLabelText("Preferred delivery date").value).toBe(
-      "Wed July 1"
+      "2020-07-01T00:00:00.000Z"
     );
 
     fillInDeliveryFormDefault(renderResult);
