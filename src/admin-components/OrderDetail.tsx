@@ -17,6 +17,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
+import dateFormat from "dateformat";
 
 const OrderDetail: React.FC = () => {
   const [order, setOrder] = React.useState<OrderDetailModel>();
@@ -106,12 +107,16 @@ const OrderDetail: React.FC = () => {
       <div>Contact number</div>
       <div>{order?.user?.contactNumber}</div>
       <br />
+
+      
       <div>
-        <b>Shipping address</b>
+        <b>Delivery details</b>
       </div>
       <div>Delivery Type</div>
       <div>{order?.deliveryType}</div>
       {deliveryInfo}
+      <div>Delivery date</div>
+      <div>{dateFormat(order?.deliveryDate?.date, "ddd, mmmm d, yyyy")}</div>
       <br />
       <div>
         <b>Payment information</b>
