@@ -213,8 +213,8 @@ describe("Order component", () => {
     });
     expect(mockedApiOrder.mock.calls[0][0]).toStrictEqual(expectedOrder);
 
-    expect(getByText("Order confirmation")).toBeInTheDocument();
-    expect(getByText(/Your order number is 1234. Expect/)).toBeInTheDocument();
+    expect(getByText("Thank You!")).toBeInTheDocument();
+    expect(getByText(/Order Number: 1234/)).toBeInTheDocument();
     // TODO expect < Back not found
   });
 
