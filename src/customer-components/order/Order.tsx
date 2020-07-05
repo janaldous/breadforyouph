@@ -23,7 +23,7 @@ const inputNameMapper = {
   paymentOption: "paymentType",
   city: "city",
   "special-instructions": "specialInstructions",
-  "delivery-date": "deliveryDate",
+  "delivery-date": "deliveryDateId",
 };
 
 export default function Order() {
@@ -104,9 +104,7 @@ export default function Order() {
       let name = inputNameMapper[e.currentTarget.name] || e.currentTarget.name;
       // console.log(`changing ${name} to ${value} ${e.target.value}`)
 
-      if (name === "deliveryDate") {
-        value = new Date(e.target.value);
-      }
+      if (name === "deliveryDateId") value = parseInt(value);
 
       setData((oldData) => {
         const newData = {

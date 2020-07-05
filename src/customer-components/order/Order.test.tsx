@@ -23,6 +23,7 @@ const defaultValues: DeliveryData = {
   city: "Sta. Rosa",
   deliveryType: OrderDtoDeliveryTypeEnum.DELIVER,
   paymentType: OrderDtoPaymentTypeEnum.CASH,
+  deliveryDateId: 1,
 };
 
 const fillInDeliveryFormDefault = (result: RenderResult) => {
@@ -75,6 +76,12 @@ const fillInDeliveryForm = (
       container.querySelectorAll("input[name=paymentOption]")
     );
     changeRadioButton(rbPayment, values.paymentType);
+  }
+
+  if (values.deliveryDateId) {
+    fireEvent.change(getByLabelText("Preferred delivery date"), {
+      target: { value: values.deliveryDateId },
+    });
   }
 
   fireEvent.change(getByLabelText("Special Instructions"), {
@@ -140,14 +147,13 @@ describe("Order component", () => {
   it("shows place order page as 3rd page", async () => {
     const renderResult = render(<Order />);
     const { getByText } = renderResult;
-    
+
     const mockedApiDelivery = mocked(DeliveryApi.getDeliveryDates, true);
     await wait(() => {
       expect(mockedApiDelivery.mock.calls.length).toBe(1);
     });
-    
-    fireEvent.click(getByText("Two more steps"));
 
+    fireEvent.click(getByText("Two more steps"));
 
     fillInDeliveryFormDefault(renderResult);
 
@@ -172,9 +178,8 @@ describe("Order component", () => {
     await wait(() => {
       expect(mockedApiDelivery.mock.calls.length).toBe(1);
     });
-    
-    fireEvent.click(getByText("Two more steps"));
 
+    fireEvent.click(getByText("Two more steps"));
 
     const values = {
       ...defaultValues,
@@ -256,18 +261,16 @@ describe("Order component", () => {
   it("changes name and address when they are filled in", async () => {
     const renderResult = render(<Order />);
     const { getByTestId, getByText, getByLabelText } = renderResult;
-    
+
     const mockedApiDelivery = mocked(DeliveryApi.getDeliveryDates, true);
     await wait(() => {
       expect(mockedApiDelivery.mock.calls.length).toBe(1);
     });
-    
+
     fireEvent.click(getByText("Two more steps"));
 
     // default is first item in dropdown
-    expect(getByLabelText("Preferred delivery date").value).toBe(
-      "1"
-    );
+    expect(getByLabelText("Preferred delivery date").value).toBe("1");
 
     fillInDeliveryFormDefault(renderResult);
     fireEvent.change(getByLabelText("Special Instructions"), {
@@ -300,7 +303,7 @@ describe("Order component", () => {
     await wait(() => {
       expect(mockedApiDelivery.mock.calls.length).toBe(1);
     });
-    
+
     fireEvent.click(getByText("Two more steps"));
 
     fillInDeliveryFormDefault(renderResult);
@@ -517,5 +520,35 @@ describe("Order component", () => {
     fireEvent.click(getByText("One more step"));
 
     expect(getAllByText(/Invalid/i).length).toBe(1);
+  });
+
+  it("changes delivery date if other date is selected", async () => {
+    const renderResult = render(<Order />);
+    const { getByText, getByLabelText } = renderResult;
+
+    fireEvent.click(getByText("Two more steps"));
+
+    const mockedApiDelivery = mocked(DeliveryApi.getDeliveryDates, true);
+    await wait(() => {
+      expect(mockedApiDelivery.mock.calls.length).toBe(1);
+    });
+
+    expect(getByText("Delivery information")).toBeInTheDocument();
+
+    const mockValues: DeliveryData = {
+      firstName: "John",
+      lastName: "Doe",
+      contactNumber: "0123456789",
+      addressLine1: "street",
+      addressLine2: "village",
+      city: "Sta. Rosa",
+      deliveryType: OrderDtoDeliveryTypeEnum.DELIVER,
+      paymentType: OrderDtoPaymentTypeEnum.CASH,
+      specialInstructions: "Let's meet in Nuvali",
+      deliveryDateId: 2,
+    };
+    fillInDeliveryForm(mockValues, renderResult);
+
+    expect(getByLabelText("Preferred delivery date").value).toBe("2");
   });
 });
