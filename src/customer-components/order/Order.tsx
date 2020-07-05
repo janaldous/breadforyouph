@@ -45,7 +45,7 @@ export default function Order() {
         city: "Sta. Rosa",
         deliveryType: undefined,
         paymentType: undefined,
-        deliveryDate: undefined,
+        deliveryDateId: undefined,
       },
       formErrors: {},
       formTouched: {
@@ -77,8 +77,8 @@ export default function Order() {
         const newData = {...oldData};
         newData.availableDeliveryDates = res;
 
-        if (!newData.deliveryForm.formValues.deliveryDate) {
-          newData.deliveryForm.formValues.deliveryDate = res[0].date;
+        if (!newData.deliveryForm.formValues.deliveryDateId) {
+          newData.deliveryForm.formValues.deliveryDateId = res[0].id;
         }
 
         return newData;
@@ -158,7 +158,7 @@ export default function Order() {
     if (
       !deliveryInfo.deliveryType ||
       !deliveryInfo.paymentType ||
-      !deliveryInfo.deliveryDate
+      !deliveryInfo.deliveryDateId
     ) {
       throw new Error();
     }
@@ -175,7 +175,7 @@ export default function Order() {
       deliveryType: deliveryInfo.deliveryType,
       paymentType: deliveryInfo.paymentType,
       quantity: data.quantity,
-      deliveryDate: deliveryInfo.deliveryDate,
+      deliveryDateId: deliveryInfo.deliveryDateId,
       user: {
         firstName: deliveryInfo.firstName,
         lastName: deliveryInfo.lastName,

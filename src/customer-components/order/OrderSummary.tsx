@@ -33,7 +33,10 @@ const paymentTypeMapper = (input: any) => {
 };
 
 const OrderSummary: React.FC<OrderComponentProps> = (props) => {
-  const formValues = props.data.deliveryForm.formValues;
+  const { availableDeliveryDates, deliveryForm } = props.data;
+  const { formValues } = deliveryForm;
+
+  const selectedDeliveryDate = availableDeliveryDates.filter(x => x.id === formValues.deliveryDateId)[0]?.date;
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -62,7 +65,7 @@ const OrderSummary: React.FC<OrderComponentProps> = (props) => {
             {formValues.specialInstructions}
           </div>
           <div data-testid="deliveryDate">
-            {dateformat(formValues?.deliveryDate, "ddd, mmmm d, yyyy")}
+            {dateformat(selectedDeliveryDate, "ddd, mmmm d, yyyy")}
           </div>
           <div data-testid="payment-type">
             {paymentTypeMapper(formValues.paymentType)}
