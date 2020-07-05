@@ -36,7 +36,9 @@ const OrderSummary: React.FC<OrderComponentProps> = (props) => {
   const { availableDeliveryDates, deliveryForm } = props.data;
   const { formValues } = deliveryForm;
 
-  const selectedDeliveryDate = availableDeliveryDates.filter(x => x.id === formValues.deliveryDateId)[0]?.date;
+  const selectedDeliveryDate = availableDeliveryDates.filter(
+    (x) => x.id === formValues.deliveryDateId
+  )[0]?.date;
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -51,6 +53,7 @@ const OrderSummary: React.FC<OrderComponentProps> = (props) => {
     <section id="order">
       <div className="row justify-content-center">
         <div className="description payment-information">
+          <div className="bold-title">Delivery information</div>
           <div
             className="customer-name"
             data-testid="customer-name"
@@ -67,6 +70,11 @@ const OrderSummary: React.FC<OrderComponentProps> = (props) => {
           <div data-testid="deliveryDate">
             {dateformat(selectedDeliveryDate, "ddd, mmmm d, yyyy")}
           </div>
+        </div>
+      </div>
+      <div className="row justify-content-center">
+        <div className="description payment-information">
+          <div className="bold-title">Payment</div>
           <div data-testid="payment-type">
             {paymentTypeMapper(formValues.paymentType)}
           </div>
@@ -112,6 +120,10 @@ const OrderSummary: React.FC<OrderComponentProps> = (props) => {
               </Col>
             </Row>
           </div>
+        </div>
+      </div>
+      <div className="row justify-content-center">
+        <div className="description">
           <Button
             variant="primary"
             className="btn-next w-100"
