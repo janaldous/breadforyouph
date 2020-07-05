@@ -38,10 +38,10 @@ export interface OrderDto {
     address: AddressDto;
     /**
      * 
-     * @type {Date}
+     * @type {number}
      * @memberof OrderDto
      */
-    deliveryDate: Date;
+    deliveryDateId: number;
     /**
      * 
      * @type {string}
@@ -79,7 +79,7 @@ export function OrderDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
     return {
         
         'address': AddressDtoFromJSON(json['address']),
-        'deliveryDate': (new Date(json['deliveryDate'])),
+        'deliveryDateId': json['deliveryDateId'],
         'deliveryType': json['deliveryType'],
         'paymentType': json['paymentType'],
         'quantity': json['quantity'],
@@ -97,7 +97,7 @@ export function OrderDtoToJSON(value?: OrderDto | null): any {
     return {
         
         'address': AddressDtoToJSON(value.address),
-        'deliveryDate': (value.deliveryDate.toISOString()),
+        'deliveryDateId': value.deliveryDateId,
         'deliveryType': value.deliveryType,
         'paymentType': value.paymentType,
         'quantity': value.quantity,
