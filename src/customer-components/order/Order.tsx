@@ -7,11 +7,10 @@ import logo from "../../logo.jpg";
 import OrderSummary from "./OrderSummary";
 import { OrderData, DeliveryData } from "./OrderModel";
 import { OrderDto, OrderDtoDeliveryTypeEnum } from "breadforyou-fetch-api";
-import OrderApi from "../../api/OrderApi";
 import Spinner from "react-bootstrap/Spinner";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import { isBrowser } from "react-device-detect";
-import DeliveryApi from "../../api/DeliveryApi";
+import PublicApi from "../../api/PublicApi";
 
 const inputNameMapper = {
   "given-name": "firstName",
@@ -70,7 +69,7 @@ export default function Order() {
   }, []);
 
   const getDeliveryDatesFromApi = () => {
-    DeliveryApi.getDeliveryDates(0, 5).then((res) => {
+    PublicApi.getDeliveryDates(0, 5).then((res) => {
       if (res.length <= 0) throw new Error("Api responded with no delivery dates");
 
       setData((oldData) => {
@@ -186,7 +185,7 @@ export default function Order() {
   const handleSubmitOrder = async () => {
     const orderDto = getOrderDto();
     setLoading(true);
-    await OrderApi.postOrder(orderDto).then((res) => {
+    await PublicApi.postOrder(orderDto).then((res) => {
       setData((oldData) => ({
         ...oldData,
         orderConfirmation: {

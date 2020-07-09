@@ -15,15 +15,9 @@
 
 import * as runtime from '../runtime';
 import {
-    OrderConfirmation,
-    OrderConfirmationFromJSON,
-    OrderConfirmationToJSON,
     OrderDetail,
     OrderDetailFromJSON,
     OrderDetailToJSON,
-    OrderDto,
-    OrderDtoFromJSON,
-    OrderDtoToJSON,
     OrderUpdateDto,
     OrderUpdateDtoFromJSON,
     OrderUpdateDtoToJSON,
@@ -35,10 +29,6 @@ export interface GetOrderUsingGETRequest {
 
 export interface GetOrdersUsingGETRequest {
     status?: GetOrdersUsingGETStatusEnum;
-}
-
-export interface OrderUsingPOSTRequest {
-    orderDto: OrderDto;
 }
 
 export interface UpdateOrderUsingPUTRequest {
@@ -64,7 +54,7 @@ export class OrderControllerApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/order/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/admin/order/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -94,7 +84,7 @@ export class OrderControllerApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/order`,
+            path: `/admin/order`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -108,39 +98,6 @@ export class OrderControllerApi extends runtime.BaseAPI {
      */
     async getOrdersUsingGET(requestParameters: GetOrdersUsingGETRequest): Promise<Array<OrderDetail>> {
         const response = await this.getOrdersUsingGETRaw(requestParameters);
-        return await response.value();
-    }
-
-    /**
-     * order
-     */
-    async orderUsingPOSTRaw(requestParameters: OrderUsingPOSTRequest): Promise<runtime.ApiResponse<OrderConfirmation>> {
-        if (requestParameters.orderDto === null || requestParameters.orderDto === undefined) {
-            throw new runtime.RequiredError('orderDto','Required parameter requestParameters.orderDto was null or undefined when calling orderUsingPOST.');
-        }
-
-        const queryParameters: runtime.HTTPQuery = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/order`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: OrderDtoToJSON(requestParameters.orderDto),
-        });
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => OrderConfirmationFromJSON(jsonValue));
-    }
-
-    /**
-     * order
-     */
-    async orderUsingPOST(requestParameters: OrderUsingPOSTRequest): Promise<OrderConfirmation> {
-        const response = await this.orderUsingPOSTRaw(requestParameters);
         return await response.value();
     }
 
@@ -163,7 +120,7 @@ export class OrderControllerApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/order/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/admin/order/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,

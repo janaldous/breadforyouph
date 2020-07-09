@@ -27,11 +27,6 @@ export interface CreateDeliveryDateUsingPOSTRequest {
     deliveryDate: DeliveryDateDto;
 }
 
-export interface GetDeliveryDatesUsingGETRequest {
-    page: number;
-    size: number;
-}
-
 /**
  * no description
  */
@@ -52,7 +47,7 @@ export class DeliveryControllerApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/delivery`,
+            path: `/admin/delivery`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -67,48 +62,6 @@ export class DeliveryControllerApi extends runtime.BaseAPI {
      */
     async createDeliveryDateUsingPOST(requestParameters: CreateDeliveryDateUsingPOSTRequest): Promise<DeliveryDate> {
         const response = await this.createDeliveryDateUsingPOSTRaw(requestParameters);
-        return await response.value();
-    }
-
-    /**
-     * getDeliveryDates
-     */
-    async getDeliveryDatesUsingGETRaw(requestParameters: GetDeliveryDatesUsingGETRequest): Promise<runtime.ApiResponse<Array<DeliveryDate>>> {
-        if (requestParameters.page === null || requestParameters.page === undefined) {
-            throw new runtime.RequiredError('page','Required parameter requestParameters.page was null or undefined when calling getDeliveryDatesUsingGET.');
-        }
-
-        if (requestParameters.size === null || requestParameters.size === undefined) {
-            throw new runtime.RequiredError('size','Required parameter requestParameters.size was null or undefined when calling getDeliveryDatesUsingGET.');
-        }
-
-        const queryParameters: runtime.HTTPQuery = {};
-
-        if (requestParameters.page !== undefined) {
-            queryParameters['page'] = requestParameters.page;
-        }
-
-        if (requestParameters.size !== undefined) {
-            queryParameters['size'] = requestParameters.size;
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/delivery`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        });
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(DeliveryDateFromJSON));
-    }
-
-    /**
-     * getDeliveryDates
-     */
-    async getDeliveryDatesUsingGET(requestParameters: GetDeliveryDatesUsingGETRequest): Promise<Array<DeliveryDate>> {
-        const response = await this.getDeliveryDatesUsingGETRaw(requestParameters);
         return await response.value();
     }
 

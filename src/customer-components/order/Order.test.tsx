@@ -10,8 +10,7 @@ import {
   OrderConfirmationOrderStatusEnum,
   OrderDto,
 } from "breadforyou-fetch-api";
-import OrderApi from "../../api/OrderApi";
-import DeliveryApi from "../../api/DeliveryApi";
+import PublicApi from "../../api/PublicApi";
 import { mocked } from "ts-jest/utils";
 
 const defaultValues: DeliveryData = {
@@ -109,8 +108,8 @@ describe("Order component", () => {
   ]);
 
   beforeEach(() => {
-    OrderApi.postOrder = jest.fn(() => orderResponsePromise);
-    DeliveryApi.getDeliveryDates = jest.fn(() => deliveryDatesPromise);
+    PublicApi.postOrder = jest.fn(() => orderResponsePromise);
+    PublicApi.getDeliveryDates = jest.fn(() => deliveryDatesPromise);
   });
 
   afterEach(() => {
@@ -119,7 +118,7 @@ describe("Order component", () => {
 
   it("shows order page on load", async () => {
     const { getByText } = render(<Order />);
-    const mockedApiDelivery = mocked(DeliveryApi.getDeliveryDates, true);
+    const mockedApiDelivery = mocked(PublicApi.getDeliveryDates, true);
     await wait(() => {
       expect(mockedApiDelivery.mock.calls.length).toBe(1);
     });
@@ -130,7 +129,7 @@ describe("Order component", () => {
   it("shows delivery info page as 2nd page and goes back to 1st page", async () => {
     const { getByText } = render(<Order />);
 
-    const mockedApiDelivery = mocked(DeliveryApi.getDeliveryDates, true);
+    const mockedApiDelivery = mocked(PublicApi.getDeliveryDates, true);
     await wait(() => {
       expect(mockedApiDelivery.mock.calls.length).toBe(1);
     });
@@ -148,7 +147,7 @@ describe("Order component", () => {
     const renderResult = render(<Order />);
     const { getByText } = renderResult;
 
-    const mockedApiDelivery = mocked(DeliveryApi.getDeliveryDates, true);
+    const mockedApiDelivery = mocked(PublicApi.getDeliveryDates, true);
     await wait(() => {
       expect(mockedApiDelivery.mock.calls.length).toBe(1);
     });
@@ -174,7 +173,7 @@ describe("Order component", () => {
     const renderResult = render(<Order />);
     const { getByText, container } = renderResult;
 
-    const mockedApiDelivery = mocked(DeliveryApi.getDeliveryDates, true);
+    const mockedApiDelivery = mocked(PublicApi.getDeliveryDates, true);
     await wait(() => {
       expect(mockedApiDelivery.mock.calls.length).toBe(1);
     });
@@ -188,7 +187,7 @@ describe("Order component", () => {
     fillInDeliveryForm(values, renderResult);
     fireEvent.click(getByText("One more step"));
 
-    expect(OrderApi.postOrder).toBeCalledTimes(0);
+    expect(PublicApi.postOrder).toBeCalledTimes(0);
 
     fireEvent.click(getByText("Place order"));
     expect(container.querySelector(".order-spinner")).toBeInTheDocument();
@@ -212,7 +211,7 @@ describe("Order component", () => {
         contactNumber: defaultValues.contactNumber,
       },
     };
-    const mockedApiOrder = mocked(OrderApi.postOrder, true);
+    const mockedApiOrder = mocked(PublicApi.postOrder, true);
     await wait(() => {
       expect(mockedApiOrder.mock.calls.length).toBe(1);
     });
@@ -225,7 +224,7 @@ describe("Order component", () => {
 
   it("changes total and subtotal when quantity is changed to 2", async () => {
     const { getByTestId } = render(<Order />);
-    const mockedApiDelivery = mocked(DeliveryApi.getDeliveryDates, true);
+    const mockedApiDelivery = mocked(PublicApi.getDeliveryDates, true);
     await wait(() => {
       expect(mockedApiDelivery.mock.calls.length).toBe(1);
     });
@@ -239,7 +238,7 @@ describe("Order component", () => {
   it("changes total and subtotal when quantity is changed to 3", async () => {
     const renderResult = render(<Order />);
     const { getByTestId, getByText } = renderResult;
-    const mockedApiDelivery = mocked(DeliveryApi.getDeliveryDates, true);
+    const mockedApiDelivery = mocked(PublicApi.getDeliveryDates, true);
     await wait(() => {
       expect(mockedApiDelivery.mock.calls.length).toBe(1);
     });
@@ -262,7 +261,7 @@ describe("Order component", () => {
     const renderResult = render(<Order />);
     const { getByTestId, getByText, getByLabelText } = renderResult;
 
-    const mockedApiDelivery = mocked(DeliveryApi.getDeliveryDates, true);
+    const mockedApiDelivery = mocked(PublicApi.getDeliveryDates, true);
     await wait(() => {
       expect(mockedApiDelivery.mock.calls.length).toBe(1);
     });
@@ -299,7 +298,7 @@ describe("Order component", () => {
     const renderResult = render(<Order />);
     const { getByText, getByLabelText, getByPlaceholderText } = renderResult;
 
-    const mockedApiDelivery = mocked(DeliveryApi.getDeliveryDates, true);
+    const mockedApiDelivery = mocked(PublicApi.getDeliveryDates, true);
     await wait(() => {
       expect(mockedApiDelivery.mock.calls.length).toBe(1);
     });
@@ -332,7 +331,7 @@ describe("Order component", () => {
     const renderResult = render(<Order />);
     const { getByText, getAllByText } = renderResult;
 
-    const mockedApiDelivery = mocked(DeliveryApi.getDeliveryDates, true);
+    const mockedApiDelivery = mocked(PublicApi.getDeliveryDates, true);
     await wait(() => {
       expect(mockedApiDelivery.mock.calls.length).toBe(1);
     });
@@ -363,7 +362,7 @@ describe("Order component", () => {
 
     fireEvent.click(getByText("Two more steps"));
 
-    const mockedApiDelivery = mocked(DeliveryApi.getDeliveryDates, true);
+    const mockedApiDelivery = mocked(PublicApi.getDeliveryDates, true);
     await wait(() => {
       expect(mockedApiDelivery.mock.calls.length).toBe(1);
     });
@@ -394,7 +393,7 @@ describe("Order component", () => {
 
     fireEvent.click(getByText("Two more steps"));
 
-    const mockedApiDelivery = mocked(DeliveryApi.getDeliveryDates, true);
+    const mockedApiDelivery = mocked(PublicApi.getDeliveryDates, true);
     await wait(() => {
       expect(mockedApiDelivery.mock.calls.length).toBe(1);
     });
@@ -417,7 +416,7 @@ describe("Order component", () => {
 
     fireEvent.click(getByText("Two more steps"));
 
-    const mockedApiDelivery = mocked(DeliveryApi.getDeliveryDates, true);
+    const mockedApiDelivery = mocked(PublicApi.getDeliveryDates, true);
     await wait(() => {
       expect(mockedApiDelivery.mock.calls.length).toBe(1);
     });
@@ -448,7 +447,7 @@ describe("Order component", () => {
 
     fireEvent.click(getByText("Two more steps"));
 
-    const mockedApiDelivery = mocked(DeliveryApi.getDeliveryDates, true);
+    const mockedApiDelivery = mocked(PublicApi.getDeliveryDates, true);
     await wait(() => {
       expect(mockedApiDelivery.mock.calls.length).toBe(1);
     });
@@ -497,7 +496,7 @@ describe("Order component", () => {
 
     fireEvent.click(getByText("Two more steps"));
 
-    const mockedApiDelivery = mocked(DeliveryApi.getDeliveryDates, true);
+    const mockedApiDelivery = mocked(PublicApi.getDeliveryDates, true);
     await wait(() => {
       expect(mockedApiDelivery.mock.calls.length).toBe(1);
     });
@@ -528,7 +527,7 @@ describe("Order component", () => {
 
     fireEvent.click(getByText("Two more steps"));
 
-    const mockedApiDelivery = mocked(DeliveryApi.getDeliveryDates, true);
+    const mockedApiDelivery = mocked(PublicApi.getDeliveryDates, true);
     await wait(() => {
       expect(mockedApiDelivery.mock.calls.length).toBe(1);
     });
