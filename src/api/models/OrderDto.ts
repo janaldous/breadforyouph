@@ -12,16 +12,9 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
 import {
     AddressDto,
-    AddressDtoFromJSON,
-    AddressDtoFromJSONTyped,
-    AddressDtoToJSON,
     UserDto,
-    UserDtoFromJSON,
-    UserDtoFromJSONTyped,
-    UserDtoToJSON,
 } from './';
 
 /**
@@ -66,43 +59,6 @@ export interface OrderDto {
      * @memberof OrderDto
      */
     user: UserDto;
-}
-
-export function OrderDtoFromJSON(json: any): OrderDto {
-    return OrderDtoFromJSONTyped(json, false);
-}
-
-export function OrderDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): OrderDto {
-    if ((json === undefined) || (json === null)) {
-        return json;
-    }
-    return {
-        
-        'address': AddressDtoFromJSON(json['address']),
-        'deliveryDateId': json['deliveryDateId'],
-        'deliveryType': json['deliveryType'],
-        'paymentType': json['paymentType'],
-        'quantity': json['quantity'],
-        'user': UserDtoFromJSON(json['user']),
-    };
-}
-
-export function OrderDtoToJSON(value?: OrderDto | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
-    }
-    return {
-        
-        'address': AddressDtoToJSON(value.address),
-        'deliveryDateId': value.deliveryDateId,
-        'deliveryType': value.deliveryType,
-        'paymentType': value.paymentType,
-        'quantity': value.quantity,
-        'user': UserDtoToJSON(value.user),
-    };
 }
 
 /**

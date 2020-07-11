@@ -13,7 +13,7 @@
  */
 
 
-export const BASE_PATH = "http://breadforyouph-api.herokuapp.com".replace(/\/+$/, "");
+export const BASE_PATH = "http://localhost:8080".replace(/\/+$/, "");
 
 const isBlob = (value: any) => typeof Blob !== 'undefined' && value instanceof Blob;
 
@@ -44,15 +44,6 @@ export class BaseAPI {
         return this.withMiddleware<T>(...middlewares);
     }
 
-    protected async request(context: RequestOpts): Promise<Response> {
-        const { url, init } = this.createFetchParams(context);
-        const response = await this.fetchApi(url, init);
-        if (response.status >= 200 && response.status < 300) {
-            return response;
-        }
-        throw response;
-    }
-
     private createFetchParams(context: RequestOpts) {
         let url = this.configuration.basePath + context.path;
         if (context.query !== undefined && Object.keys(context.query).length !== 0) {
@@ -73,30 +64,6 @@ export class BaseAPI {
             credentials: this.configuration.credentials
         };
         return { url, init };
-    }
-
-    private fetchApi = async (url: string, init: RequestInit) => {
-        let fetchParams = { url, init };
-        for (const middleware of this.middleware) {
-            if (middleware.pre) {
-                fetchParams = await middleware.pre({
-                    fetch: this.fetchApi,
-                    ...fetchParams,
-                }) || fetchParams;
-            }
-        }
-        let response = await this.configuration.fetchApi(fetchParams.url, fetchParams.init);
-        for (const middleware of this.middleware) {
-            if (middleware.post) {
-                response = await middleware.post({
-                    fetch: this.fetchApi,
-                    url,
-                    init,
-                    response: response.clone(),
-                }) || response;
-            }
-        }
-        return response;
     }
 
     /**
@@ -125,11 +92,9 @@ export const COLLECTION_FORMATS = {
     pipes: "|",
 };
 
-export type FetchAPI = GlobalFetch['fetch'];
 
 export interface ConfigurationParameters {
     basePath?: string; // override base path
-    fetchApi?: FetchAPI; // override for fetch implementation
     middleware?: Middleware[]; // middleware to apply before/after fetch requests
     queryParamsStringify?: (params: HTTPQuery) => string; // stringify function for query strings
     username?: string; // parameter for basic security
@@ -145,10 +110,6 @@ export class Configuration {
 
     get basePath(): string {
         return this.configuration.basePath || BASE_PATH;
-    }
-
-    get fetchApi(): FetchAPI {
-        return this.configuration.fetchApi || window.fetch.bind(window);
     }
 
     get middleware(): Middleware[] {
@@ -257,13 +218,11 @@ export interface Consume {
 }
 
 export interface RequestContext {
-    fetch: FetchAPI;
     url: string;
     init: RequestInit;
 }
 
 export interface ResponseContext {
-    fetch: FetchAPI;
     url: string;
     init: RequestInit;
     response: Response;

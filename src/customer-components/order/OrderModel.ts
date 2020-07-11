@@ -1,4 +1,4 @@
-import { OrderDtoDeliveryTypeEnum, OrderDtoPaymentTypeEnum, DeliveryDate } from "breadforyou-fetch-api";
+import { OrderDtoDeliveryTypeEnum, OrderDtoPaymentTypeEnum, DeliveryDate } from "../../api/models";
 
 export interface OrderData {
   quantity: number;

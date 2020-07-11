@@ -6,7 +6,7 @@ import Navbar from "react-bootstrap/Navbar";
 import logo from "../../logo.jpg";
 import OrderSummary from "./OrderSummary";
 import { OrderData, DeliveryData } from "./OrderModel";
-import { OrderDto, OrderDtoDeliveryTypeEnum } from "breadforyou-fetch-api";
+import { OrderDto, OrderDtoDeliveryTypeEnum } from "../../api/models";
 import Spinner from "react-bootstrap/Spinner";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import { isBrowser } from "react-device-detect";

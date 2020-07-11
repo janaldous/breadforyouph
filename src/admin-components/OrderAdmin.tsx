@@ -1,6 +1,6 @@
 import React from "react";
 import OrderApi from "../api/OrderApi";
-import { OrderDetail } from "breadforyou-fetch-api";
+import { OrderDetail } from "../api/models/OrderDetail";
 import Table from "@material-ui/core/Table";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableBody from "@material-ui/core/TableBody";

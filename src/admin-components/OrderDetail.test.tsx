@@ -1,7 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import OrderDetail from "./OrderDetail";
-import { useParams, Link } from "react-router-dom";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
 import OrderApi from "../api/OrderApi";
@@ -10,7 +9,7 @@ import {
   OrderTrackingStatusEnum,
   OrderDetailPaymentTypeEnum,
   OrderDetailDeliveryTypeEnum,
-} from "breadforyou-fetch-api";
+} from "../api/models";
 import { act } from "react-dom/test-utils";
 
 const mockResponse: OrderDetailModel = {

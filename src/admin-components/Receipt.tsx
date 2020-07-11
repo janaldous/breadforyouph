@@ -1,5 +1,5 @@
 import React from "react";
-import { OrderDetail } from "breadforyou-fetch-api";
+import { OrderDetail } from "../api/models";
 
 import "./Receipt.scss";
 import Data from "./Data";

@@ -5,7 +5,7 @@ import {
   OrderTrackingStatusEnum,
   OrderUpdateDtoStatusEnum,
   OrderDetailDeliveryTypeEnum,
-} from "breadforyou-fetch-api";
+} from "../api/models";
 import { useParams, Link } from "react-router-dom";
 import Receipt from "./Receipt";
 import Button from "@material-ui/core/Button";

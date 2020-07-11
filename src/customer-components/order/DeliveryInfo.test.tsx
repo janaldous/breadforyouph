@@ -2,8 +2,8 @@ import React from "react";
 import { render } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import { OrderData } from "./OrderModel";
-import { OrderConfirmationOrderStatusEnum, OrderDtoDeliveryTypeEnum } from "breadforyou-fetch-api";
-import OrderApi from "../../api/OrderApi";
+import { OrderConfirmationOrderStatusEnum, OrderDtoDeliveryTypeEnum } from "../../api/models";
+import PublicApi from "../../api/PublicApi";
 import DeliveryInfo from "./DeliveryInfo";
 
 describe("Order component", () => {
@@ -15,6 +15,7 @@ describe("Order component", () => {
       lastName: "Doe",
       contactNumber: "0123456789",
     },
+    deliveryDate: new Date(),
   });
 
   const data: OrderData = {
@@ -49,12 +50,13 @@ describe("Order component", () => {
       },
       isSubmitting: false,
     },
+    availableDeliveryDates: [],
   };
   const onChangeMock = jest.fn();
   const onNextMock = jest.fn();
 
   beforeEach(() => {
-    OrderApi.postOrder = jest.fn(() => orderResponsePromise);
+    PublicApi.postOrder = jest.fn(() => orderResponsePromise);
   });
 
   afterEach(() => {

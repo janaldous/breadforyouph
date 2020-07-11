@@ -7,7 +7,7 @@ import { OrderComponentProps } from "./OrderModel";
 import {
   OrderDtoDeliveryTypeEnum,
   OrderDtoPaymentTypeEnum,
-} from "breadforyou-fetch-api";
+} from "../../api/models";
 import dateformat from "dateformat";
 
 const deliveryTypeMapper = (input: any) => {

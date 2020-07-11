@@ -1,25 +1,26 @@
+import axios from "axios";
 import {
-  OrderControllerApi,
   GetOrdersUsingGETStatusEnum,
-  OrderDetail,
   OrderUpdateDtoStatusEnum,
-} from "breadforyou-fetch-api";
+  OrderDetail,
+} from "./models";
+import { BASE_PATH } from "./runtime";
 
 export default class OrderApi {
   static getOrders(
     status?: GetOrdersUsingGETStatusEnum
   ): Promise<Array<OrderDetail>> {
-    const orderApi = new OrderControllerApi();
-    return orderApi.getOrdersUsingGET({ status });
+    return axios.get(`${BASE_PATH}/admin/order`, { params: { status } });
   }
 
   static getOrder(id: string): Promise<OrderDetail> {
-    const orderApi = new OrderControllerApi();
-    return orderApi.getOrderUsingGET({ id });
+    return axios.get(`${BASE_PATH}/admin/order/${id}`);
   }
 
-  static updateStatus(id: string, status: OrderUpdateDtoStatusEnum) {
-    const orderApi = new OrderControllerApi();
-    return orderApi.updateOrderUsingPUT({ id, orderDto: { status } });
+  static updateStatus(
+    id: string,
+    status: OrderUpdateDtoStatusEnum
+  ): Promise<OrderDetail> {
+    return axios.put(`${BASE_PATH}/admin/order/${id}`, { status });
   }
 }

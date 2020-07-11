@@ -9,7 +9,7 @@ import {
   OrderDtoPaymentTypeEnum,
   OrderConfirmationOrderStatusEnum,
   OrderDto,
-} from "breadforyou-fetch-api";
+} from "../../api/models";
 import PublicApi from "../../api/PublicApi";
 import { mocked } from "ts-jest/utils";
 

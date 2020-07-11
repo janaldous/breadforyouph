@@ -1,22 +1,16 @@
-import {
-    OrderDto,
-    OrderConfirmation,
-    PublicControllerApi,
-    DeliveryDate,
-  } from "breadforyou-fetch-api";
-  
-  export default class OrderApi {
-    static postOrder(orderDto: OrderDto): Promise<OrderConfirmation> {
-      const orderApi = new PublicControllerApi();
-      return orderApi.orderUsingPOST({ orderDto });
-    }
+import { OrderDto, OrderConfirmation, DeliveryDate } from "./models";
+import axios from "axios";
+import {BASE_PATH} from "./runtime";
 
-    static getDeliveryDates(
-        page: number,
-        size: number
-      ): Promise<Array<DeliveryDate>> {
-        const deliveryApi = new PublicControllerApi();
-        return deliveryApi.getDeliveryDatesUsingGET({ page, size });
-      }
+export default class OrderApi {
+  static postOrder(orderDto: OrderDto): Promise<OrderConfirmation> {
+    return axios.post(`${BASE_PATH}/order/`, { orderDto });
   }
-  
+
+  static getDeliveryDates(
+    page: number,
+    size: number
+  ): Promise<Array<DeliveryDate>> {
+    return axios.get(`${BASE_PATH}/delivery/`, { params: { page, size } });
+  }
+}
