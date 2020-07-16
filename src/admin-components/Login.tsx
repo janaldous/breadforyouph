@@ -9,24 +9,32 @@ import { useAuth } from "useAuth";
 const Login: React.FC = () => {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [prompt, setPrompt] = React.useState("");
 
   const history = useHistory();
   const { setAuthorized, setBasicAuth } = useAuth();
 
   const handleSubmit = () => {
-    LoginApi.login(username, password).then(() => {
-      setAuthorized(true);
-      setBasicAuth(LoginApi.createBasicAuthToken(username, password));
-      setUsername("");
-      setPassword("");
-      history.push("admin/orders");
-    });
+    LoginApi.login(username, password)
+      .then(() => {
+        setAuthorized(true);
+        setBasicAuth(LoginApi.createBasicAuthToken(username, password));
+        setUsername("");
+        setPassword("");
+        history.push("admin/orders");
+      })
+      .catch((res) => {
+        setPrompt("Incorrect username and password combination");
+      });
   };
 
   return (
     <div className="admin-login">
       <h2>Login</h2>
       <Form>
+        <Form.Label>
+          {prompt}
+        </Form.Label>
         <Form.Group controlId="formUsername">
           <Form.Label>Username</Form.Label>
           <Form.Control
