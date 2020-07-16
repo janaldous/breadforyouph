@@ -53,7 +53,7 @@ describe("Login", () => {
 
     expect(LoginApi.login).toBeCalledWith("username", "password");
 
-    expect(history.location.pathname).toBe("admin/orders");
+    expect(history.location.pathname).toBe("../");
   });
 
   it("shows error when username and password is incorrect", async () => {

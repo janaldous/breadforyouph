@@ -21,7 +21,7 @@ const Login: React.FC = () => {
         setBasicAuth(LoginApi.createBasicAuthToken(username, password));
         setUsername("");
         setPassword("");
-        history.push("admin/orders");
+        history.push("../");
       })
       .catch((res) => {
         setPrompt("Incorrect username and password combination");
