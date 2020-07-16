@@ -6,6 +6,7 @@ import Login from "./Login";
 import LoginApi from "../api/LoginApi";
 import { mocked } from "ts-jest/utils";
 import ReactTestUtils from "react-dom/test-utils";
+import { useProvideAuth, AuthContext } from "../useAuth";
 
 describe("Login", () => {
   afterEach(() => {
@@ -22,9 +23,23 @@ describe("Login", () => {
 
     const history = createMemoryHistory();
 
+    let authorizedField = false;
+    let basicAuthField = "";
+    const auth = {
+      authorized: authorizedField,
+      setAuthorized: (val) => {
+        authorizedField = val;
+      },
+      basicAuth: basicAuthField,
+      setBasicAuth: (val) => {
+        basicAuthField = val;
+      },
+    };
     const { getByLabelText, getByText } = render(
       <Router history={history}>
-        <Login />
+        <AuthContext.Provider value={auth}>
+          <Login />
+        </AuthContext.Provider>
       </Router>
     );
 
@@ -52,6 +67,8 @@ describe("Login", () => {
     });
 
     expect(LoginApi.login).toBeCalledWith("username", "password");
+    expect(basicAuthField).toBe("Basic dXNlcm5hbWU6cGFzc3dvcmQ=");
+    expect(authorizedField).toBeTruthy();
 
     expect(history.location.pathname).toBe("../");
   });
@@ -62,9 +79,23 @@ describe("Login", () => {
 
     const history = createMemoryHistory();
 
+    let authorizedField = false;
+    let basicAuthField = "";
+    const auth = {
+      authorized: authorizedField,
+      setAuthorized: (val) => {
+        authorizedField = val;
+      },
+      basicAuth: basicAuthField,
+      setBasicAuth: (val) => {
+        basicAuthField = val;
+      },
+    };
     const { getByLabelText, getByText } = render(
       <Router history={history}>
-        <Login />
+        <AuthContext.Provider value={auth}>
+          <Login />
+        </AuthContext.Provider>
       </Router>
     );
 
@@ -93,6 +124,10 @@ describe("Login", () => {
 
     expect(LoginApi.login).toBeCalledWith("username", "wrongpassword");
 
-    expect(getByText("Incorrect username and password combination")).toBeInTheDocument();
+    expect(
+      getByText("Incorrect username and password combination")
+    ).toBeInTheDocument();
+    expect(authorizedField).toBeFalsy();
+    expect(basicAuthField).toBe("");
   });
 });
