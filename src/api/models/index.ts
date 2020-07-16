@@ -2,10 +2,14 @@ import { Address as Address1 } from "./Address";
 import { AddressDto as AddressDto1 } from "./AddressDto";
 import { DeliveryDate as DeliveryDate1 } from "./DeliveryDate";
 import { DeliveryDateDto as DeliveryDateDto1 } from "./DeliveryDateDto";
-import { OrderConfirmation as OrderConfirmation1 } from "./OrderConfirmation";
+import {
+  OrderConfirmation as OrderConfirmation1,
+  OrderConfirmationOrderStatusEnum as OrderConfirmationOrderStatusEnum1,
+} from "./OrderConfirmation";
 import {
   OrderDetail as OrderDetail1,
   OrderDetailDeliveryTypeEnum as OrderDetailDeliveryTypeEnum1,
+  OrderDetailPaymentTypeEnum as OrderDetailPaymentTypeEnum1,
 } from "./OrderDetail";
 import {
   OrderDto as OrderDto1,
@@ -46,21 +50,6 @@ export {
   OrderTrackingStatusEnum1 as OrderTrackingStatusEnum,
   OrderUpdateDtoStatusEnum1 as OrderUpdateDtoStatusEnum,
   GetOrdersUsingGETStatusEnum1 as GetOrdersUsingGETStatusEnum,
+  OrderConfirmationOrderStatusEnum1 as OrderConfirmationOrderStatusEnum,
+  OrderDetailPaymentTypeEnum1 as OrderDetailPaymentTypeEnum,
 };
-
-/*
-export type { Address } from "./Address";
-export type { AddressDto } from "./AddressDto";
-export type { DeliveryDate } from "./DeliveryDate";
-export type { DeliveryDateDto } from "./DeliveryDateDto";
-export type { OrderConfirmation } from "./OrderConfirmation";
-export type { OrderDetail } from "./OrderDetail";
-export type { OrderDto } from "./OrderDto";
-export type { OrderItem } from "./OrderItem";
-export type { OrderTracking } from "./OrderTracking";
-export type { OrderUpdateDto } from "./OrderUpdateDto";
-export type { Product } from "./Product";
-export type { User } from "./User";
-export type { UserDto } from "./UserDto";
-export type { GetOrdersUsingGETStatusEnum } from "./GetOrdersUsingGETStatusEnum";
-*/
