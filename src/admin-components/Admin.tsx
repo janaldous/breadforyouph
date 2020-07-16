@@ -17,9 +17,9 @@ const Admin: React.FC<{}> = () => {
     <div className="admin-container">
       <Router basename="/admin">
         <Switch>
+          <LoginRoute path="/login" component={Login} />
           <PrivateRoute exact path="/orders" component={OrderAdmin} />
           <PrivateRoute path="/orders/:id" component={OrderDetail} />
-          <LoginRoute path="/login" component={Login} />
           <Route path="/">
             <Redirect to="/orders" />
           </Route>

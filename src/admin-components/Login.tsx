@@ -23,7 +23,7 @@ const Login: React.FC = () => {
         setPassword("");
         history.push("../");
       })
-      .catch((res) => {
+      .catch(() => {
         setPrompt("Incorrect username and password combination");
       });
   };
