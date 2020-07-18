@@ -5,6 +5,7 @@ export default class LoginApi {
   static login(username: string, password: string): Promise<any> {
     return axios.get(`${BASE_PATH}/admin/login`, {
       headers: { Authorization: LoginApi.createBasicAuthToken(username, password) },
+      withCredentials: true,
     });
   }
 

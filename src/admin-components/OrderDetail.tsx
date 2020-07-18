@@ -29,8 +29,8 @@ const OrderDetail: React.FC = () => {
 
   React.useEffect(() => {
     OrderApi.getOrder(id).then((res) => {
-      setOrder(res);
-      setStatus(res.tracking?.status);
+      setOrder(res.data);
+      setStatus(res.data.tracking?.status);
     });
   }, [id]);
 
@@ -59,7 +59,7 @@ const OrderDetail: React.FC = () => {
     };
     if (!order || !status) throw new Error();
     OrderApi.updateStatus(order.id + "", mapper(status))
-      .then((res) => setOrder(res))
+      .then((res) => setOrder(res.data))
       .finally(() => setOpen(false));
   };
 
@@ -102,7 +102,7 @@ const OrderDetail: React.FC = () => {
           Update status
         </Button>
       </div>
-      <Data name={"Last updated"} value={order?.tracking?.dateLastUpdated?.toDateString()} />
+      <Data name={"Last updated"} value={dateFormat(order?.tracking?.dateLastUpdated)} />
       <br />
       <Receipt orderDetail={order} />
       <br />

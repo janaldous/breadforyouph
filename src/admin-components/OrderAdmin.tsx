@@ -16,7 +16,7 @@ const OrderAdmin: React.FC = () => {
 
   React.useEffect(() => {
     OrderApi.getOrders().then((res) => {
-      setOrders(res);
+      setOrders(res.data);
     });
   }, []);
 
