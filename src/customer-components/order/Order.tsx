@@ -11,6 +11,7 @@ import Spinner from "react-bootstrap/Spinner";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import { isBrowser } from "react-device-detect";
 import PublicApi from "../../api/PublicApi";
+import OrderError from "./OrderError";
 
 const inputNameMapper = {
   "given-name": "firstName",
@@ -84,6 +85,8 @@ export default function Order() {
 
         return newData;
       });
+    }).catch((err) => {
+      setStep(400);
     });
   };
 
@@ -187,7 +190,7 @@ export default function Order() {
   const handleSubmitOrder = async () => {
     const orderDto = getOrderDto();
     setLoading(true);
-    await PublicApi.postOrder(orderDto).then((res) => {
+    const result = await PublicApi.postOrder(orderDto).then((res) => {
       const { data } = res;
       setData((oldData) => ({
         ...oldData,
@@ -196,11 +199,14 @@ export default function Order() {
         },
       }));
       setLoading(false);
+      return Promise.resolve(true);
     }).catch((err) => {
-      
+      setStep(400);
+      setLoading(false);
+      return Promise.reject(false);
     });
 
-    return true;
+    return result;
   };
 
   const validate = (values: DeliveryData) => {
@@ -242,10 +248,8 @@ export default function Order() {
             {isBrowser ? "< Back" : <ArrowBackIosIcon />}
           </div>
         );
-      case 3:
-        return <div></div>;
       default:
-        throw new Error("invalid step");
+        return <div></div>;
     }
   };
 
@@ -274,8 +278,10 @@ export default function Order() {
         );
       case 3:
         return <OrderConfirmation data={data} />;
+      case 400:
+        return <OrderError/>;
       default:
-        throw new Error("invalid step");
+        throw new Error("invalid step: " + step);
     }
   };
 

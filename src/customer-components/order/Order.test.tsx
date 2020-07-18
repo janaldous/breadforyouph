@@ -580,4 +580,47 @@ describe("Order component", () => {
       (getByLabelText("Preferred delivery date") as HTMLInputElement).value
     ).toBe("2");
   });
+
+  it("shows error page when has error in get delivery date api call", async () => {
+    PublicApi.getDeliveryDates = jest.fn().mockRejectedValue({})
+    
+    const renderResult = render(<Order />);
+    const { getByText, container } = renderResult;
+
+    const mockedApiDelivery = mocked(PublicApi.getDeliveryDates, true);
+    await wait(() => {
+      expect(mockedApiDelivery.mock.calls.length).toBe(1);
+    });
+
+    expect(getByText(/error/i)).toBeInTheDocument();
+  });
+
+  it("shows error page when has error in post order api call", async () => {
+    PublicApi.postOrder = jest.fn().mockRejectedValue({});
+    
+    const renderResult = render(<Order />);
+    const { getByText, container } = renderResult;
+
+    const mockedApiDelivery = mocked(PublicApi.getDeliveryDates, true);
+    await wait(() => {
+      expect(mockedApiDelivery.mock.calls.length).toBe(1);
+    });
+
+    fireEvent.click(getByText("Two more steps"));
+
+    const values = {
+      ...defaultValues,
+      specialInstructions: "My special instructions",
+    };
+    fillInDeliveryForm(values, renderResult);
+    fireEvent.click(getByText("One more step"));
+
+    fireEvent.click(getByText("Place order"));
+    const mockedApiOrder = mocked(PublicApi.postOrder, true);
+    await wait(() => {
+      expect(mockedApiOrder.mock.calls.length).toBe(1);
+    });
+
+    expect(getByText(/error/i)).toBeInTheDocument();
+  });
 });

@@ -45,7 +45,7 @@ const OrderSummary: React.FC<OrderComponentProps> = (props) => {
     if (props.onNext && props.onSubmit) {
       props.onSubmit().then(() => {
         props.onNext && props.onNext();
-      });
+      }).catch((err) => {/*do nothing*/});
     }
   };
 
