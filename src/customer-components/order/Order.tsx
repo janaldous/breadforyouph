@@ -70,14 +70,16 @@ export default function Order() {
 
   const getDeliveryDatesFromApi = () => {
     PublicApi.getDeliveryDates(0, 5).then((res) => {
-      if (res.length <= 0) throw new Error("Api responded with no delivery dates");
+      const { data } = res;
+      if (data.length <= 0)
+        throw new Error("Api responded with no delivery dates");
 
       setData((oldData) => {
-        const newData = {...oldData};
-        newData.availableDeliveryDates = res;
+        const newData = { ...oldData };
+        newData.availableDeliveryDates = data;
 
         if (!newData.deliveryForm.formValues.deliveryDateId) {
-          newData.deliveryForm.formValues.deliveryDateId = res[0].id;
+          newData.deliveryForm.formValues.deliveryDateId = data[0].id;
         }
 
         return newData;
@@ -186,10 +188,11 @@ export default function Order() {
     const orderDto = getOrderDto();
     setLoading(true);
     await PublicApi.postOrder(orderDto).then((res) => {
+      const { data } = res;
       setData((oldData) => ({
         ...oldData,
         orderConfirmation: {
-          orderNumber: res.orderNumber,
+          orderNumber: data.orderNumber,
         },
       }));
       setLoading(false);

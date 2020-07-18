@@ -29,8 +29,13 @@ const fillInDeliveryFormDefault = (result: RenderResult) => {
   fillInDeliveryForm(defaultValues, result);
 };
 
-const changeRadioButton = (radioButtons: Array<Element>, value: string) => {
-  const rbSelect = radioButtons.filter((x) => x.value === value)[0];
+const changeRadioButton = (
+  radioButtons: Array<HTMLInputElement>,
+  value: string
+) => {
+  const rbSelect = radioButtons.filter(
+    (x: HTMLInputElement) => x.value === value
+  )[0];
   ReactTestUtils.Simulate.change(rbSelect);
 };
 
@@ -53,21 +58,26 @@ const fillInDeliveryForm = (
     const rbDeliveries = Array.from(
       container.querySelectorAll("input[name=deliveryOption]")
     );
-    changeRadioButton(rbDeliveries, values.deliveryType);
+    changeRadioButton(
+      rbDeliveries as Array<HTMLInputElement>,
+      values.deliveryType
+    );
   }
 
-  const addressLine1Elem = container.querySelector("input[name=address-line1]");
+  const addressLine1Elem = container.querySelector(
+    "input[name=address-line1]"
+  ) as HTMLInputElement;
   if (addressLine1Elem) {
-    ReactTestUtils.Simulate.change(addressLine1Elem, {
-      target: { value: values.addressLine1 },
-    });
+    addressLine1Elem.value = values.addressLine1 || "";
+    ReactTestUtils.Simulate.change(addressLine1Elem);
   }
 
-  const addressLine2Elem = container.querySelector("input[name=address-line2]");
+  const addressLine2Elem = container.querySelector(
+    "input[name=address-line2]"
+  ) as HTMLInputElement;
   if (addressLine2Elem) {
-    ReactTestUtils.Simulate.change(addressLine2Elem, {
-      target: { value: values.addressLine2 },
-    });
+    addressLine2Elem.value = values.addressLine2 || "";
+    ReactTestUtils.Simulate.change(addressLine2Elem);
   }
 
   if (values.paymentType) {
@@ -90,22 +100,26 @@ const fillInDeliveryForm = (
 
 describe("Order component", () => {
   let orderResponsePromise = Promise.resolve({
-    orderNumber: 1234,
-    orderStatus: OrderConfirmationOrderStatusEnum.REGISTERED,
-    user: {
-      firstName: "John",
-      lastName: "Doe",
-      contactNumber: "0123456789",
+    data: {
+      orderNumber: 1234,
+      orderStatus: OrderConfirmationOrderStatusEnum.REGISTERED,
+      user: {
+        firstName: "John",
+        lastName: "Doe",
+        contactNumber: "0123456789",
+      },
     },
   });
 
-  const deliveryDatesPromise = Promise.resolve([
-    { id: 1, date: new Date("2020-07-01"), orderLimit: 6 },
-    { id: 2, date: new Date("2020-07-02"), orderLimit: 6 },
-    { id: 3, date: new Date("2020-07-03"), orderLimit: 6 },
-    { id: 4, date: new Date("2020-07-04"), orderLimit: 6 },
-    { id: 5, date: new Date("2020-07-05"), orderLimit: 6 },
-  ]);
+  const deliveryDatesPromise = Promise.resolve({
+    data: [
+      { id: 1, date: new Date("2020-07-01"), orderLimit: 6 },
+      { id: 2, date: new Date("2020-07-02"), orderLimit: 6 },
+      { id: 3, date: new Date("2020-07-03"), orderLimit: 6 },
+      { id: 4, date: new Date("2020-07-04"), orderLimit: 6 },
+      { id: 5, date: new Date("2020-07-05"), orderLimit: 6 },
+    ],
+  });
 
   beforeEach(() => {
     PublicApi.postOrder = jest.fn(() => orderResponsePromise);
@@ -269,7 +283,9 @@ describe("Order component", () => {
     fireEvent.click(getByText("Two more steps"));
 
     // default is first item in dropdown
-    expect(getByLabelText("Preferred delivery date").value).toBe("1");
+    expect(
+      (getByLabelText("Preferred delivery date") as HTMLInputElement).value
+    ).toBe("1");
 
     fillInDeliveryFormDefault(renderResult);
     fireEvent.change(getByLabelText("Special Instructions"), {
@@ -316,15 +332,27 @@ describe("Order component", () => {
       expect(mockedApiDelivery.mock.calls.length).toBe(1);
     });
 
-    expect(getByPlaceholderText("First name").value).toBe("John");
-    expect(getByPlaceholderText("Last name").value).toBe("Doe");
-    expect(getByLabelText("contactNumber").value).toBe("09123456789");
-    expect(getByLabelText("Address Line 1").value).toBe("street name");
-    expect(getByLabelText("Address Line 2").value).toBe("village name");
-    expect(getByLabelText("City").value).toBe("Sta. Rosa");
-    expect(getByLabelText("Special Instructions").value).toBe(
-      "Please leave the parcel at the guardhouse"
+    expect((getByPlaceholderText("First name") as HTMLInputElement).value).toBe(
+      "John"
     );
+    expect((getByPlaceholderText("Last name") as HTMLInputElement).value).toBe(
+      "Doe"
+    );
+    expect((getByLabelText("contactNumber") as HTMLInputElement).value).toBe(
+      "09123456789"
+    );
+    expect((getByLabelText("Address Line 1") as HTMLInputElement).value).toBe(
+      "street name"
+    );
+    expect((getByLabelText("Address Line 2") as HTMLInputElement).value).toBe(
+      "village name"
+    );
+    expect((getByLabelText("City") as HTMLInputElement).value).toBe(
+      "Sta. Rosa"
+    );
+    expect(
+      (getByLabelText("Special Instructions") as HTMLInputElement).value
+    ).toBe("Please leave the parcel at the guardhouse");
   });
 
   it("does not let you continue when delivery form is not completed", async () => {
@@ -548,6 +576,8 @@ describe("Order component", () => {
     };
     fillInDeliveryForm(mockValues, renderResult);
 
-    expect(getByLabelText("Preferred delivery date").value).toBe("2");
+    expect(
+      (getByLabelText("Preferred delivery date") as HTMLInputElement).value
+    ).toBe("2");
   });
 });
