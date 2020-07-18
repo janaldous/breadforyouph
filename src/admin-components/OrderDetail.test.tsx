@@ -65,7 +65,7 @@ describe("OrderDetail", () => {
     const history = createMemoryHistory();
     history.push("/admin/order/123");
 
-    const mockPromise = Promise.resolve(mockResponse);
+    const mockPromise = Promise.resolve({data: mockResponse});
     OrderApi.getOrder = jest.fn().mockReturnValue(mockPromise);
 
     render(
