@@ -122,8 +122,8 @@ describe("Order component", () => {
   });
 
   beforeEach(() => {
-    PublicApi.postOrder = jest.fn(() => orderResponsePromise);
-    PublicApi.getDeliveryDates = jest.fn(() => deliveryDatesPromise);
+    PublicApi.postOrder = jest.fn().mockImplementation(() => orderResponsePromise);
+    PublicApi.getDeliveryDates = jest.fn().mockImplementation(() => deliveryDatesPromise);
   });
 
   afterEach(() => {

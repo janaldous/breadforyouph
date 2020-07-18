@@ -196,6 +196,8 @@ export default function Order() {
         },
       }));
       setLoading(false);
+    }).catch((err) => {
+      
     });
 
     return true;
