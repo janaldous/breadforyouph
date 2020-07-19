@@ -8,11 +8,15 @@ import { BASE_PATH } from "./runtime";
 
 export default class OrderApi {
   static getOrders(
+    token: string,
     status?: GetOrdersUsingGETStatusEnum
   ): AxiosPromise<Array<OrderDetail>> {
-    return axios.get(`${BASE_PATH}/admin/order`, {
+    return axios.get(`${BASE_PATH}/admin/order/`, {
       params: { status },
       withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
   }
 

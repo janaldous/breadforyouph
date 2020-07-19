@@ -8,23 +8,29 @@ import {
 import OrderAdmin from "./OrderAdmin";
 import "./Admin.scss";
 import OrderDetail from "./OrderDetail";
-import PrivateRoute from "PrivateRoute";
 import Login from "./Login";
-import LoginRoute from "admin-components/LoginRoute";
+import { Auth0Provider } from "@auth0/auth0-react";
 
 const Admin: React.FC<{}> = () => {
   return (
     <div className="admin-container">
-      <Router basename="/admin">
-        <Switch>
-          <LoginRoute path="/login" component={Login} />
-          <PrivateRoute exact path="/orders" component={OrderAdmin} />
-          <PrivateRoute path="/orders/:id" component={OrderDetail} />
-          <Route path="/">
-            <Redirect to="/orders" />
-          </Route>
-        </Switch>
-      </Router>
+      <Auth0Provider
+        domain="janaldous.eu.auth0.com"
+        clientId="XBxLW6htBnvKJzqzWxQKpThM2fOmKr0U"
+        redirectUri={"https://localhost:3000/admin/"}
+        audience={"http://localhost:8080"}
+      >
+        <Router basename="/admin">
+          <Switch>
+            <Route exact path="/orders" component={OrderAdmin} />
+            <Route path="/orders/:id" component={OrderDetail} />
+            <Route path="/login" component={Login} />
+            <Route path="/">
+              <Redirect to="/orders" />
+            </Route>
+          </Switch>
+        </Router>
+      </Auth0Provider>
     </div>
   );
 };

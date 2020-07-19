@@ -10,15 +10,21 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const OrderAdmin: React.FC = () => {
   const [orders, setOrders] = React.useState<Array<OrderDetail>>([]);
+  const { getAccessTokenSilently } = useAuth0();
 
   React.useEffect(() => {
-    OrderApi.getOrders().then((res) => {
-      setOrders(res.data);
-    });
-  }, []);
+    (async () => {
+      const token = await getAccessTokenSilently();
+      
+      OrderApi.getOrders(token).then((res) => {
+        setOrders(res.data);
+      });
+    })()
+  }, [getAccessTokenSilently]);
 
   return (
     <div className="admin-order">

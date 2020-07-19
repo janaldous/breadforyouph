@@ -1,15 +1,15 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import { useAuth } from "useAuth";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function LoginRoute({ component: Component, ...rest }) {
-  const { authorized } = useAuth();
+  const { isAuthenticated } = useAuth0();
 
   return (
     <Route
       {...rest}
       render={(props) =>
-        authorized ? <Redirect to="/" /> : <Component {...props} />
+        isAuthenticated ? <Redirect to="/" /> : <Component {...props} />
       }
     />
   );
