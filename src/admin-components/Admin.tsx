@@ -17,7 +17,7 @@ const Admin: React.FC<{}> = () => {
       <Auth0Provider
         domain="janaldous.eu.auth0.com"
         clientId="XBxLW6htBnvKJzqzWxQKpThM2fOmKr0U"
-        redirectUri={window.location.origin}
+        redirectUri={`${window.location.origin}/admin`}
         audience={"http://localhost:8080"}
       >
         <Router basename="/admin">

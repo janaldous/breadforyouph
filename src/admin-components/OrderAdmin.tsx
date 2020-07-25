@@ -14,14 +14,18 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 const OrderAdmin: React.FC = () => {
   const [orders, setOrders] = React.useState<Array<OrderDetail>>([]);
+  const [errorMessage, setErrorMessage] = React.useState<string>();
   const { getAccessTokenSilently } = useAuth0();
 
   React.useEffect(() => {
     (async () => {
       const token = await getAccessTokenSilently();
-      
+      setErrorMessage("loading...")
       OrderApi.getOrders(token).then((res) => {
         setOrders(res.data);
+        setErrorMessage("hello world");
+      }).catch((err) => {
+        setErrorMessage("an error occurred: " +  err.status);
       });
     })()
   }, [getAccessTokenSilently]);
@@ -29,6 +33,7 @@ const OrderAdmin: React.FC = () => {
   return (
     <div className="admin-order">
       <h2>Admin order page</h2>
+      {errorMessage && <p>{errorMessage}</p>}
       <TableContainer component={Paper}>
         <Table aria-label="orders table">
           <TableHead>
