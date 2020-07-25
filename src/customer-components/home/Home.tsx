@@ -25,7 +25,6 @@ function Home() {
           >
             Order
           </a>
-          <Link to="/order">Order here</Link>
         </div>
       </Jumbotron>
       <div className="container pictures-section">
@@ -76,12 +75,8 @@ function Home() {
           </div>
           <div className="instruction-step">
             <div className="message">
-              <div className="message-line">
-                Name: Juan de la Cruz
-              </div>
-              <div className="message-line">
-                Order: 2 original banana bread
-              </div>
+              <div className="message-line">Name: Juan de la Cruz</div>
+              <div className="message-line">Order: 2 original banana bread</div>
               <div className="message-line">
                 Mode of payment: COD or GCash to 09178001866
               </div>
@@ -89,6 +84,17 @@ function Home() {
                 Delivery: Meet up location or Drop off address
               </div>
             </div>
+          </div>
+          <div className="instruction-step">
+            <Link to="/order">
+              <button
+                className="btn btn-primary"
+                role="button"
+                id="btn-order-online"
+              >
+                Order online
+              </button>
+            </Link>
           </div>
         </div>
       </section>
@@ -101,9 +107,9 @@ function Home() {
               Sta. Rosa.
             </p>
             <p>
-              Aim: Food Pantry with the goal to feed 5,000 people from
-              Sitio Mangumpit, Sitio Buntog, Inchican, Don Jose, Bgry. San
-              Antonio, San Pedro, Sitio Hemedes.
+              Aim: Food Pantry with the goal to feed 5,000 people from Sitio
+              Mangumpit, Sitio Buntog, Inchican, Don Jose, Bgry. San Antonio,
+              San Pedro, Sitio Hemedes.
             </p>
           </div>
         </div>
