@@ -6,12 +6,15 @@ import lemon from "./lemon.jpg";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import { Link } from "react-router-dom";
 import "./Home.scss";
+import { useFeatures } from "@paralleldrive/react-feature-toggles";
 
 const defaultMessage = "Name:\nOrder:\nPayment:\nDelivery:";
 const uriDefaultMessage = encodeURIComponent(defaultMessage);
 const smsURI = `sms:09178001866;?&body=${uriDefaultMessage}`;
 
 function Home() {
+  const features = useFeatures();
+
   return (
     <div className="home-container">
       <Jumbotron>
@@ -86,15 +89,17 @@ function Home() {
             </div>
           </div>
           <div className="instruction-step">
-            <Link to="/order">
-              <button
-                className="btn btn-primary"
-                role="button"
-                id="btn-order-online"
-              >
-                Order online
-              </button>
-            </Link>
+            {features.includes("online-order") && (
+              <Link to="/order">
+                <button
+                  className="btn btn-primary"
+                  role="button"
+                  id="btn-order-online"
+                >
+                  Order online
+                </button>
+              </Link>
+            )}
           </div>
         </div>
       </section>
