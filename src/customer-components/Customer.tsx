@@ -1,13 +1,11 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./home/Home";
 import Order from "./order/Order";
 import instagramLogo from "./icons8-instagram-96.png";
 import "./Customer.scss";
+import { Feature } from "@paralleldrive/react-feature-toggles";
+import NotFoundComponent from "NotFoundComponent";
 
 const Customer: React.FC<{}> = () => {
   return (
@@ -15,7 +13,11 @@ const Customer: React.FC<{}> = () => {
       <Router>
         <Switch>
           <Route path="/order">
-            <Order />
+            <Feature
+              name="online-order"
+              inactiveComponent={NotFoundComponent}
+              activeComponent={Order}
+            />
           </Route>
           <Route path="/">
             <Home />
