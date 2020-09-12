@@ -93,7 +93,6 @@ function Home() {
               <Link to="/order">
                 <button
                   className="btn btn-primary"
-                  role="button"
                   id="btn-order-online"
                 >
                   Order online

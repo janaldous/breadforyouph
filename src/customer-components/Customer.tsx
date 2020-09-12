@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./home/Home";
-import Order from "./order/Order";
+import Order from "./cart/Order";
 import instagramLogo from "./icons8-instagram-96.png";
 import "./Customer.scss";
 import { Feature } from "@paralleldrive/react-feature-toggles";
@@ -12,6 +12,13 @@ const Customer: React.FC<{}> = () => {
     <div className="app-container">
       <Router>
         <Switch>
+          <Route path="/cart">
+            <Feature
+              name="online-order"
+              inactiveComponent={NotFoundComponent}
+              activeComponent={Order}
+            />
+          </Route>
           <Route path="/order">
             <Feature
               name="online-order"
