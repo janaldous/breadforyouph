@@ -8,7 +8,7 @@ import {
 } from "@paralleldrive/react-feature-toggles";
 import queryString from "query-string";
 
-const initialFeatures = [];
+const initialFeatures = ["online-order"];
 
 function App() {
 

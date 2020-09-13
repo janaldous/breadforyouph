@@ -1,4 +1,4 @@
-import { OrderDto, OrderConfirmation, DeliveryDate } from "./models";
+import { OrderDto, OrderConfirmation, DeliveryDate, Product } from "./models";
 import axios, { AxiosPromise } from "axios";
 import { BASE_PATH } from "./runtime";
 
@@ -12,5 +12,9 @@ export default class OrderApi {
     size: number
   ): AxiosPromise<Array<DeliveryDate>> {
     return axios.get(`${BASE_PATH}/api/delivery`, { params: { page, size } });
+  }
+
+  static getProducts(page: number, size: number): AxiosPromise<Array<Product>> {
+    return axios.get(`${BASE_PATH}/api/products`, { params: { page, size } });
   }
 }

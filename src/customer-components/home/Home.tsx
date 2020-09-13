@@ -7,6 +7,8 @@ import Jumbotron from "react-bootstrap/Jumbotron";
 import { Link } from "react-router-dom";
 import "./Home.scss";
 import { useFeatures } from "@paralleldrive/react-feature-toggles";
+import Button from "react-bootstrap/Button";
+import { Routes } from "Routes";
 
 const defaultMessage = "Name:\nOrder:\nPayment:\nDelivery:";
 const uriDefaultMessage = encodeURIComponent(defaultMessage);
@@ -20,14 +22,11 @@ function Home() {
       <Jumbotron>
         <div className="company-name">
           <img src={logo} alt="Logo" className="logo" />
-          <a
-            className="btn btn-primary btn-lg"
-            href="#how-to-order"
-            role="button"
-            id="btn-order"
-          >
-            Order
-          </a>
+          <Link to={Routes.Products}>
+            <Button variant="primary" size="lg">
+              Order
+            </Button>
+          </Link>
         </div>
       </Jumbotron>
       <div className="container pictures-section">
@@ -90,11 +89,8 @@ function Home() {
           </div>
           <div className="instruction-step">
             {features.includes("online-order") && (
-              <Link to="/order">
-                <button
-                  className="btn btn-primary"
-                  id="btn-order-online"
-                >
+              <Link to={Routes.Products}>
+                <button className="btn btn-primary" id="btn-order-online">
                   Order online
                 </button>
               </Link>

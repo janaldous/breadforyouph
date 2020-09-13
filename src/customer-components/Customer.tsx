@@ -6,27 +6,29 @@ import instagramLogo from "./icons8-instagram-96.png";
 import "./Customer.scss";
 import { Feature } from "@paralleldrive/react-feature-toggles";
 import NotFoundComponent from "NotFoundComponent";
+import { ProductPage } from "./product/ProductPage";
+import { Routes } from "Routes";
 
 const Customer: React.FC<{}> = () => {
   return (
     <div className="app-container">
       <Router>
         <Switch>
-          <Route path="/cart">
+          <Route path={Routes.Cart}>
             <Feature
               name="online-order"
               inactiveComponent={NotFoundComponent}
               activeComponent={Order}
             />
           </Route>
-          <Route path="/order">
+          <Route path={Routes.Products}>
             <Feature
               name="online-order"
               inactiveComponent={NotFoundComponent}
-              activeComponent={Order}
+              activeComponent={ProductPage}
             />
           </Route>
-          <Route path="/">
+          <Route path={Routes.Home}>
             <Home />
           </Route>
         </Switch>

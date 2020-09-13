@@ -12,6 +12,7 @@ import {
 } from "../../api/models";
 import PublicApi from "../../api/PublicApi";
 import { mocked } from "ts-jest/utils";
+import { MemoryRouter } from "react-router-dom";
 
 const defaultValues: DeliveryData = {
   firstName: "John",
@@ -37,6 +38,10 @@ const changeRadioButton = (
     (x: HTMLInputElement) => x.value === value
   )[0];
   ReactTestUtils.Simulate.change(rbSelect);
+};
+
+const renderWithRouter = (component) => {
+  return render(component, { wrapper: MemoryRouter });
 };
 
 const fillInDeliveryForm = (
@@ -131,7 +136,7 @@ describe("Order component", () => {
   });
 
   it("shows order page on load", async () => {
-    const { getByText } = render(<Order />);
+    const { getByText } = renderWithRouter(<Order />);
     const mockedApiDelivery = mocked(PublicApi.getDeliveryDates, true);
     await wait(() => {
       expect(mockedApiDelivery.mock.calls.length).toBe(1);
@@ -141,7 +146,7 @@ describe("Order component", () => {
   });
 
   it("shows delivery info page as 2nd page and goes back to 1st page", async () => {
-    const { getByText } = render(<Order />);
+    const { getByText } = renderWithRouter(<Order />);
 
     const mockedApiDelivery = mocked(PublicApi.getDeliveryDates, true);
     await wait(() => {
@@ -158,7 +163,7 @@ describe("Order component", () => {
   });
 
   it("shows place order page as 3rd page", async () => {
-    const renderResult = render(<Order />);
+    const renderResult = renderWithRouter(<Order />);
     const { getByText } = renderResult;
 
     const mockedApiDelivery = mocked(PublicApi.getDeliveryDates, true);
@@ -184,7 +189,7 @@ describe("Order component", () => {
   });
 
   it("shows order confirmation as 4th page", async () => {
-    const renderResult = render(<Order />);
+    const renderResult = renderWithRouter(<Order />);
     const { getByText, container } = renderResult;
 
     const mockedApiDelivery = mocked(PublicApi.getDeliveryDates, true);
@@ -237,7 +242,7 @@ describe("Order component", () => {
   });
 
   it("changes total and subtotal when quantity is changed to 2", async () => {
-    const { getByTestId } = render(<Order />);
+    const { getByTestId } = renderWithRouter(<Order />);
     const mockedApiDelivery = mocked(PublicApi.getDeliveryDates, true);
     await wait(() => {
       expect(mockedApiDelivery.mock.calls.length).toBe(1);
@@ -250,7 +255,7 @@ describe("Order component", () => {
   });
 
   it("changes total and subtotal when quantity is changed to 3", async () => {
-    const renderResult = render(<Order />);
+    const renderResult = renderWithRouter(<Order />);
     const { getByTestId, getByText } = renderResult;
     const mockedApiDelivery = mocked(PublicApi.getDeliveryDates, true);
     await wait(() => {
@@ -272,7 +277,7 @@ describe("Order component", () => {
   });
 
   it("changes name and address when they are filled in", async () => {
-    const renderResult = render(<Order />);
+    const renderResult = renderWithRouter(<Order />);
     const { getByTestId, getByText, getByLabelText } = renderResult;
 
     const mockedApiDelivery = mocked(PublicApi.getDeliveryDates, true);
@@ -311,7 +316,7 @@ describe("Order component", () => {
   });
 
   it("still keeps values in delivery form even when going back to delivery form", async () => {
-    const renderResult = render(<Order />);
+    const renderResult = renderWithRouter(<Order />);
     const { getByText, getByLabelText, getByPlaceholderText } = renderResult;
 
     const mockedApiDelivery = mocked(PublicApi.getDeliveryDates, true);
@@ -356,7 +361,7 @@ describe("Order component", () => {
   });
 
   it("does not let you continue when delivery form is not completed", async () => {
-    const renderResult = render(<Order />);
+    const renderResult = renderWithRouter(<Order />);
     const { getByText, getAllByText } = renderResult;
 
     const mockedApiDelivery = mocked(PublicApi.getDeliveryDates, true);
@@ -385,7 +390,7 @@ describe("Order component", () => {
   });
 
   it("does not let you continue when delivery form is not completed - meet up", async () => {
-    const renderResult = render(<Order />);
+    const renderResult = renderWithRouter(<Order />);
     const { getByText, getAllByText } = renderResult;
 
     fireEvent.click(getByText("Two more steps"));
@@ -416,7 +421,7 @@ describe("Order component", () => {
   });
 
   it("does not let you continue when delivery form city is not in Sta Rosa", async () => {
-    const renderResult = render(<Order />);
+    const renderResult = renderWithRouter(<Order />);
     const { getByText, getByLabelText, getAllByText } = renderResult;
 
     fireEvent.click(getByText("Two more steps"));
@@ -439,7 +444,7 @@ describe("Order component", () => {
   });
 
   it("lets you continue when delivery form is completed - meet up", async () => {
-    const renderResult = render(<Order />);
+    const renderResult = renderWithRouter(<Order />);
     const { getByText } = renderResult;
 
     fireEvent.click(getByText("Two more steps"));
@@ -470,7 +475,7 @@ describe("Order component", () => {
   });
 
   it("removes address info when changing between delivery types", async () => {
-    const renderResult = render(<Order />);
+    const renderResult = renderWithRouter(<Order />);
     const { getByText, container, getByLabelText } = renderResult;
 
     fireEvent.click(getByText("Two more steps"));
@@ -519,7 +524,7 @@ describe("Order component", () => {
   });
 
   it("shows validation error when given invalid contact number", async () => {
-    const renderResult = render(<Order />);
+    const renderResult = renderWithRouter(<Order />);
     const { getByText, getAllByText } = renderResult;
 
     fireEvent.click(getByText("Two more steps"));
@@ -550,7 +555,7 @@ describe("Order component", () => {
   });
 
   it("changes delivery date if other date is selected", async () => {
-    const renderResult = render(<Order />);
+    const renderResult = renderWithRouter(<Order />);
     const { getByText, getByLabelText } = renderResult;
 
     fireEvent.click(getByText("Two more steps"));
@@ -584,7 +589,7 @@ describe("Order component", () => {
   it("shows error page when has error in get delivery date api call", async () => {
     PublicApi.getDeliveryDates = jest.fn().mockRejectedValue({})
     
-    const renderResult = render(<Order />);
+    const renderResult = renderWithRouter(<Order />);
     const { getByText, container } = renderResult;
 
     const mockedApiDelivery = mocked(PublicApi.getDeliveryDates, true);
@@ -598,7 +603,7 @@ describe("Order component", () => {
   it("shows error page when has error in post order api call", async () => {
     PublicApi.postOrder = jest.fn().mockRejectedValue({});
     
-    const renderResult = render(<Order />);
+    const renderResult = renderWithRouter(<Order />);
     const { getByText, container } = renderResult;
 
     const mockedApiDelivery = mocked(PublicApi.getDeliveryDates, true);

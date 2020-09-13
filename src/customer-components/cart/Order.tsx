@@ -12,6 +12,7 @@ import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import { isBrowser } from "react-device-detect";
 import PublicApi from "../../api/PublicApi";
 import OrderError from "./OrderError";
+import { Link } from "react-router-dom";
 
 const inputNameMapper = {
   "given-name": "firstName",
@@ -236,9 +237,9 @@ export default function Order() {
       case 0:
         return (
           <div className="btn-back">
-            <a href={"/"}>
-              {isBrowser ? "< Back to Home" : <ArrowBackIosIcon />}
-            </a>
+            <Link to={"/products"}>
+              {isBrowser ? "< Back to Products" : <ArrowBackIosIcon />}
+            </Link>
           </div>
         );
       case 1:
