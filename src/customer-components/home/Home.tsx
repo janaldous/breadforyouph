@@ -22,11 +22,6 @@ function Home() {
       <Jumbotron>
         <div className="company-name">
           <img src={logo} alt="Logo" className="logo" />
-          <Link to={Routes.Products}>
-            <Button variant="primary" size="lg">
-              Order
-            </Button>
-          </Link>
         </div>
       </Jumbotron>
       <div className="container pictures-section">
@@ -59,6 +54,13 @@ function Home() {
               Only <b>₱165</b> per loaf (delivery included)
             </p>
           </div>
+        </div>
+        <div className="row justify-content-center">
+          <Link to={Routes.Products}>
+            <Button variant="primary" size="lg">
+              Order
+            </Button>
+          </Link>
         </div>
       </section>
       <section id="how-to-order">

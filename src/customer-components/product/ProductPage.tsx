@@ -36,10 +36,7 @@ export const ProductPage: React.FC = () => {
 
   React.useEffect(() => {
     PublicApi.getProducts(0, 5).then((res) => {
-      setProducts([
-        ...res.data,
-        { id: 2, name: "Chocolate Chip Banana Bread", unitPrice: 165.0 },
-      ]);
+      setProducts(res.data);
     });
   }, []);
 
