@@ -11,6 +11,10 @@ import { Link } from "react-router-dom";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import { isBrowser } from "react-device-detect";
 
+interface ProductDto extends Product {
+  quantity?: number;
+}
+
 const cartCheck = (
   <svg
     width="2em"
@@ -32,13 +36,26 @@ const cartCheck = (
 );
 
 export const ProductPage: React.FC = () => {
-  const [products, setProducts] = React.useState<Array<Product>>([]);
+  const [products, setProducts] = React.useState<Array<ProductDto>>([]);
 
   React.useEffect(() => {
     PublicApi.getProducts(0, 5).then((res) => {
       setProducts(res.data);
     });
   }, []);
+
+  const addToCart = (productId?: number) => {
+    setProducts((oldProducts) => {
+      return oldProducts.map((p) => {
+        if (p.id === productId) {
+          const oldQuantity = p.quantity || 0;
+          return { ...p, quantity: oldQuantity + 1 };
+        } else {
+          return p;
+        }
+      });
+    });
+  };
 
   return (
     <div className="product">
@@ -61,7 +78,11 @@ export const ProductPage: React.FC = () => {
         </Navbar>
         <div className="content">
           {products.map((product) => (
-            <Card style={{ width: "18rem" }} className="product-card" key={product.id}>
+            <Card
+              style={{ width: "18rem" }}
+              className="product-card"
+              key={product.id}
+            >
               <Card.Img
                 variant="top"
                 src="https://via.placeholder.com/100px100"
@@ -71,7 +92,15 @@ export const ProductPage: React.FC = () => {
                 <Card.Text>
                   {currencyFormatter.format(product.unitPrice, { code: "PHP" })}
                 </Card.Text>
-                <Button variant="primary">Add to cart</Button>
+                <div className="d-flex">
+                  <Button
+                    variant="primary"
+                    onClick={() => addToCart(product.id)}
+                  >
+                    Add to cart
+                  </Button>
+                  {product.quantity && <div className="border rounded ml-2 text-center quantity">{product.quantity}</div>}
+                </div>
               </Card.Body>
             </Card>
           ))}

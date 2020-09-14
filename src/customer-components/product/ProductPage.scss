@@ -11,4 +11,9 @@
 
 .product-card {
   margin: 16px;
+
+  .quantity {
+    line-height: 2rem;
+    width: 2rem;
+  }
 }
