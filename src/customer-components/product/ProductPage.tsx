@@ -13,8 +13,12 @@ import { ProductCard } from "./ProductCard";
 import { formatCurrency } from "utils/CurrencyFormatterUtil";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { CustomerContext } from "customer-components/CustomerContext";
+import { Routes } from "Routes";
 
-export type ProductDto = Required<Product> & {
+export type ProductRequired = Required<Product>;
+
+export type ProductDto = ProductRequired & {
   quantity: number;
 };
 
@@ -39,15 +43,16 @@ const cartCheck = (
 );
 
 export const ProductPage: React.FC = () => {
-  const [products, setProducts] = React.useState<Array<ProductDto>>([]);
+  const [products, setProducts] = React.useState<Array<ProductRequired>>([]);
   const [checkoutOpen, setCheckoutOpen] = React.useState<boolean>(false);
+
+  const { cart, onAddToCart } = React.useContext(CustomerContext);
 
   React.useEffect(() => {
     PublicApi.getProducts(0, 5).then((res) => {
       setProducts(
         res.data.map((d) => ({
           ...d,
-          quantity: 0,
           code: d.code || "",
           description: d.description || "",
           id: d.id || 1,
@@ -58,38 +63,17 @@ export const ProductPage: React.FC = () => {
     });
   }, []);
 
-  const handleAddToCartClicked = (
-    productId: number,
-    operation: "increase" | "decrease"
-  ) => {
-    setProducts((oldProducts) => {
-      return oldProducts.map((p) => {
-        if (p.id === productId) {
-          const oldQuantity = p.quantity || 0;
-          return {
-            ...p,
-            quantity:
-              operation === "increase" ? oldQuantity + 1 : oldQuantity - 1,
-          };
-        } else {
-          return p;
-        }
-      });
-    });
+  const handleIncreaseQuantity = (product: ProductDto) => {
+    console.log("increasing quantity");
+    onAddToCart(product, "increase");
   };
 
-  const handleIncreaseQuantity = (productId: number) => {
-    handleAddToCartClicked(productId, "increase");
-  };
-
-  const handleDecreaseQuantity = (productId: number) => {
-    handleAddToCartClicked(productId, "decrease");
+  const handleDecreaseQuantity = (product: ProductDto) => {
+    onAddToCart(product, "decrease");
   };
 
   const handleCartClick = () => {
-    const numOfItems = products.reduce((prev, cur) => prev + cur.quantity, 0);
-    console.log(typeof numOfItems, numOfItems, numOfItems > 1);
-    if (numOfItems > 0) {
+    if (cart.numberOfItems > 0) {
       setCheckoutOpen((old) => !old);
     }
   };
@@ -108,7 +92,11 @@ export const ProductPage: React.FC = () => {
           </Navbar.Brand>
           <div className="flex-1-only d-flex">
             <div className="flex-1-only"></div>
-            <div className="shopping-cart" onClick={handleCartClick}>
+            <div
+              className="shopping-cart"
+              style={{ cursor: "pointer" }}
+              onClick={handleCartClick}
+            >
               {cartCheck}
             </div>
           </div>
@@ -118,32 +106,32 @@ export const ProductPage: React.FC = () => {
             <ProductCard
               key={product.id}
               product={product}
-              onAddToCart={() => handleIncreaseQuantity(product.id)}
+              onAddToCart={() =>
+                handleIncreaseQuantity({ ...product, quantity: 0 })
+              }
             />
           ))}
         </div>
         <div id="cd-cart" className={checkoutOpen ? "speed-in" : ""}>
           <div className="h3 text-center mb-2">Cart</div>
           <div className="cd-cart-items">
-            {products
-              .filter((product) => product.quantity)
-              .map((product) => (
-                <ProductCheckoutItem
-                  product={product}
-                  onIncrease={() => handleIncreaseQuantity(product.id)}
-                  onDecrease={() => handleDecreaseQuantity(product.id)}
-                  key={product.id}
-                />
-              ))}
+            {cart.items.map((product) => (
+              <ProductCheckoutItem
+                product={product}
+                onIncrease={() => handleIncreaseQuantity(product)}
+                onDecrease={() => handleDecreaseQuantity(product)}
+                key={product.id}
+              />
+            ))}
           </div>
           <div className="border-top mb-2"></div>
           <div className="cd-cart-total mb-2">
             <Row>
               <Col xs={9}>Total</Col>
-              <Col xs={3}>{formatCurrency(399.99)}</Col>
+              <Col xs={3}>{formatCurrency(cart.total)}</Col>
             </Row>
           </div>
-          <Link to={`/cart`}>
+          <Link to={Routes.Checkout}>
             <Button className="w-100">Checkout</Button>
           </Link>
         </div>

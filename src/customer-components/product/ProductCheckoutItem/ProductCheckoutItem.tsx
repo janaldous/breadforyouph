@@ -7,8 +7,8 @@ import Col from "react-bootstrap/Col";
 
 interface ProductCheckoutItemProps {
   product: ProductDto;
-  onDecrease: () => void;
   onIncrease: () => void;
+  onDecrease: () => void;
 }
 
 export const ProductCheckoutItem: React.FC<ProductCheckoutItemProps> = (
