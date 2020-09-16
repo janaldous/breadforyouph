@@ -17,3 +17,21 @@
     width: 2rem;
   }
 }
+
+#cd-cart {
+  position: absolute;
+  top: 62px;
+  right: -100%;
+
+  padding: 20px;
+
+  width: 400px;
+  -webkit-overflow-scrolling: touch;
+
+  transition: right 0.3s;
+  background-color: white;
+}
+
+#cd-cart.speed-in {
+  right: 0;
+}

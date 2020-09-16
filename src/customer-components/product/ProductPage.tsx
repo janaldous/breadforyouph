@@ -2,18 +2,21 @@ import React from "react";
 import PublicApi from "../../api/PublicApi";
 import { Product } from "../../api/models";
 import Navbar from "react-bootstrap/Navbar";
-import Card from "react-bootstrap/Card";
 import logo from "../../logo.jpg";
 import "./ProductPage.scss";
 import Button from "react-bootstrap/Button";
-import currencyFormatter from "currency-formatter";
-import { Link } from "react-router-dom";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import { isBrowser } from "react-device-detect";
+import { ProductCheckoutItem } from "./ProductCheckoutItem/ProductCheckoutItem";
+import { Link } from "react-router-dom";
+import { ProductCard } from "./ProductCard";
+import { formatCurrency } from "utils/CurrencyFormatterUtil";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
-interface ProductDto extends Product {
-  quantity?: number;
-}
+export type ProductDto = Required<Product> & {
+  quantity: number;
+};
 
 const cartCheck = (
   <svg
@@ -37,24 +40,58 @@ const cartCheck = (
 
 export const ProductPage: React.FC = () => {
   const [products, setProducts] = React.useState<Array<ProductDto>>([]);
+  const [checkoutOpen, setCheckoutOpen] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     PublicApi.getProducts(0, 5).then((res) => {
-      setProducts(res.data);
+      setProducts(
+        res.data.map((d) => ({
+          ...d,
+          quantity: 0,
+          code: d.code || "",
+          description: d.description || "",
+          id: d.id || 1,
+          name: d.name || "",
+          unitPrice: d.unitPrice || 0,
+        }))
+      );
     });
   }, []);
 
-  const addToCart = (productId?: number) => {
+  const handleAddToCartClicked = (
+    productId: number,
+    operation: "increase" | "decrease"
+  ) => {
     setProducts((oldProducts) => {
       return oldProducts.map((p) => {
         if (p.id === productId) {
           const oldQuantity = p.quantity || 0;
-          return { ...p, quantity: oldQuantity + 1 };
+          return {
+            ...p,
+            quantity:
+              operation === "increase" ? oldQuantity + 1 : oldQuantity - 1,
+          };
         } else {
           return p;
         }
       });
     });
+  };
+
+  const handleIncreaseQuantity = (productId: number) => {
+    handleAddToCartClicked(productId, "increase");
+  };
+
+  const handleDecreaseQuantity = (productId: number) => {
+    handleAddToCartClicked(productId, "decrease");
+  };
+
+  const handleCartClick = () => {
+    const numOfItems = products.reduce((prev, cur) => prev + cur.quantity, 0);
+    console.log(typeof numOfItems, numOfItems, numOfItems > 1);
+    if (numOfItems > 0) {
+      setCheckoutOpen((old) => !old);
+    }
   };
 
   return (
@@ -71,39 +108,44 @@ export const ProductPage: React.FC = () => {
           </Navbar.Brand>
           <div className="flex-1-only d-flex">
             <div className="flex-1-only"></div>
-            <div className="shopping-cart">
-              <Link to={`/cart`}>{cartCheck}</Link>
+            <div className="shopping-cart" onClick={handleCartClick}>
+              {cartCheck}
             </div>
           </div>
         </Navbar>
         <div className="content">
           {products.map((product) => (
-            <Card
-              style={{ width: "18rem" }}
-              className="product-card"
+            <ProductCard
               key={product.id}
-            >
-              <Card.Img
-                variant="top"
-                src="https://via.placeholder.com/100px100"
-              />
-              <Card.Body>
-                <Card.Title>{product.name}</Card.Title>
-                <Card.Text>
-                  {currencyFormatter.format(product.unitPrice, { code: "PHP" })}
-                </Card.Text>
-                <div className="d-flex">
-                  <Button
-                    variant="primary"
-                    onClick={() => addToCart(product.id)}
-                  >
-                    Add to cart
-                  </Button>
-                  {product.quantity && <div className="border rounded ml-2 text-center quantity">{product.quantity}</div>}
-                </div>
-              </Card.Body>
-            </Card>
+              product={product}
+              onAddToCart={() => handleIncreaseQuantity(product.id)}
+            />
           ))}
+        </div>
+        <div id="cd-cart" className={checkoutOpen ? "speed-in" : ""}>
+          <div className="h3 text-center mb-2">Cart</div>
+          <div className="cd-cart-items">
+            {products
+              .filter((product) => product.quantity)
+              .map((product) => (
+                <ProductCheckoutItem
+                  product={product}
+                  onIncrease={() => handleIncreaseQuantity(product.id)}
+                  onDecrease={() => handleDecreaseQuantity(product.id)}
+                  key={product.id}
+                />
+              ))}
+          </div>
+          <div className="border-top mb-2"></div>
+          <div className="cd-cart-total mb-2">
+            <Row>
+              <Col xs={9}>Total</Col>
+              <Col xs={3}>{formatCurrency(399.99)}</Col>
+            </Row>
+          </div>
+          <Link to={`/cart`}>
+            <Button className="w-100">Checkout</Button>
+          </Link>
         </div>
       </div>
     </div>
