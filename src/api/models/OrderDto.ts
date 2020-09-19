@@ -52,13 +52,19 @@ export interface OrderDto {
      * @type {number}
      * @memberof OrderDto
      */
-    quantity: number;
+    // quantity: number;
+    products: Array<ProductDto>;
     /**
      * 
      * @type {UserDto}
      * @memberof OrderDto
      */
     user: UserDto;
+}
+
+export interface ProductDto {
+    id: number;
+    quantity: number;
 }
 
 /**

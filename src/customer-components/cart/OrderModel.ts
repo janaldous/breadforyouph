@@ -1,7 +1,8 @@
 import { OrderDtoDeliveryTypeEnum, OrderDtoPaymentTypeEnum, DeliveryDate } from "../../api/models";
+import { ProductDto } from "api/models/OrderDto";
 
 export interface OrderData {
-  quantity: number;
+  items: Array<ProductDto>;
   subtotal: number;
   deliveryFee: number;
   total: number;

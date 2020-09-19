@@ -6,7 +6,7 @@ import instagramLogo from "./icons8-instagram-96.png";
 import "./Customer.scss";
 import { Feature } from "@paralleldrive/react-feature-toggles";
 import NotFoundComponent from "NotFoundComponent";
-import { ProductPage, ProductDto } from "./product/ProductPage";
+import { ProductPage, ProductRequiredDto } from "./product/ProductPage";
 import { Routes } from "Routes";
 import { CustomerContext, CheckoutCart } from "./CustomerContext";
 
@@ -17,9 +17,10 @@ const Customer: React.FC<{}> = () => {
     numberOfItems: 0,
   });
 
-  const handleAddToCart = (
-    product: ProductDto,
-    operation: "increase" | "decrease"
+  const handleCartChange = (
+    product: ProductRequiredDto,
+    operation: "increase" | "decrease" | "set",
+    quantity?: number,
   ) => {
     setCart((cart) => {
       const itemIndex = cart.items.findIndex((i) => i.id === product.id);
@@ -27,10 +28,16 @@ const Customer: React.FC<{}> = () => {
       let numberOfItems = 0;
       if (itemIndex > -1) {
         const oldQuantity = newItems[itemIndex].quantity;
-        const newQuantity =
-          operation === "increase" ? oldQuantity + 1 : oldQuantity - 1;
-        numberOfItems =
-          operation === "increase" ? numberOfItems + 1 : numberOfItems - 1;
+        let changeInQuantity = 0;
+        if (operation === "set" && !!quantity) {
+          changeInQuantity = quantity - oldQuantity;
+        } else if (operation === "increase") {
+          changeInQuantity = 1;
+        } else if (operation === "decrease") {
+          changeInQuantity = -1;
+        }
+        const newQuantity = oldQuantity + changeInQuantity;
+        numberOfItems = numberOfItems + changeInQuantity;
 
         newItems = cart.items
           .map((p) => {
@@ -68,9 +75,16 @@ const Customer: React.FC<{}> = () => {
     });
   };
 
+  const handleAddToCart = (
+    product: ProductRequiredDto,
+    operation: "increase" | "decrease" | "set"
+  ) => {
+    handleCartChange(product, operation);
+  };
+
   return (
     <div className="app-container">
-      <CustomerContext.Provider value={{ cart, onAddToCart: handleAddToCart }}>
+      <CustomerContext.Provider value={{ cart, onAddToCart: handleAddToCart, onCartChange: handleCartChange }}>
         <Router>
           <Switch>
             <Route path={Routes.Checkout}>

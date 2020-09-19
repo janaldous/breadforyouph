@@ -9,6 +9,7 @@ import {
   OrderDtoPaymentTypeEnum,
 } from "../../api/models";
 import dateformat from "dateformat";
+import { ProductRequiredDto } from "customer-components/product/ProductPage";
 
 const deliveryTypeMapper = (input: any) => {
   switch (input) {
@@ -32,7 +33,9 @@ const paymentTypeMapper = (input: any) => {
   }
 };
 
-const OrderSummary: React.FC<OrderComponentProps> = (props) => {
+const OrderSummary: React.FC<
+  OrderComponentProps & { items: Array<ProductRequiredDto>; total: number }
+> = (props) => {
   const { availableDeliveryDates, deliveryForm } = props.data;
   const { formValues } = deliveryForm;
 
@@ -43,9 +46,14 @@ const OrderSummary: React.FC<OrderComponentProps> = (props) => {
   const handleSubmit = (e: any) => {
     e.preventDefault();
     if (props.onNext && props.onSubmit) {
-      props.onSubmit().then(() => {
-        props.onNext && props.onNext();
-      }).catch((err) => {/*do nothing*/});
+      props
+        .onSubmit()
+        .then(() => {
+          props.onNext && props.onNext();
+        })
+        .catch((err) => {
+          /*do nothing*/
+        });
     }
   };
 
@@ -84,19 +92,23 @@ const OrderSummary: React.FC<OrderComponentProps> = (props) => {
         <div className="description">
           <div className="bold-title">Order</div>
           <div className="products">
-            <Row>
-              <Col xs={9}>1 Original Banana Bread</Col>
-              <Col xs={3}>
-                ₱<span data-testid="price">{props.data.price}</span>
-              </Col>
-            </Row>
+            {props.items.map((item) => (
+              <Row key={item.id}>
+                <Col xs={9}>
+                  {item.quantity} {item.name}
+                </Col>
+                <Col xs={3}>
+                  ₱<span data-testid="price">{item.unitPrice}</span>
+                </Col>
+              </Row>
+            ))}
           </div>
           <div className="line-separator"></div>
           <div className="subtotal">
             <Row>
               <Col xs={9}>Subtotal</Col>
               <Col xs={3}>
-                ₱<span data-testid="subtotal">{props.data.subtotal}</span>
+                ₱<span data-testid="subtotal">{props.total}</span>
               </Col>
             </Row>
             <Row>
@@ -115,7 +127,7 @@ const OrderSummary: React.FC<OrderComponentProps> = (props) => {
               </Col>
               <Col xs={3}>
                 <b>
-                  ₱<span data-testid="total">{props.data.total}</span>
+                  ₱<span data-testid="total">{props.total}</span>
                 </b>
               </Col>
             </Row>

@@ -36,19 +36,19 @@ export interface Product {
      * @type {number}
      * @memberof Product
      */
-    id?: number;
+    id: number;
     /**
      * 
      * @type {string}
      * @memberof Product
      */
-    name?: string;
+    name: string;
     /**
      * 
      * @type {number}
      * @memberof Product
      */
-    unitPrice?: number;
+    unitPrice: number;
 }
 
 export function ProductFromJSON(json: any): Product {

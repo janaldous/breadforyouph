@@ -1,12 +1,12 @@
 import React from "react";
-import { ProductDto } from "../ProductPage";
+import { ProductRequiredDto } from "../ProductPage";
 import { formatCurrency } from "utils/CurrencyFormatterUtil";
 import { QuantityStep } from "./QuantityStep";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 interface ProductCheckoutItemProps {
-  product: ProductDto;
+  product: ProductRequiredDto;
   onIncrease: () => void;
   onDecrease: () => void;
 }

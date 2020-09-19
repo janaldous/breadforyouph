@@ -1,5 +1,5 @@
 import React from "react";
-import { ProductDto } from "./product/ProductPage";
+import { ProductRequiredDto } from "./product/ProductPage";
 
 export interface CartItem {
   productId: number;
@@ -7,14 +7,20 @@ export interface CartItem {
 }
 
 export interface CheckoutCart {
-  items: Array<ProductDto>;
+  items: Array<ProductRequiredDto>;
   total: number;
   numberOfItems: number;
 }
 
+export type QuantityOperation = "increase" | "decrease" | "set";
+
 export interface CustomerContextStuff {
   cart: CheckoutCart;
-  onAddToCart: (product: ProductDto, operation: "increase" | "decrease") => void;
+  onAddToCart: (
+    product: ProductRequiredDto,
+    operation: "increase" | "decrease"
+  ) => void;
+  onCartChange: (product: ProductRequiredDto, operation: QuantityOperation, quantity?: number) => void;
 }
 
 export const CustomerContext = React.createContext<CustomerContextStuff>({
@@ -23,5 +29,6 @@ export const CustomerContext = React.createContext<CustomerContextStuff>({
     total: 0,
     numberOfItems: 0,
   },
-  onAddToCart: (productId, operation) => console.log
+  onAddToCart: (productId, operation) => console.log,
+  onCartChange: () => console.log,
 });

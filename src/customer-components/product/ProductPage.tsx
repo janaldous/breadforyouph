@@ -18,7 +18,7 @@ import { Routes } from "Routes";
 
 export type ProductRequired = Required<Product>;
 
-export type ProductDto = ProductRequired & {
+export type ProductRequiredDto = ProductRequired & {
   quantity: number;
 };
 
@@ -63,12 +63,12 @@ export const ProductPage: React.FC = () => {
     });
   }, []);
 
-  const handleIncreaseQuantity = (product: ProductDto) => {
+  const handleIncreaseQuantity = (product: ProductRequiredDto) => {
     console.log("increasing quantity");
     onAddToCart(product, "increase");
   };
 
-  const handleDecreaseQuantity = (product: ProductDto) => {
+  const handleDecreaseQuantity = (product: ProductRequiredDto) => {
     onAddToCart(product, "decrease");
   };
 

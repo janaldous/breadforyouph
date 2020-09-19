@@ -13,6 +13,10 @@ import {
 import PublicApi from "../../api/PublicApi";
 import { mocked } from "ts-jest/utils";
 import { MemoryRouter } from "react-router-dom";
+import {
+  CustomerContext,
+  CustomerContextStuff,
+} from "customer-components/CustomerContext";
 
 const defaultValues: DeliveryData = {
   firstName: "John",
@@ -40,8 +44,22 @@ const changeRadioButton = (
   ReactTestUtils.Simulate.change(rbSelect);
 };
 
-const renderWithRouter = (component) => {
-  return render(component, { wrapper: MemoryRouter });
+const renderWithRouter = (
+  component,
+  intialContext: CustomerContextStuff = {
+    cart: { items: [], numberOfItems: 0, total: 0 },
+    onAddToCart: () => console.log,
+    onCartChange: () => console.log,
+  }
+) => {
+  const Wrapper = ({ children }): React.ReactElement => (
+    <MemoryRouter>
+      <CustomerContext.Provider value={intialContext}>
+        {children}
+      </CustomerContext.Provider>
+    </MemoryRouter>
+  );
+  return render(component, { wrapper: Wrapper as React.FunctionComponent });
 };
 
 const fillInDeliveryForm = (
@@ -126,9 +144,16 @@ describe("Order component", () => {
     ],
   });
 
+  const onAddToCartMock = jest.fn();
+  const onCartChangeMock = jest.fn();
+
   beforeEach(() => {
-    PublicApi.postOrder = jest.fn().mockImplementation(() => orderResponsePromise);
-    PublicApi.getDeliveryDates = jest.fn().mockImplementation(() => deliveryDatesPromise);
+    PublicApi.postOrder = jest
+      .fn()
+      .mockImplementation(() => orderResponsePromise);
+    PublicApi.getDeliveryDates = jest
+      .fn()
+      .mockImplementation(() => deliveryDatesPromise);
   });
 
   afterEach(() => {
@@ -223,7 +248,7 @@ describe("Order component", () => {
       deliveryType: OrderDtoDeliveryTypeEnum.DELIVER,
       paymentType: OrderDtoPaymentTypeEnum.CASH,
       deliveryDateId: 1,
-      quantity: 1,
+      products: [],
       user: {
         firstName: defaultValues.firstName,
         lastName: defaultValues.lastName,
@@ -242,27 +267,58 @@ describe("Order component", () => {
   });
 
   it("changes total and subtotal when quantity is changed to 2", async () => {
-    const { getByTestId } = renderWithRouter(<Order />);
+    const product = {
+      id: 1,
+      name: "Original Banana Bread",
+      unitPrice: 165,
+      description: "",
+      quantity: 1,
+      code: "",
+    };
+    const intitialContext: CustomerContextStuff = {
+      cart: {
+        items: [product],
+        total: 0,
+        numberOfItems: 1,
+      },
+      onAddToCart: onAddToCartMock,
+      onCartChange: onCartChangeMock,
+    };
+    const { getByTestId } = renderWithRouter(<Order />, intitialContext);
     const mockedApiDelivery = mocked(PublicApi.getDeliveryDates, true);
     await wait(() => {
       expect(mockedApiDelivery.mock.calls.length).toBe(1);
     });
 
     fireEvent.change(getByTestId("quantity"), { target: { value: "2" } });
-    expect(getByTestId("subtotal").textContent).toBe("330");
-    expect(getByTestId("delivery-fee").textContent).toBe("0");
-    expect(getByTestId("total").textContent).toBe("330");
+    expect(onCartChangeMock).toBeCalledWith(product, "set", 2);
   });
 
-  it("changes total and subtotal when quantity is changed to 3", async () => {
-    const renderResult = renderWithRouter(<Order />);
+  it("shows total and subtotal in order info and order summary", async () => {
+    const product = {
+      id: 1,
+      name: "Original Banana Bread",
+      unitPrice: 165,
+      description: "",
+      quantity: 3,
+      code: "",
+    };
+    const intitialContext: CustomerContextStuff = {
+      cart: {
+        items: [product],
+        total: 495,
+        numberOfItems: 1,
+      },
+      onAddToCart: onAddToCartMock,
+      onCartChange: onCartChangeMock,
+    };
+    const renderResult = renderWithRouter(<Order />, intitialContext);
     const { getByTestId, getByText } = renderResult;
     const mockedApiDelivery = mocked(PublicApi.getDeliveryDates, true);
     await wait(() => {
       expect(mockedApiDelivery.mock.calls.length).toBe(1);
     });
 
-    fireEvent.change(getByTestId("quantity"), { target: { value: "3" } });
     expect(getByTestId("subtotal").textContent).toBe("495");
     expect(getByTestId("total").textContent).toBe("495");
     expect(getByTestId("delivery-fee").textContent).toBe("0");
@@ -587,8 +643,8 @@ describe("Order component", () => {
   });
 
   it("shows error page when has error in get delivery date api call", async () => {
-    PublicApi.getDeliveryDates = jest.fn().mockRejectedValue({})
-    
+    PublicApi.getDeliveryDates = jest.fn().mockRejectedValue({});
+
     const renderResult = renderWithRouter(<Order />);
     const { getByText, container } = renderResult;
 
@@ -602,7 +658,7 @@ describe("Order component", () => {
 
   it("shows error page when has error in post order api call", async () => {
     PublicApi.postOrder = jest.fn().mockRejectedValue({});
-    
+
     const renderResult = renderWithRouter(<Order />);
     const { getByText, container } = renderResult;
 

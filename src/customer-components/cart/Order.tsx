@@ -13,6 +13,7 @@ import { isBrowser } from "react-device-detect";
 import PublicApi from "../../api/PublicApi";
 import OrderError from "./OrderError";
 import { Link } from "react-router-dom";
+import { CustomerContext } from "customer-components/CustomerContext";
 
 const inputNameMapper = {
   "given-name": "firstName",
@@ -28,10 +29,11 @@ const inputNameMapper = {
 };
 
 export default function Order() {
+  const { cart, onCartChange } = React.useContext(CustomerContext);
   const [step, setStep] = React.useState<number>(0);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [data, setData] = React.useState<OrderData>({
-    quantity: 1,
+    items: cart.items,
     subtotal: 165,
     deliveryFee: 0,
     total: 165,
@@ -71,24 +73,26 @@ export default function Order() {
   }, []);
 
   const getDeliveryDatesFromApi = () => {
-    PublicApi.getDeliveryDates(0, 5).then((res) => {
-      const { data } = res;
-      if (data.length <= 0)
-        throw new Error("Api responded with no delivery dates");
+    PublicApi.getDeliveryDates(0, 5)
+      .then((res) => {
+        const { data } = res;
+        if (data.length <= 0)
+          throw new Error("Api responded with no delivery dates");
 
-      setData((oldData) => {
-        const newData = { ...oldData };
-        newData.availableDeliveryDates = data;
+        setData((oldData) => {
+          const newData = { ...oldData };
+          newData.availableDeliveryDates = data;
 
-        if (!newData.deliveryForm.formValues.deliveryDateId) {
-          newData.deliveryForm.formValues.deliveryDateId = data[0].id;
-        }
+          if (!newData.deliveryForm.formValues.deliveryDateId) {
+            newData.deliveryForm.formValues.deliveryDateId = data[0].id;
+          }
 
-        return newData;
+          return newData;
+        });
+      })
+      .catch((err) => {
+        setStep(400);
       });
-    }).catch((err) => {
-      setStep(400);
-    });
   };
 
   const handleNext = () => {
@@ -101,47 +105,42 @@ export default function Order() {
 
   const handleChange = (e: any) => {
     let value = e.target.value;
-    // console.log(`${e.currentTarget.name}`)
-    if (e.currentTarget.name === "quantity") {
-      const subtotal = value * data.price;
-      setData((oldData) => ({ ...oldData, total: subtotal, subtotal }));
-    } else {
-      let name = inputNameMapper[e.currentTarget.name] || e.currentTarget.name;
-      // console.log(`changing ${name} to ${value} ${e.target.value}`)
 
-      if (name === "deliveryDateId") value = parseInt(value);
+    let name = inputNameMapper[e.currentTarget.name] || e.currentTarget.name;
+    // console.log(`changing ${name} to ${value} ${e.target.value}`)
 
-      setData((oldData) => {
-        const newData = {
-          ...oldData,
-          deliveryForm: {
-            ...oldData.deliveryForm,
-            formValues: { ...oldData.deliveryForm.formValues, [name]: value },
-            formTouched: { ...oldData.deliveryForm.formTouched, [name]: true },
-          },
+    if (name === "deliveryDateId") value = parseInt(value);
+
+    setData((oldData) => {
+      const newData = {
+        ...oldData,
+        deliveryForm: {
+          ...oldData.deliveryForm,
+          formValues: { ...oldData.deliveryForm.formValues, [name]: value },
+          formTouched: { ...oldData.deliveryForm.formTouched, [name]: true },
+        },
+      };
+
+      if (
+        newData.deliveryForm.formValues.deliveryType !==
+        oldData.deliveryForm.formValues.deliveryType
+      ) {
+        const { formValues } = newData.deliveryForm;
+        formValues.addressLine1 = "";
+        formValues.addressLine2 = "";
+        formValues.specialInstructions = "";
+      }
+
+      const errors = validate(newData.deliveryForm.formValues);
+      if (newData.deliveryForm.formTouched) {
+        newData.deliveryForm.formErrors = {
+          ...newData.deliveryForm.formErrors,
+          [name]: errors[name],
         };
-
-        if (
-          newData.deliveryForm.formValues.deliveryType !==
-          oldData.deliveryForm.formValues.deliveryType
-        ) {
-          const { formValues } = newData.deliveryForm;
-          formValues.addressLine1 = "";
-          formValues.addressLine2 = "";
-          formValues.specialInstructions = "";
-        }
-
-        const errors = validate(newData.deliveryForm.formValues);
-        if (newData.deliveryForm.formTouched) {
-          newData.deliveryForm.formErrors = {
-            ...newData.deliveryForm.formErrors,
-            [name]: errors[name],
-          };
-        }
-        newData.deliveryForm.isSubmitting = Object.keys(errors).length === 0;
-        return newData;
-      });
-    }
+      }
+      newData.deliveryForm.isSubmitting = Object.keys(errors).length === 0;
+      return newData;
+    });
   };
 
   const validateForm = () => {
@@ -177,7 +176,7 @@ export default function Order() {
       },
       deliveryType: deliveryInfo.deliveryType,
       paymentType: deliveryInfo.paymentType,
-      quantity: data.quantity,
+      products: cart.items.map((item) => ({id: item.id, quantity: item.quantity})),
       deliveryDateId: deliveryInfo.deliveryDateId,
       user: {
         firstName: deliveryInfo.firstName,
@@ -185,27 +184,30 @@ export default function Order() {
         contactNumber: deliveryInfo.contactNumber,
       },
     };
+
     return orderDto;
   };
 
   const handleSubmitOrder = async () => {
     const orderDto = getOrderDto();
     setLoading(true);
-    const result = await PublicApi.postOrder(orderDto).then((res) => {
-      const { data } = res;
-      setData((oldData) => ({
-        ...oldData,
-        orderConfirmation: {
-          orderNumber: data.orderNumber,
-        },
-      }));
-      setLoading(false);
-      return Promise.resolve(true);
-    }).catch((err) => {
-      setStep(400);
-      setLoading(false);
-      return Promise.reject(false);
-    });
+    const result = await PublicApi.postOrder(orderDto)
+      .then((res) => {
+        const { data } = res;
+        setData((oldData) => ({
+          ...oldData,
+          orderConfirmation: {
+            orderNumber: data.orderNumber,
+          },
+        }));
+        setLoading(false);
+        return Promise.resolve(true);
+      })
+      .catch((err) => {
+        setStep(400);
+        setLoading(false);
+        return Promise.reject(false);
+      });
 
     return result;
   };
@@ -258,7 +260,13 @@ export default function Order() {
     switch (step) {
       case 0:
         return (
-          <OrderInfo onNext={handleNext} data={data} onChange={handleChange} />
+          <OrderInfo
+            onNext={handleNext}
+            data={data}
+            items={cart.items}
+            total={cart.total}
+            onQuantityChange={onCartChange}
+          />
         );
       case 1:
         return (
@@ -273,6 +281,8 @@ export default function Order() {
         return (
           <OrderSummary
             onNext={handleNext}
+            items={cart.items}
+            total={cart.total}
             data={data}
             onSubmit={handleSubmitOrder}
           />
@@ -280,7 +290,7 @@ export default function Order() {
       case 3:
         return <OrderConfirmation data={data} />;
       case 400:
-        return <OrderError/>;
+        return <OrderError />;
       default:
         throw new Error("invalid step: " + step);
     }
